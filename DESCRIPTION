@@ -10,7 +10,7 @@ License: MIT + file LICENSE
 URL: https://github.com/yourusername/PostopPGD2024
 BugReports: https://github.com/yourusername/PostopPGD2024/issues
 Depends: 
-    R (>= 4.0.0)
+    R (>= 4.3.0)
 Imports:
     yaml,
     here,
