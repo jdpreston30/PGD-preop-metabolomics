@@ -1,0 +1,32 @@
+# Analysis Configuration
+# Project settings and data paths for reproducible analysis
+
+# Paths configuration  
+paths:
+  # Raw data path (update this to your data location)
+  raw_data: "/Users/jdp2019/Library/CloudStorage/OneDrive-Emory/Research/Jones Lab/Mass Spec Hard Copy Backups/PGD studies/Chan_PGD_9_2025/"
+  
+  # Output paths (relative to project root)
+  output: "./Outputs"
+  
+  # Script and utility paths
+  scripts: "R/Scripts/"
+  utils: "R/Utilities/"
+
+# Analysis settings
+analysis:
+  # Project metadata
+  project_name: "Postop_PGD_9_2024"
+  description: "PGD Preop Metabolomics Analysis"
+  
+  # Environment preferences
+  tibble_options:
+    print_max: 20
+    print_min: 10
+    sigfig: 3
+    
+  # Data.table preferences  
+  datatable_options:
+    print_class: true
+    print_keys: true
+    aware: true
