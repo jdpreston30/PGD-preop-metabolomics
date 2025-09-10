@@ -1,0 +1,40 @@
+Package: PostopPGD2024
+Type: Project
+Title: Postoperative Primary Graft Dysfunction Metabolomics Analysis
+Version: 1.0.0
+Authors@R: person("Joshua", "Preston", email = "joshua.preston@emory.edu", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9834-3017"))
+Description: Metabolomics analysis pipeline for postoperative primary graft dysfunction study.
+    This project contains all code and analysis scripts for reproducing the results
+    published in Preston et al. 2025, AJT.
+License: MIT + file LICENSE
+URL: https://github.com/yourusername/PostopPGD2024
+BugReports: https://github.com/yourusername/PostopPGD2024/issues
+Depends: 
+    R (>= 4.0.0)
+Imports:
+    yaml,
+    here,
+    conflicted,
+    purrr,
+    dplyr,
+    readr,
+    tidyr,
+    stringr,
+    ggplot2,
+    lubridate,
+    magrittr,
+    tibble,
+    forcats,
+    readxl,
+    writexl,
+    janitor,
+    scales,
+    viridis,
+    data.table,
+    mixOmics,
+    KEGGREST
+Remotes:
+    jdpreston30/TernTablesR
+Config/renv/snapshot/type: explicit
+Encoding: UTF-8
+RoxygenNote: 7.2.3
