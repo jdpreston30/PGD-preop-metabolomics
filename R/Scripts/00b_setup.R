@@ -2,12 +2,8 @@
 #+ 00b.1: Set up R options and repositories
   options(repos = c(CRAN = "https://cran.rstudio.com/"))
   options(expressions = 10000)
-#+ 00b.2: Load essential packages for configuration
-  #- 00b.2.1: Install yaml and here if missing
-    if (!require(yaml, quietly = TRUE)) install.packages("yaml")
-    if (!require(here, quietly = TRUE)) install.packages("here")
-    library(yaml)
-    library(here)
+#+ 00b.2: Essential packages (loaded by 00a_environment_setup.R)
+  # yaml and here are already loaded
 #+ 00b.3: Load project configuration  
   #- 00b.3.1: Read YAML configuration
     config <- yaml::read_yaml(here::here("config.yaml"))
@@ -39,7 +35,7 @@
       .datatable.aware = config$analysis$datatable_options$aware
     }
 #+ 00b.7: Set up package conflict preferences
-  library(conflicted)
+  # conflicted is already loaded by 00a_environment_setup.R
   conflicts_prefer(purrr::map)
   conflicts_prefer(dplyr::filter) 
   conflicts_prefer(dplyr::select)
