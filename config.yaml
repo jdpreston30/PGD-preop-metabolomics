@@ -4,8 +4,10 @@
 # Paths configuration  
 paths:
   # Raw data path (update this to your data location)
-  raw_data: "/Users/jdp2019/Library/CloudStorage/OneDrive-Emory/Research/Jones Lab/Mass Spec Hard Copy Backups/PGD studies/Chan_PGD_9_2025/"
-  
+  TFT: /Users/JoshsMacbook2015/Library/CloudStorage/OneDrive-EmoryUniversity/Research/MS_raw_data/Chan_studies_MS_raw/PGD studies/Chan_PGD_9_2025/MetaboJanitoR/Outputs/MSMICA/global_KEGG/MSMICA_Feature_Tables/MSMICA_20p_halfmin_log2.csv
+  UFT_full: /Users/JoshsMacbook2015/Library/CloudStorage/OneDrive-EmoryUniversity/Research/MS_raw_data/Chan_studies_MS_raw/PGD studies/Chan_PGD_9_2025/MetaboJanitoR/Outputs/Simple/UFT_full_halfmin_log2.csv
+  UFT_filtered: /Users/JoshsMacbook2015/Library/CloudStorage/OneDrive-EmoryUniversity/Research/MS_raw_data/Chan_studies_MS_raw/PGD studies/Chan_PGD_9_2025/MetaboJanitoR/Outputs/Untargeted/UFT_20p_halfmin_log2.csv
+  clinical_metadata: "/Users/JoshsMacbook2015/Library/CloudStorage/OneDrive-EmoryUniversity/Research/Chan Lab - Transplant Multi-Omics - OHT/OHT Clinical Data Master Sheet.xlsx"
   # Output paths (relative to project root)
   output: "./Outputs"
   
