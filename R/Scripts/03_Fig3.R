@@ -1,6 +1,6 @@
-#* Figure 3
-  #+ Import and structure MSMICA data
-    #- Import
+#* 3: Figure 3
+  #+ 3.0: Import and structure MSMICA data
+    #- 3.0.1: Import
       HILIC_MSMICA <- read_csv("Raw/HILIC_median_summarized_MSMICA.csv")
       C18_HILIC_MSMICA <- read_csv("Raw/C18_median_summarized_MSMICA.csv") %>%
         left_join(HILIC_MSMICA, by = "Sample_ID") %>%
@@ -31,7 +31,7 @@
           keep = if_else(row_number() == 1, TRUE, FALSE) # Keep only the first occurrence
         ) %>%
         ungroup()
-    #- Determine number of mass duplicates and number of feature duplicates
+    #- 3.0.2: Determine number of mass duplicates and number of feature duplicates
       cleaned_names <- gsub("_HILIC|_C18", "", feature_key_flagged$Name)
       duplicate_count <- sum(base::duplicated(cleaned_names))
       duplicate_mass_count <- feature_key_flagged %>%
@@ -43,15 +43,15 @@
         dplyr::count(mz, time,ion_mode) %>% # Count duplicates based on both mz and time
         filter(n > 1) %>%
         summarise(total_duplicates = sum(n))
-    #- Filter and consolidate any duplicates
+    #- 3.0.3: Filter and consolidate any duplicates
       columns_to_keep <- feature_key_flagged %>%
         filter(keep) %>%
         pull(Name)
       C18_HILIC_MSMICA_cleaned <- C18_HILIC_MSMICA %>%
         select(Patient, PGD, all_of(columns_to_keep))
-  #+ 3A) Violin Plots
-    #- Process algorithm targeted data
-      #_Run t-tests 
+  #+ 3.1: Violin Plots
+    #- 3.1.1: Process algorithm targeted data
+      #_ Run t-tests 
         feature_key_simple <- feature_key_flagged %>%
           select(Name, Identified_Name, duplicate_flag, Exact_mass,mz,time)
         algorithm_features_sig <- C18_HILIC_MSMICA_cleaned %>%
@@ -76,8 +76,8 @@
             Higher = if_else(Mean_PGD > Mean_No_PGD, "PGD", "No PGD")
           ) %>%
           filter(P_Value < 0.05)
-    #- Process targeted data
-      #_Prepare and put in form for t-tests
+    #- 3.1.2: Process targeted data
+      #_ Prepare and put in form for t-tests
         targeted_FT_ttest_ready <- targeted_FT_transposed %>%
         select(CNAME_KEGG_HMDB_col_ad, H1:H36) %>%
         pivot_longer(cols = -CNAME_KEGG_HMDB_col_ad, names_to = "Patient_no", values_to = "Value") %>%
@@ -87,7 +87,7 @@
         left_join(UFT_C18_HILIC %>% select(Patient_no, PGD), by = "Patient_no") %>%
         select(Patient_no, PGD, everything()) %>%
         rename(Patient = Patient_no)
-      #_Run t-tests
+      #_ Run t-tests
         targeted_FT_ttest_results_sig <- targeted_FT_ttest_ready %>%
           select(-Patient) %>% # Remove patient ID column
           summarise(across(
@@ -111,7 +111,7 @@
           mutate(Identified_Name = "-") %>%
           select(Name, P_value, Identified_Name, Higher) %>%
           filter(P_value < 0.05)
-    #- Merge t-test results from both
+    #- 3.1.3: Merge t-test results from both
       algorithm_features_sig_merge_ready <- algorithm_features_sig %>%
         select(Name, P_Value, Identified_Name, Higher) %>%
         mutate(data_source = "Algorithm")
@@ -121,7 +121,7 @@
       colnames(algorithm_features_sig_merge_ready) <- colnames(targeted_FT_ttest_results_merge_ready)
       merge_targeted_ttest <- rbind(targeted_FT_ttest_results_merge_ready, algorithm_features_sig_merge_ready) %>%
         arrange(P_value)
-    #- Z-score
+    #- 3.1.4: Z-score
       subset_z_scored_targeted <- targeted_FT_ttest_ready %>%
         select(Patient, PGD, all_of(targeted_FT_ttest_results_sig$Name)) %>%
         mutate(across(where(is.numeric), ~ scale(.)[, 1])) %>%
@@ -134,31 +134,33 @@
         left_join(subset_z_scored_targeted, by = c("Patient"))
       write.csv(combined_algo_targeted_z, "violins.csv")
       write.csv(merge_targeted_ttest, "merge_targeted_ttest.csv")
-  #+ 3B and C) Superclasses and Classes(ClassyFire)
-    class_analysis <- read_excel("SM3.xlsx", sheet = "Significant Features") %>%
-      select(Identified_Name, "Regulation in PGD", Superclass:Class) %>%
-      rename(Regulation = "Regulation in PGD")
-    total_regulation_counts <- class_analysis %>%
-      group_by(Regulation) %>%
-      summarise(Total_Chemicals = n(), .groups = "drop")
-    significance_results_superclasses <- class_analysis %>%
-      group_by(Superclass, Regulation) %>%
-      summarise(Chemical_Count = n(), .groups = "drop") %>%
-      pivot_wider(names_from = Regulation, values_from = Chemical_Count, values_fill = 0) %>%
-      rowwise() %>%
-      mutate(Total = Downregulated + Upregulated,
-        Downregulated = Downregulated * (-1)) %>%
-      arrange(Upregulated, Downregulated)
-    significance_results_classes <- class_analysis %>%
-      group_by(Class, Regulation) %>%
-      summarise(Chemical_Count = n(), .groups = "drop") %>%
-      pivot_wider(names_from = Regulation, values_from = Chemical_Count, values_fill = 0) %>%
-      rowwise() %>%
-      mutate(Total = Downregulated + Upregulated,
-        Downregulated = Downregulated*(-1)) %>%
-      filter(Total > 1) %>% # filtered on classes but not superclasses
-      arrange(Upregulated,Downregulated)
-    #- Save an export
-      write.csv(significance_results_superclasses, "superclasses_05.csv")
-      write.csv(significance_results_classes, "classes_05.csv")
+  #+ 3.2: Superclasses and Classes (ClassyFire)
+    #- 3.2.1: Import and structure
+        class_analysis <- read_excel("SM3.xlsx", sheet = "Significant Features") %>%
+        select(Identified_Name, "Regulation in PGD", Superclass:Class) %>%
+        rename(Regulation = "Regulation in PGD")
+        total_regulation_counts <- class_analysis %>%
+        group_by(Regulation) %>%
+        summarise(Total_Chemicals = n(), .groups = "drop")
+        significance_results_superclasses <- class_analysis %>%
+        group_by(Superclass, Regulation) %>%
+        summarise(Chemical_Count = n(), .groups = "drop") %>%
+        pivot_wider(names_from = Regulation, values_from = Chemical_Count, values_fill = 0) %>%
+        rowwise() %>%
+        mutate(Total = Downregulated + Upregulated,
+            Downregulated = Downregulated * (-1)) %>%
+        arrange(Upregulated, Downregulated)
+        significance_results_classes <- class_analysis %>%
+        group_by(Class, Regulation) %>%
+        summarise(Chemical_Count = n(), .groups = "drop") %>%
+        pivot_wider(names_from = Regulation, values_from = Chemical_Count, values_fill = 0) %>%
+        rowwise() %>%
+        mutate(Total = Downregulated + Upregulated,
+            Downregulated = Downregulated*(-1)) %>%
+        filter(Total > 1) %>% # filtered on classes but not superclasses
+        arrange(Upregulated,Downregulated)
+    #- 3.2.2: Save an export
+        write.csv(significance_results_superclasses, "superclasses_05.csv")
+        write.csv(significance_results_classes, "classes_05.csv")
+    #- 3.2.3: Graph results
       #! Graphed in Prism from here
