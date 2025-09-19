@@ -1,10 +1,10 @@
-#* Figure 2
-  #+ 2A) Pathway Enrichment
-    #- Filter to relevant columns
+#* 2: Figure 2
+  #+ 2.1: Pathway Enrichment
+    #- 2.1.1: Filter to relevant columns
       pathway_enrich_raw <- UFT_C18_HILIC %>%
         select(-Patient_no) %>%
         mutate(PGD = as.factor(PGD))
-    #- Run ttest of each feature and format for metaboanalyst
+    #- 2.1.2: Run ttest of each feature and format for metaboanalyst
       ttest_results_pathway <- pathway_enrich_raw %>%
         pivot_longer(cols = -PGD, names_to = "Feature", values_to = "Value") %>%
         group_by(Feature) %>%
@@ -21,12 +21,12 @@
         ) %>%
         select(m.z, mode, p.value, r.t) 
       write.csv(ttest_results_pathway, "pathway_enrichment_data.csv", row.names = FALSE)
-    #- Import results from mummichog
+    #- 2.1.3: Import results from mummichog
       pathway_enrich_results <- read_excel("Outputs/mummichog.xlsx", sheet = "summary") %>%
         select(pathway_name, p_gamma, enrichment_factor) %>%
         filter(p_gamma < 0.05) %>%
         arrange(desc(enrichment_factor), p_gamma) # Sort by bubble size (enrichment factor)
-    #- Create the balloon plot
+    #- 2.1.4: Create the balloon plot
       ggplot(pathway_enrich_results, aes(
         x = 1, y = reorder(pathway_name, enrichment_factor),
         size = enrichment_factor, color = p_gamma
@@ -51,5 +51,5 @@
           legend.key.height = unit(1.5, "cm"), # Adjust space between keys to center title vertically
           legend.text.align = 0.5 # Center-align legend text horizontally
         )
-  #+ 2B) KEGG Map
+  #+ 2.2: KEGG Map
     #! Done on Metaboanalyst
