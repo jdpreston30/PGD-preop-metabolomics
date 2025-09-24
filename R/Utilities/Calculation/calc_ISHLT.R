@@ -1,4 +1,8 @@
 #! UPDATE
+#! function inputs = column names for varaiables, tibble to add columns to
+#! Outputs = adds column to input tibble, first = ISHLT PGD GRADE (mild moderate, severe, none)
+#! Output 2 = ISHLT_PGD_binary Yes/No
+
 calc_radial <- function(clinical_data, 
                         rap_col, 
                         age_col, 
