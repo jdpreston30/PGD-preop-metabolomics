@@ -30,13 +30,12 @@ NO BLANK LINES POLICY:
 #+ 1.1: Clean names
   df <- janitor::clean_names(df)
   #- 1.1.1: Verify rows
-    #_ Expect > 100 rows
     stopifnot(nrow(df) > 100)
 #+ 1.2: Function example (plain comments only, no subsections)
   clean_and_summarize <- function(x) {
-  # strip empty cols
+  #- 1.2.1: Strip empty cols
   x <- x[, colSums(!is.na(x)) > 0, drop = FALSE]
-  # summarize
+  #- 1.2.2: Summarize
   dplyr::summarise(dplyr::as_tibble(x), rows = dplyr::n())
   }
 ```

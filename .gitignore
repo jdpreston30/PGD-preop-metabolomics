@@ -1,6 +1,3 @@
-# Output files - never commit processed data
-Outputs/
-
 # R specific
 .Rhistory
 .RData
