@@ -6,8 +6,8 @@
   # yaml and here are already loaded
 #+ 0b.3: Load project configuration
   #- 0b.3.1: Read YAML configuration
-    # config <- yaml::read_yaml(here::here("config.yaml"))
-    config <- yaml::read_yaml(here::here("config_AT.yaml"))
+    config <- yaml::read_yaml(here::here("config.yaml"))
+    # config <- yaml::read_yaml(here::here("config_AT.yaml"))
   #- 0b.3.2: Make config available globally (for compatibility)
     .GlobalEnv$CONFIG <- config
 #+ 0b.4: Set up global paths from config
