@@ -14,14 +14,14 @@
           "comorbidities_smoking_hx", "comorbidities_DM", "comorbidities_prior_cardiac_surg", 
           "preop_temp_MCS",
           "preop_IABP", "preop_imeplla5.5", "preop_VA_ECMO", "preop_LVAD", 
-          "rx_preop_inotrope", "rx_preop_amiodarone", "rx_preop_ASA", "preop_MCS_days")	
+          "rx_preop_inotrope", "rx_preop_amiodarone", "rx_preop_ASA")	
   #- 0d.0.3: Set T2 Vector
     T2 <- c("donor_age", "donor_sex", "donor_sex_mismatch", "donor_PHM", "donor_LVEF", 
           "donor_drug_use", "donor_PHS_risk", "donor_DBD_DCD", "donor_COD_simplified")
   #- 0d.0.4: Set T3 Vector
     T3 <- c("operative_IT_minutes", "operative_CPB_minutes", "postop_LVEF_median", "postop_CVP", 
           "postop_cardiac_index", "postop_inotrope_score", "postop_MCS_IABP", "postop_VA_ECMO", 
-          "postop_MCS_Impella5.5", "postop_MCS_RVAD", "postop_PGD_ISHLT", "postop_ICU_LOS", 
+          "postop_MCS_Impella5.5", "postop_MCS_RVAD", "postop_ICU_LOS", 
           "postop_RRT_needed", "postop_CRRT", "postop_stroke", "postop_30_day_LVEF", 
           "postop_hospital_LOS", "ACR_2R_or_greater", "survival_30", "survival_90", 
           "survival", "survival_days")
@@ -48,21 +48,20 @@
     select(-ends_with(".x"), -ends_with(".y")) %>%
     mutate(across(where(is.character), as.factor))
 #+ 0d.4: Compute RADIAL score, PHM, and ISHLT PGD Status
-#   clinical_metadata <- clinical_metadata_i %>%
-#     calc_radial(
-#       rap_col = "preop_RAP",
-#       age_col = "demographics_age_tpx",
-#       dm_col = "comorbidities_DM",
-#       inotrope_col = "rx_preop_inotrope",
-#       donor_age_col = "donor_age",
-#       ischemic_time_col = "operative_IT_minutes"
-#     ) %>%
-#     calc_PHM() %>%
-#     calc_ISHLT()
+  clinical_metadata <- clinical_metadata_i %>%
+    calc_radial(
+      rap_col = "preop_RAP",
+      age_col = "demographics_age_tpx",
+      dm_col = "comorbidities_DM",
+      inotrope_col = "rx_preop_inotrope",
+      donor_age_col = "donor_age",
+      ischemic_time_col = "operative_IT_minutes"
+    ) %>%
+    select(Patient, preop_RADIAL_calc)
 # #+ 0d.4: Break into components for the final tables
   T1_data <- clinical_metadata_i %>%
-    select(Patient, all_of(T1))
+    select(Patient, postop_PGD_ISHLT, all_of(T1))
   T2_data <- clinical_metadata_i %>%
-    select(Patient, all_of(T2))
+    select(Patient, postop_PGD_ISHLT, all_of(T2))
   T3_data <- clinical_metadata_i %>%
-    select(Patient, all_of(T3))
+    select(Patient, postop_PGD_ISHLT, all_of(T3))

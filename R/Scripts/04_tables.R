@@ -35,9 +35,8 @@
     exclude_vars = "Patient",
     group_var = "postop_PGD_ISHLT",
     descriptive = TRUE,
-    output_xlsx = "Outputs/Table1.xlsx",
     consider_normality = TRUE,
-    print_normality = TRUE
+    print_normality = FALSE
   )
 #+ 4.2: Table 2 (Donor Characteristics)
   T2 <- ternG(
@@ -46,7 +45,6 @@
     exclude_vars = "Patient",
     group_var = "postop_PGD_ISHLT",
     descriptive = TRUE,
-    output_xlsx = "Outputs/Table2.xlsx",
     consider_normality = TRUE,
     print_normality = FALSE
   )
@@ -57,15 +55,9 @@
     exclude_vars = "Patient",
     group_var = "postop_PGD_ISHLT",
     descriptive = TRUE,
-    output_xlsx = "Outputs/Table3.xlsx",
     consider_normality = TRUE,
     print_normality = FALSE
   )
 
-
-
-
-
-str(T1_data)
-str(T2_data)
-str(T3_data)
+total <- rbind(T1,T2,T3) %>%
+  arrange(p)
