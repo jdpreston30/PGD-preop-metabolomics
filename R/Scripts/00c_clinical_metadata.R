@@ -36,10 +36,8 @@
   match_run_i <- read_xlsx(config$paths$clinical_metadata, sheet = "Match Run", na = c("", "NA", "-")) %>%
     filter(Patient %in% analyzed_patients)
   #- 0d.1.2: Sample Type Data
-#!!!!!!!!!!!!!!!!!!
-  # sample_type <- read_xlsx(config$paths$sample_type) %>%
-  #   filter(Patient %in% analyzed_patients) %>%
-  #   filter(Sample == "S0")
+    sample_type <- read_xlsx(config$paths$sample_type) %>%
+      filter(Patient %in% analyzed_patients)
 #+ 0d.2: Combine clinical metadata into one tibble; format variables
   clinical_metadata_i <- preop_i %>%
     left_join(periop_i, by = "Patient") %>%
