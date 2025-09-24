@@ -1,41 +1,32 @@
 #' Perform t-tests between groups and format results for Mummichog analysis
 #'
-#' @param data Data frame with Patient_ID, Variant, and feature columns
-#' @param group_assignments Data frame with Patient_ID and group assignments (e.g., Clade)
-#' @param group_column Name of the group column in group_assignments (default: "Clade")
+#' @param data Data frame with grouping column (e.g., PGD) and feature columns
+#' @param group_column Name of the grouping column (default: "PGD")
 #' @param output_filename Filename for the exported CSV results
-#' @param group1_value Value representing the first group (default: 1)
-#' @param group2_value Value representing the second group (default: 2)
+#' @param output_dir Directory path for output (default: "Outputs/mummichog_inputs/")
+#' @param group1_value Value representing the first group (default: "N")
+#' @param group2_value Value representing the second group (default: "Y")
 #' @return List containing the results tibble and summary statistics
 #' @export
 mummichog_ttests <- function(data,
-                             group_assignments,
-                             group_column = "Clade",
+                             group_column = "PGD",
                              output_filename,
-                             group1_value = 1,
-                             group2_value = 2) {
-  # _Prepare data for t-tests with group assignments
+                             output_dir = "Outputs/mummichog_inputs/",
+                             group1_value = "N",
+                             group2_value = "Y") {
+  # _Prepare data for t-tests - data already has grouping column
   ttest_data <- data %>%
-    dplyr::left_join(
-      group_assignments %>% dplyr::mutate(Group_Test = !!rlang::sym(group_column)),
-      by = "Patient_ID"
-    ) %>%
-    dplyr::select(-Patient_ID) %>%
+    dplyr::rename(Group_Test = !!rlang::sym(group_column)) %>%
     dplyr::filter(!is.na(Group_Test))
 
-  # _Remove the original grouping column if it exists (and is different from Group_Test)
-  if (group_column %in% names(ttest_data) && group_column != "Group_Test") {
-    ttest_data <- ttest_data %>% dplyr::select(-!!rlang::sym(group_column))
-  }
-
-  # _Get feature names (exclude Group_Test and any remaining non-numeric columns)
-  feature_names <- names(ttest_data)[names(ttest_data) != "Group_Test"]
+  # _Get feature names (exclude Group_Test, Patient, and any other non-numeric columns)
+  excluded_columns <- c("Group_Test", "Patient")
+  feature_names <- names(ttest_data)[!names(ttest_data) %in% excluded_columns]
 
   # _Filter to only include columns that look like metabolite features (HILIC or C18 prefix)
   metabolite_feature_names <- feature_names[stringr::str_starts(feature_names, "HILIC|C18")]
 
-  # _Remove any remaining categorical columns that shouldn't be tested
-  # _Only keep columns that can be converted to numeric for t-tests
+  # _Only keep numeric columns for t-tests
   numeric_feature_names <- c()
   for (col in metabolite_feature_names) {
     test_values <- ttest_data[[col]]
@@ -126,11 +117,20 @@ mummichog_ttests <- function(data,
     # _Remove rows where feature parsing failed (invalid feature names)
     dplyr::filter(!is.na(m.z) & !is.na(mode))
 
+  # _Create output directory if it doesn't exist
+  if (!dir.exists(output_dir)) {
+    dir.create(output_dir, recursive = TRUE)
+    cat("Created output directory:", output_dir, "\n")
+  }
+  
+  # _Create full output path
+  output_path <- file.path(output_dir, output_filename)
+  
   # _Export results
-  readr::write_csv(results_tibble, paste0("Outputs/Mummichog Inputs/", output_filename))
+  readr::write_csv(results_tibble, output_path)
 
   # _Display summary
-  cat("T-test results exported to:", paste0("Outputs/", output_filename), "\n")
+  cat("T-test results exported to:", output_path, "\n")
   cat("Total features processed:", length(feature_names), "\n")
   cat("Features with actual t-test p-values:", sum(unlist(ttest_results) < 1.0), "\n")
   cat("Features with assigned p-value of 1 (constant/insufficient data):", sum(unlist(ttest_results) == 1.0), "\n")
@@ -143,7 +143,7 @@ mummichog_ttests <- function(data,
   return(list(
     results = results_tibble,
     n_features = nrow(results_tibble),
-    output_file = paste0("Outputs/", output_filename),
+    output_file = output_path,
     group1_value = group1_value,
     group2_value = group2_value
   ))
