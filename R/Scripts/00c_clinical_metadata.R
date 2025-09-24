@@ -55,8 +55,8 @@ clinical_metadata <- clinical_metadata_i %>%
     donor_age_col = "donor_age",
     ischemic_time_col = "operative_IT_minutes"
   ) %>%
-  select(Patient, preop_RADIAL_calc) %>%
-  calc_ISHLT()
+  select(Patient, preop_RADIAL_calc) #%>%
+  # # calc_ISHLT()
 
 
 #+ 0d.4: Break into components for the final tables ----
