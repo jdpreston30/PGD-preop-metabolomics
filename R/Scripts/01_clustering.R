@@ -1,6 +1,6 @@
 #* 1: PCA and PLS-DA Analysis
-#+ 1.1: Run PCA on UFT data
-  uft_pca <- make_PCA(UFT_filtered, method = "PCA", show_patient_labels = TRUE, label_size = 2)
+#+ 1.1: Run PCA on UFT data ----
+uft_pca <- make_PCA(UFT_filtered, method = "PCA", show_patient_labels = TRUE, label_size = 2)
 
 
 

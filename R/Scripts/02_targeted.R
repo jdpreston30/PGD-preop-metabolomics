@@ -1,14 +1,14 @@
 
-#* 2: Metabolomic Features vs PGD Analysis
-#+ 2.1: T-tests for all metabolomic features against PGD status
-  cat("\n=== METABOLOMIC FEATURES vs PGD ANALYSIS ===\n")
-  
-  # Get metabolomic feature columns (exclude Patient and PGD)
-  feature_cols <- names(TFT)[!names(TFT) %in% c("Patient", "PGD")]
-  cat("Testing", length(feature_cols), "metabolomic features against PGD status\n")
-  
-  # Create results dataframe
-  metabolite_results <- data.frame(
+#* 2: Metabolomic Features vs PGD Analysis ----
+#+ 2.1: T-tests for all metabolomic features against PGD status ----
+cat("\n=== METABOLOMIC FEATURES vs PGD ANALYSIS ===\n")
+
+# Get metabolomic feature columns (exclude Patient and PGD)
+feature_cols <- names(TFT)[!names(TFT) %in% c("Patient", "PGD")]
+cat("Testing", length(feature_cols), "metabolomic features against PGD status\n")
+
+# Create results dataframe
+metabolite_results <- data.frame(
     Feature = character(),
     P_Value = numeric(),
     Mean_No_PGD = numeric(),
