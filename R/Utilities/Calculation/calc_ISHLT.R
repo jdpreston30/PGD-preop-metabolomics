@@ -1,7 +1,30 @@
-#! UPDATE
-#! function inputs = column names for varaiables, tibble to add columns to
-#! Outputs = adds column to input tibble, first = ISHLT PGD GRADE (mild moderate, severe, none)
-#! Output 2 = ISHLT_PGD_binary Yes/No
+#! INPUTS
+# column names for varaiables, tibble to add columns to
+
+#! OUTPUTS
+# adds column to input tibble: ISHLT PGD GRADE (mild moderate, severe, none)
+# adds column to input tibble: ISHLT_PGD_binary Y/N
+
+#! ORIGINAL FORMULA
+# =IF(AND(AJ33="",AL33="",AN33="",AM33="",AQ33="",AO33="",AP33="",AS33=0),"",
+  #  IF(OR(AJ33="Y",AL33="Y",AN33="Y"),"Severe",
+  #     IF(AND(OR(AND(AQ33<40,AQ33<>""),AO33>15,IF(AP33="",1,AP33)<2),OR(AS33>10,AM33="Y")),"Moderate",
+  #        IF(OR(AND(AQ33<40,AQ33<>""),AO33>15,IF(AP33="",1,AP33)<2),"Mild","N"))))
+
+#! ORIGINAL COLUMNS
+# postop_MCS_Impella5.5_DEPENDENT = AJ
+# postop_MCS_Impella5.5 = AK
+# postop_MCS_RVAD = AL
+# postop_MCS_IABP = AM
+# postop_VA_ECMO = AN
+# postop_CVP = AO
+# postop_cardiac_index = AP
+# postop_LVEF_median = AQ
+# postop_inotrope_score = AS
+
+# ! REFERENCE COLUMN TO COMPARE
+# postop_PGD_textbook_calc
+# postop_PGD_ISHLT
 
 calc_radial <- function(clinical_data, 
                         rap_col, 
