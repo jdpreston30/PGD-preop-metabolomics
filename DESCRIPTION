@@ -5,7 +5,7 @@ Version: 1.0.0
 Authors@R: person("Joshua", "Preston", email = "joshua.preston@emory.edu", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9834-3017"))
 Description: Metabolomics analysis pipeline for postoperative primary graft dysfunction study.
     This project contains all code and analysis scripts for reproducing the results
-    published in Preston et al. 2025, AJT.
+    submitted to AJT, Preston et al. 2025.
 License: MIT + file LICENSE
 URL: https://github.com/yourusername/PostopPGD2024
 BugReports: https://github.com/yourusername/PostopPGD2024/issues
@@ -32,7 +32,8 @@ Imports:
     viridis,
     data.table,
     mixOmics,
-    KEGGREST
+    KEGGREST,
+    TernTablesR
 Remotes:
     jdpreston30/TernTablesR
 Config/renv/snapshot/type: explicit
