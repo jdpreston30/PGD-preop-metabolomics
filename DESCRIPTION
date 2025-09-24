@@ -32,7 +32,6 @@ Imports:
     viridis,
     data.table,
     mixOmics,
-    KEGGREST,
     TernTablesR
 Remotes:
     jdpreston30/TernTablesR

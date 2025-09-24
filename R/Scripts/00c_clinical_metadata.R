@@ -25,8 +25,8 @@
           "postop_RRT_needed", "postop_CRRT", "postop_stroke", "postop_30_day_LVEF", 
           "postop_hospital_LOS", "ACR_2R_or_greater", "survival_30", "survival_90", 
           "survival", "survival_days")
-#+ 0d.1: Import Clinical metadata
-  #- 0d.1.1: Clinical Data
+#+ 0d.1: Import Clinical metadata ----
+  #- 0d.1.1: Clinical Data ----
   preop_i <- read_xlsx(config$paths$clinical_metadata, sheet = "Preop", na = c("", "NA", "-")) %>%
     filter(Patient %in% analyzed_patients)
   periop_i <- read_xlsx(config$paths$clinical_metadata, sheet = "Periop", na = c("", "NA", "-")) %>%
@@ -35,17 +35,17 @@
     filter(Patient %in% analyzed_patients)
   match_run_i <- read_xlsx(config$paths$clinical_metadata, sheet = "Match Run", na = c("", "NA", "-")) %>%
     filter(Patient %in% analyzed_patients)
-  #- 0d.1.2: Sample Type Data
-    sample_type <- read_xlsx(config$paths$sample_type) %>%
-      filter(Patient %in% analyzed_patients)
-#+ 0d.2: Combine clinical metadata into one tibble; format variables
+  #- 0d.1.2: Sample Type Data ----
+  sample_type <- read_xlsx(config$paths$sample_type) %>%
+    filter(Patient %in% analyzed_patients)
+#+ 0d.2: Combine clinical metadata into one tibble; format variables ----
   clinical_metadata_i <- preop_i %>%
     left_join(periop_i, by = "Patient") %>%
     left_join(outcomes_i, by = "Patient") %>%
     left_join(match_run_i, by = "Patient") %>%
     select(-ends_with(".x"), -ends_with(".y")) %>%
     mutate(across(where(is.character), as.factor))
-#+ 0d.4: Compute RADIAL score, PHM, and ISHLT PGD Status
+#+ 0d.4: Compute RADIAL score, PHM, and ISHLT PGD Status ----
   clinical_metadata <- clinical_metadata_i %>%
     calc_radial(
       rap_col = "preop_RAP",

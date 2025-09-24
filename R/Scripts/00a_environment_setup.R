@@ -12,7 +12,7 @@
       stop("No Imports section found in DESCRIPTION file.")
     }
   #- 0a.1.3: Find where Imports section ends (next field or end of file)
-    next_field <- which(grepl("^[A-Z]", desc_lines[(imports_start + 1):length(desc_lines)]))
+    next_field <- which(grepl("^[A-Z]", desc_lines[(imports_start + 1):length(desc_lines)])) # nolint
     if (length(next_field) > 0) {
       imports_end <- imports_start + next_field[1] - 1
     } else {

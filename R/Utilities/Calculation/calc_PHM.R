@@ -18,4 +18,4 @@ calc_radial <- function(clinical_data,
                      " column (", col, "). Radial score calculation may be incomplete for affected patients."))
     }
   }
-  
+}
