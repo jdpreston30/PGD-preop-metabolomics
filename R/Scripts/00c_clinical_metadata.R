@@ -57,8 +57,8 @@ clinical_metadata <- clinical_metadata_i %>%
   ) %>%
   select(Patient, preop_RADIAL_calc) %>%
   calc_ISHLT()
-  #!!!! postop_PGD_ISHLT (Y N)
-  #!!! postop_PGD_textbook_calc
+
+
 #+ 0d.4: Break into components for the final tables ----
 T1_data <- clinical_metadata_i %>%
   select(Patient, postop_PGD_ISHLT, all_of(T1))
