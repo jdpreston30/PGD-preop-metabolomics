@@ -57,3 +57,5 @@ cat("📚 Loading required packages...\n")
 invisible(sapply(required_packages, library, character.only = TRUE, quietly = TRUE))
 #+ 0a.4: Environment setup complete ----
 cat("✅ Environment setup complete! All required packages loaded.\n")
+
+#ailintang trial comment 
