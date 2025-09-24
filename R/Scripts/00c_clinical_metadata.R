@@ -8,13 +8,11 @@ analyzed_patients <- c("H1", "H2", "H3", "H4", "H5", "H6", "H7", "H8", "H9", "H1
                        "H42", "H43", "H44", "H45", "H46", "H47", "H48", "H50", "H51", "H52",
                        "H53", "H54", "H55", "H56", "H57", "H58", "H59", "H60", "H61", "H62", "H63", "H64")
 #- 0d.0.2: Set T1 Vector ----
-#!!!!!!!!!!!!!!!!!! Add back RADIAL
-# "radial_calc",
 T1 <- c("demographics_age_tpx", "demographics_race", "demographics_sex", "demographics_BMI", 
         "comorbidities_smoking_hx", "comorbidities_DM", "comorbidities_prior_cardiac_surg", 
-        "preop_temp_MCS",
+        "preop_temp_MCS", 
         "preop_IABP", "preop_imeplla5.5", "preop_VA_ECMO", "preop_LVAD", 
-        "rx_preop_inotrope", "rx_preop_amiodarone", "rx_preop_ASA")	
+        "rx_preop_inotrope", "rx_preop_amiodarone", "preop_RADIAL_calc", "rx_preop_ASA")	
 #- 0d.0.3: Set T2 Vector ----
 T2 <- c("donor_age", "donor_sex", "donor_sex_mismatch", "donor_PHM", "donor_LVEF", 
           "donor_drug_use", "donor_PHS_risk", "donor_DBD_DCD", "donor_COD_simplified")
@@ -54,15 +52,11 @@ clinical_metadata <- clinical_metadata_i %>%
     inotrope_col = "rx_preop_inotrope",
     donor_age_col = "donor_age",
     ischemic_time_col = "operative_IT_minutes"
-  ) %>%
-  select(Patient, preop_RADIAL_calc) #%>%
-  # # calc_ISHLT()
-
-
+  )
 #+ 0d.4: Break into components for the final tables ----
-T1_data <- clinical_metadata_i %>%
+T1_data <- clinical_metadata %>%
   select(Patient, postop_PGD_ISHLT, all_of(T1))
-T2_data <- clinical_metadata_i %>%
+T2_data <- clinical_metadata %>%
   select(Patient, postop_PGD_ISHLT, all_of(T2))
-T3_data <- clinical_metadata_i %>%
+T3_data <- clinical_metadata %>%
   select(Patient, postop_PGD_ISHLT, all_of(T3))
