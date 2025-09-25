@@ -35,6 +35,7 @@ conflicts_prefer(purrr::map)
 conflicts_prefer(dplyr::filter) 
 conflicts_prefer(dplyr::select)
 conflicts_prefer(stats::chisq.test)
+conflicts_prefer(readxl::read_xlsx)
 #+ 0b.7: Load utility functions ----
 if (dir.exists(utils_path)) {
   purrr::walk(

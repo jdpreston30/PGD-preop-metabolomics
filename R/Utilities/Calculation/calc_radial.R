@@ -1,4 +1,4 @@
-calc_radial <- function(clinical_data, 
+calc_radial <- function(clinical_metadata, 
                         rap_col, 
                         age_col, 
                         dm_col, 
@@ -14,12 +14,12 @@ calc_radial <- function(clinical_data,
   
   for (i in seq_along(required_cols)) {
     col <- required_cols[i]
-    na_indices <- which(is.na(clinical_data[[col]]))
+    na_indices <- which(is.na(clinical_metadata[[col]]))
     na_count <- length(na_indices)
     
     if (na_count > 0) {
       missing_data_found <- TRUE
-      affected_patients <- clinical_data$Patient[na_indices]
+      affected_patients <- clinical_metadata$Patient[na_indices]
       
       cat("\n=== MISSING DATA ALERT ===\n")
       cat("Column:", col_names[i], "(", col, ")\n")
@@ -35,11 +35,11 @@ calc_radial <- function(clinical_data,
   # Summary of all missing data
   if (missing_data_found) {
     # Create a matrix to check for missing values across all required columns
-    missing_matrix <- is.na(clinical_data[required_cols])
+    missing_matrix <- is.na(clinical_metadata[required_cols])
     
     # Calculate missing count and identify missing columns for each patient
     missing_summary <- data.frame(
-      Patient = clinical_data$Patient,
+      Patient = clinical_metadata$Patient,
       missing_count = rowSums(missing_matrix),
       stringsAsFactors = FALSE
     )
@@ -62,7 +62,7 @@ calc_radial <- function(clinical_data,
   }
   
   # Calculate RADIAL score
-  clinical_data_with_radial <- clinical_data %>%
+  clinical_metadata_with_radial <- clinical_metadata %>%
     mutate(
       preop_RADIAL_calc = ifelse(
         # Check if ANY required values are missing for this patient
@@ -88,8 +88,8 @@ calc_radial <- function(clinical_data,
     )
   
   cat("RADIAL scores calculated successfully!\n")
-  cat("RADIAL score range:", min(clinical_data_with_radial$preop_RADIAL_calc, na.rm = TRUE), 
-      "to", max(clinical_data_with_radial$preop_RADIAL_calc, na.rm = TRUE), "\n\n")
+  cat("RADIAL score range:", min(clinical_metadata_with_radial$preop_RADIAL_calc, na.rm = TRUE), 
+      "to", max(clinical_metadata_with_radial$preop_RADIAL_calc, na.rm = TRUE), "\n\n")
   
-  return(clinical_data_with_radial)
+  return(clinical_metadata_with_radial)
 }

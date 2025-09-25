@@ -1,99 +1,145 @@
-#! INPUTS
-# column names for varaiables, tibble to add columns to
-calc_PGD <- function(clinical_data,
-postop_MCS_Impella5.5_DEPENDENT_col = "postop_MCS_Impella5.5_DEPENDENT",
-                     postop_MCS_Impella5.5_col = "postop_MCS_Impella5.5",
-                     postop_MCS_RVAD_col = "postop_MCS_RVAD",
-                     postop_MCS_IABP_col = "postop_MCS_IABP",
-                     postop_VA_ECMO_col = "postop_VA_ECMO",
-                     postop_CVP_col = "postop_CVP",
-                     postop_cardiac_index_col = "postop_cardiac_index",
-                     postop_LVEF_median_col = "postop_LVEF_median",
-                     postop_inotrope_score_col = "postop_inotrope_score") 
-                     
-                     {
-  clinical_data %>%
-    mutate(
-      ISHLT_PGD_grade = case_when(
-        # Check for missing data in all relevant columns
-        is.na(.data[[postop_MCS_Impella5.5_DEPENDENT_col]]) &
-          is.na(.data[[postop_MCS_Impella5.5_col]]) &
-          is.na(.data[[postop_MCS_RVAD_col]]) &
-          is.na(.data[[postop_MCS_IABP_col]]) &
-          is.na(.data[[postop_VA_ECMO_col]]) &
-          is.na(.data[[postop_CVP_col]]) &
-          is.na(.data[[postop_cardiac_index_col]]) &
-          (is.na(.data[[postop_LVEF_median_col]]) | .data[[postop_LVEF_median_col]] == 0) &
-          (is.na(.data[[postop_inotrope_score_col]]) | .data[[postop_inotrope_score_col]] == 0) ~ NA_character_,
-        
-        # Severe PGD criteria
-        .data[[postop_MCS_Impella5.5_DEPENDENT_col]] == "Y" |
-          .data[[postop_MCS_RVAD_col]] == "Y" |
-          .data[[postop_VA_ECMO_col]] == "Y" ~ "Severe",
-        
-        # Moderate PGD criteria
-        ( (.data[[postop_LVEF_median_col]] < 40 & !is.na(.data[[postop_LVE
-
-
-
-
-#! OUTPUTS
-# adds column to input tibble: ISHLT PGD GRADE (mild moderate, severe, none)
-# adds column to input tibble: ISHLT_PGD_binary Y/N
-
-#! ORIGINAL FORMULA
-# =IF(AND(AJ33="",AL33="",AN33="",AM33="",AQ33="",AO33="",AP33="",AS33=0),"",
-  #  IF(OR(AJ33="Y",AL33="Y",AN33="Y"),"Severe",
-  #     IF(AND(OR(AND(AQ33<40,AQ33<>""),AO33>15,IF(AP33="",1,AP33)<2),OR(AS33>10,AM33="Y")),"Moderate",
-  #        IF(OR(AND(AQ33<40,AQ33<>""),AO33>15,IF(AP33="",1,AP33)<2),"Mild","N"))))
-
-#! ORIGINAL COLUMNS
-# postop_MCS_Impella5.5_DEPENDENT = AJ
-# postop_MCS_Impella5.5 = AK
-# postop_MCS_RVAD = AL
-# postop_MCS_IABP = AM
-# postop_VA_ECMO = AN
-# postop_CVP = AO
-# postop_cardiac_index = AP
-# postop_LVEF_median = AQ
-# postop_inotrope_score = AS
-
-# ! REFERENCE COLUMN TO COMPARE
-# postop_PGD_textbook_calc
-# postop_PGD_ISHLT
-
-calc_radial <- function(clinical_data, 
-                        rap_col, 
-                        age_col, 
-                        dm_col, 
-                        inotrope_col, 
-                        donor_age_col, 
-                        ischemic_time_col) {
-  # Check for missing values in required columns
-  required_cols <- c(rap_col, age_col, dm_col, inotrope_col, donor_age_col, ischemic_time_col)
-  col_names <- c("RAP", "Age", "Diabetes", "Inotrope", "Donor Age", "Ischemic Time")
+calc_ISHLT <- function(clinical_metadata_i,
+                       impella_dep_col = "postop_MCS_Impella5.5_DEPENDENT",
+                       mcs_impella_col = "postop_MCS_Impella5.5",
+                       rvad_col = "postop_MCS_RVAD",
+                       iabp_col = "postop_MCS_IABP",
+                       ecmo_col = "postop_VA_ECMO",
+                       cvp_col = "postop_CVP",
+                       cardiac_index_col = "postop_cardiac_index",
+                       lvef_col = "postop_LVEF_median",
+                       inotrope_col = "postop_inotrope_score") {
   
-  for (i in seq_along(required_cols)) {
-    col <- required_cols[i]
-    na_count <- sum(is.na(clinical_data[[col]]))
-    if (na_count > 0) {
-      warning(paste0("Missing values detected: ", na_count, " NA(s) in ", col_names[i], 
-                     " column (", col, "). Radial score calculation may be incomplete for affected patients."))
+  clinical_metadata <- clinical_metadata_i
+  original_PGD <- clinical_metadata_i %>% select(postop_PGD_textbook_calc, postop_PGD_ISHLT)
+
+  # Check column names exist
+  missing_cols <- c()
+  for (col in c(impella_dep_col,
+                mcs_impella_col,
+                rvad_col,
+                iabp_col,
+                ecmo_col,
+                cvp_col,
+                cardiac_index_col,
+                lvef_col,
+                inotrope_col)) {
+    if (!col %in% colnames(clinical_metadata)) {
+      missing_cols <- c(missing_cols, col)
     }
   }
   
-  clinical_data %>%
+  if (length(missing_cols) > 0) {
+    stop(paste("Error: The following required columns are missing from the input data:", 
+               paste(missing_cols, collapse = ", ")))
+  }
+  
+  # Calculate ISHLT PGD Grade
+  clinical_metadata <- clinical_metadata %>%
     mutate(
-      radial_calc = rowSums(
-        cbind(
-          !!sym(rap_col) >= 10, # Recipient right atrial pressure ≥ 10 mmHg
-          !!sym(age_col) >= 60, # Recipient age ≥ 60 years
-          !!sym(dm_col) == "Yes", # Recipient diabetes mellitus
-          !!sym(inotrope_col) == "Yes", # Recipient inotrope dependence
-          !!sym(donor_age_col) >= 30, # Donor age ≥ 30 years
-          !!sym(ischemic_time_col) >= 240 # Ischemic time ≥ 240 minutes
-        ),
-        na.rm = TRUE # Ignore NA values in row-wise summation
+      postop_PGD_grade_ISHLT = case_when(
+        # Check if all values are empty/NA (return empty string)
+        is.na(.data[[impella_dep_col]]) & is.na(.data[[rvad_col]]) & 
+        is.na(.data[[ecmo_col]]) & is.na(.data[[iabp_col]]) & 
+        is.na(.data[[cvp_col]]) & is.na(.data[[cardiac_index_col]]) & 
+        is.na(.data[[lvef_col]]) & 
+        (is.na(.data[[inotrope_col]]) | .data[[inotrope_col]] == 0) ~ "",
+        
+        # Check for Severe PGD first (any mechanical support)
+        .data[[ecmo_col]] == "Y" | 
+        .data[[rvad_col]] == "Y" | 
+        .data[[impella_dep_col]] == "Y" ~ "Severe",
+        
+        # Moderate PGD: hemodynamic compromise AND (high inotrope OR IABP)
+        ((.data[[lvef_col]] <= 40 & !is.na(.data[[lvef_col]])) |
+         .data[[cvp_col]] > 15 |
+         (if_else(is.na(.data[[cardiac_index_col]]), 1, .data[[cardiac_index_col]]) < 2)) &
+        (.data[[inotrope_col]] > 10 | .data[[iabp_col]] == "Y") ~ "Moderate",
+        
+        # Mild PGD: hemodynamic compromise AND inotrope 1-10
+        ((.data[[lvef_col]] <= 40 & !is.na(.data[[lvef_col]])) |
+         .data[[cvp_col]] > 15 |
+         (if_else(is.na(.data[[cardiac_index_col]]), 1, .data[[cardiac_index_col]]) < 2)) &
+        (.data[[inotrope_col]] > 0 & .data[[inotrope_col]] <= 10) ~ "Mild",
+        
+        # Default: No PGD
+        TRUE ~ "N"
+      ),
+      
+      postop_PGD_binary_ISHLT = case_when(
+        postop_PGD_grade_ISHLT == "" ~ "",
+        postop_PGD_grade_ISHLT == "N" ~ "N", 
+        TRUE ~ "Y"
       )
     )
+
+  return(clinical_metadata)
 }
+
+results <- calc_ISHLT(clinical_metadata)
+names(results)
+
+# Binary mismatches
+results %>%
+  filter(postop_PGD_ISHLT != postop_PGD_binary_ISHLT) %>%
+  select(postop_PGD_ISHLT, postop_PGD_binary_ISHLT)
+
+# Grade mismatches
+results %>%
+  filter(postop_PGD_textbook_calc != postop_PGD_grade_ISHLT) %>%
+  select(postop_PGD_textbook_calc, postop_PGD_grade_ISHLT)
+
+sum(results$postop_PGD_ISHLT != results$postop_PGD_binary_ISHLT, na.rm = TRUE)
+sum(results$postop_PGD_textbook_calc != results$postop_PGD_grade_ISHLT, na.rm = TRUE)
+
+
+
+
+#+ Calculate ISHLT PGD Grade ----
+## returns tibble with two new columns: ISHLT_PGD_grade (mild, moderate, severe, none)
+## and ISHLT_PGD_binary (Y/N)
+
+# #* Define PGD Criteria
+
+# # Mild PGD criteria
+# mild_PGD <- (LVEF_median_col, RAP_col, cardiac_index_col, inotrope_score_col)
+# LVEF_median_col <= 40 | RAP_col > 15 & cardiac_index_col < 2 
+# & inotrope_score_col > 1 & inotrope_score_col < 10
+
+# # Moderate PGD criteria
+# moderate_PGD <- (LVEF_median_col, RAP_col, cardiac_index_col, inotrope_score_col, MCS_IABP_col)
+# LVEF_median_col <= 40 | RAP_col > 15 & cardiac_index_col < 2 & inotrope_score_col < 10
+# & 
+# inotrope_score_col > 10 | MCS_IABP_col == "Y"
+
+# # Severe PGD criteria
+# severe_PGD <- (VA_ECMO_col, MCS_RVAD_col, Impella5.5_dep_col)
+# VA_ECMO_col == "Y" | MCS_RVAD_col == "Y" | Impella5.5_dep_col == "Y"
+
+
+
+# #! OUTPUTS ----
+# # adds column to input tibble: ISHLT PGD GRADE (mild moderate, severe, none)
+# # adds column to input tibble: ISHLT_PGD_binary Y/N
+
+
+# #! ORIGINAL FORMULA
+# # =IF(AND(AJ33="",AL33="",AN33="",AM33="",AQ33="",AO33="",AP33="",AS33=0),"",
+#   #  IF(OR(AJ33="Y",AL33="Y",AN33="Y"),"Severe",
+#   #     IF(AND(OR(AND(AQ33<40,AQ33<>""),AO33>15,IF(AP33="",1,AP33)<2),OR(AS33>10,AM33="Y")),"Moderate",
+#   #        IF(OR(AND(AQ33<40,AQ33<>""),AO33>15,IF(AP33="",1,AP33)<2),"Mild","N"))))
+
+# #! ORIGINAL COLUMNS
+# # postop_MCS_Impella5.5_DEPENDENT = AJ
+# # postop_MCS_Impella5.5 = AK
+# # postop_MCS_RVAD = AL
+# # postop_MCS_IABP = AM
+# # postop_VA_ECMO = AN
+# # postop_CVP = AO
+# # postop_cardiac_index = AP
+# # postop_LVEF_median = AQ
+# # postop_inotrope_score = AS
+
+# # ! REFERENCE COLUMN TO COMPARE
+# # postop_PGD_textbook_calc
+# # postop_PGD_ISHLT
+
