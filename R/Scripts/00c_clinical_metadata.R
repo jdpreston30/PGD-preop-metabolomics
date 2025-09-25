@@ -54,6 +54,21 @@ clinical_metadata <- clinical_metadata_i %>%
     ischemic_time_col = "operative_IT_minutes"
   ) %>%
   mutate(severe_PGD = if_else(postop_PGD_textbook_calc == "Severe", "Y", "N", missing = "N"))
+
+  calc_radial(
+    clinical_metadata = clinical_metadata_i,
+    rap_col = "preop_RAP",
+    age_col = "demographics_age_tpx",
+    dm_col = "comorbidities_DM",
+    inotrope_col = "rx_preop_inotrope",
+    donor_age_col = "donor_age",
+    ischemic_time_col = "operative_IT_minutes"
+  ) 
+
+  # Ailin's calc_ISHLT code
+  calc_ISHLT
+
+
 #+ 0d.4: Break into components for the final tables ----
 T1_data <- clinical_metadata %>%
   select(Patient, postop_PGD_ISHLT, severe_PGD, all_of(T1))
@@ -61,11 +76,3 @@ T2_data <- clinical_metadata %>%
   select(Patient, postop_PGD_ISHLT, severe_PGD, all_of(T2))
 T3_data <- clinical_metadata %>%
   select(Patient, postop_PGD_ISHLT, severe_PGD, all_of(T3))
-
-
-clinical_metadata_test <- clinical_metadata %>%
-  select(postop_PGD_textbook_calc) %>%
-    arrange(postop_PGD_textbook_calc)
-
-clinical_metadata_test %>%
-  count(postop_PGD_textbook_calc)
