@@ -8,7 +8,7 @@ calc_PHM <- function(clinical_metadata,
 
   clinical_metadata <- clinical_metadata %>%
     mutate(
-      donor_PHM = case_when(
+      donor_PHM_calc = case_when(
         .data[[donor_sex_col]] == "Female" ~ (6.82 * (.data[[donor_height_col]] / 100)^0.54 * .data[[donor_weight_col]]^0.61) + (10.59 * .data[[donor_age_col]]^-0.32 * (.data[[donor_height_col]] / 100)^1.135 * .data[[donor_weight_col]]^0.315),
         TRUE ~ (8.25 * (.data[[donor_height_col]] / 100)^0.54 * .data[[donor_weight_col]]^0.61) + (11.25 * .data[[donor_age_col]]^-0.32 * (.data[[donor_height_col]] / 100)^1.135 * .data[[donor_weight_col]]^0.315)
       )
@@ -21,9 +21,9 @@ calc_PHM <- function(clinical_metadata,
 clinical_metadata <- clinical_metadata_i
 clinical_metadata_with_PHM <- calc_PHM(clinical_metadata)
 names(clinical_metadata_with_PHM)
-summary(clinical_metadata_with_PHM$donor_PHM)
+summary(clinical_metadata_with_PHM$donor_PHM_calc)
 
-sum(is.na(clinical_metadata_with_PHM$donor_PHM))
+sum(clinical_metadata_with_PHM$donor_PHM_calc != clinical_metadata$donor_PHM, na.rm = TRUE)
 
 
 #! ORIGINAL COLUMNS
