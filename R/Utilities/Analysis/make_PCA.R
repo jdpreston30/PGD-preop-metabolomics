@@ -11,13 +11,14 @@
 #' @param ncomp Number of components for PLS-DA (default: 2)
 #' @param show_patient_labels Logical, whether to show Patient IDs as text labels (default: FALSE)
 #' @param label_size Size of patient ID labels when show_patient_labels = TRUE (default: 3)
+#' @param show_legend Logical, whether to show the legend (default: TRUE)
 #' @return List containing the plot, model object, scores, scores_df, and explained variance
 #' @export
 make_PCA <- function(data, method = "PCA", plot_title = "",
                      ellipse_colors = c("Y" = "#D8919A", "N" = "#87A6C7", "Control" = "#B0B0B0"),
                      point_colors = c("Y" = "#800017", "N" = "#113d6a", "Control" = "#4c4c4c"),
                      point_size = 3, comp_x = 1, comp_y = 2, ncomp = 2, 
-                     show_patient_labels = FALSE, label_size = 3) {
+                     show_patient_labels = FALSE, label_size = 3, show_legend = TRUE) {
   # _Data preparation
   df <- as.data.frame(data)
   cls_col <- if ("Variant" %in% names(df)) "Variant" else names(df)[2]
@@ -131,9 +132,29 @@ make_PCA <- function(data, method = "PCA", plot_title = "",
       y = paste0(comp_label, comp_y, " (", explained[2], "%)")
     ) +
     ggplot2::theme(
+      # Square aspect ratio and margins
+      aspect.ratio = 1,
+      plot.margin = grid::unit(c(2, 8, 8, 8), "pt"),
+      
+      # Legend styling - conditional based on show_legend parameter
+      legend.position = if (show_legend) "top" else "none",
+      legend.direction = "horizontal",
+      legend.box = "horizontal",
+      legend.box.margin = ggplot2::margin(0, 0, 0, 0),
+      legend.margin = ggplot2::margin(t = 0, r = 0, b = -3, l = 0),
+      legend.key.width = grid::unit(0.35, "cm"),
+      legend.key.height = grid::unit(0.35, "cm"),
+      legend.key.size = grid::unit(0.35, "cm"),
+      legend.spacing.x = grid::unit(0, "cm"),
+      legend.text.align = -10,
+      legend.title = ggplot2::element_blank(),
+      
+      # Axis styling
       axis.title = ggplot2::element_text(size = 25, face = "bold"),
+      axis.title.y = ggplot2::element_text(margin = ggplot2::margin(r = 0), hjust = 0.5),
       axis.text = ggplot2::element_text(size = 22, face = "bold", color = "black"),
-      legend.position = "none",
+      
+      # Panel styling
       panel.grid.major = ggplot2::element_line(color = "gray80", linewidth = 0.8, linetype = "solid"),
       panel.grid.minor = ggplot2::element_blank(),
       panel.border = ggplot2::element_rect(color = "black", fill = NA, linewidth = 3.2),

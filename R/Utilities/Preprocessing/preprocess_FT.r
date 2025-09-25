@@ -13,8 +13,9 @@ preprocess_FT <- function(df) {
     select(Sample_ID, Patient, Sample, everything(), -Patient_temp, -Patient_num) %>%
     filter(Sample == "S0") %>%
     filter(Patient != "H49") %>%
-    left_join(pgd_status, by = "Patient") %>%
-    select(Patient, PGD, everything(), -c(Sample_ID, Sample)) %>%
-    mutate(PGD = as.factor(PGD)) %>%
+    left_join(PGD_specifics, by = "Patient") %>%
+    select(Patient, severe_PGD, PGD_grade_tier, everything(), -c(Sample_ID, Sample, postop_PGD_grade_ISHLT, postop_PGD_binary_ISHLT)) %>%
+    mutate(PGD_grade_tier = as.factor(PGD_grade_tier)) %>%
+    mutate(severe_PGD = as.factor(severe_PGD)) %>%
     mutate(Patient = factor(Patient))
 }

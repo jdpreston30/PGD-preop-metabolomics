@@ -14,7 +14,7 @@ T1 <- c("demographics_age_tpx", "demographics_race", "demographics_sex", "demogr
         "preop_IABP", "preop_imeplla5.5", "preop_VA_ECMO", "preop_LVAD", 
         "rx_preop_inotrope", "rx_preop_amiodarone", "preop_RADIAL_calc", "rx_preop_ASA")	
 #- 0d.0.3: Set T2 Vector ----
-T2 <- c("donor_age", "donor_sex", "donor_sex_mismatch", "donor_PHM", "donor_LVEF", 
+T2 <- c("donor_age", "donor_sex", "donor_sex_mismatch", "donor_PHM_calc", "donor_LVEF", 
           "donor_drug_use", "donor_PHS_risk", "donor_DBD_DCD", "donor_COD_simplified")
 #- 0d.0.4: Set T3 Vector ----
 T3 <- c("operative_IT_minutes", "operative_CPB_minutes", "postop_LVEF_median", "postop_CVP", 
@@ -53,26 +53,22 @@ clinical_metadata <- clinical_metadata_i %>%
     donor_age_col = "donor_age",
     ischemic_time_col = "operative_IT_minutes"
   ) %>%
-  mutate(severe_PGD = if_else(postop_PGD_textbook_calc == "Severe", "Y", "N", missing = "N"))
-
-  calc_radial(
-    clinical_metadata = clinical_metadata_i,
-    rap_col = "preop_RAP",
-    age_col = "demographics_age_tpx",
-    dm_col = "comorbidities_DM",
-    inotrope_col = "rx_preop_inotrope",
-    donor_age_col = "donor_age",
-    ischemic_time_col = "operative_IT_minutes"
-  ) 
-
-  # Ailin's calc_ISHLT code
-  calc_ISHLT
-
-
+  calc_ISHLT() %>%
+  calc_PHM() %>%
+  mutate(severe_PGD = if_else(postop_PGD_grade_ISHLT == "Severe", "Y", "N", missing = "N")) %>%
+  mutate(PGD_grade_tier = case_when(
+    postop_PGD_grade_ISHLT %in% c("Moderate", "Mild") ~ "Non-Severe",
+    postop_PGD_grade_ISHLT == "Severe" ~ "Severe",
+    postop_PGD_grade_ISHLT == "N" ~ "No PGD",
+    TRUE ~ NA_character_
+  ))
 #+ 0d.4: Break into components for the final tables ----
 T1_data <- clinical_metadata %>%
-  select(Patient, postop_PGD_ISHLT, severe_PGD, all_of(T1))
+  select(Patient, severe_PGD, all_of(T1))
 T2_data <- clinical_metadata %>%
-  select(Patient, postop_PGD_ISHLT, severe_PGD, all_of(T2))
+  select(Patient, severe_PGD, all_of(T2))
 T3_data <- clinical_metadata %>%
-  select(Patient, postop_PGD_ISHLT, severe_PGD, all_of(T3))
+  select(Patient, severe_PGD, all_of(T3))
+#+ 0d.5: Store PGD specifics for later joining ----
+PGD_specifics <- clinical_metadata %>%
+  select(Patient, postop_PGD_grade_ISHLT, severe_PGD, PGD_grade_tier, postop_PGD_binary_ISHLT)
