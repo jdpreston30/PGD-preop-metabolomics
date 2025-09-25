@@ -33,7 +33,7 @@ T1 <- ternG(
   data = T1_data,
   vars = NULL,
   exclude_vars = "Patient",
-  group_var = "postop_PGD_ISHLT",
+  group_var = "severe_PGD",
   descriptive = TRUE,
   consider_normality = TRUE,
   print_normality = FALSE
