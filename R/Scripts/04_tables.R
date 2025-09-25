@@ -31,10 +31,11 @@ normality_test <- ternG(
 #+ 4.1: Table 1 (Recipient Preoperative Characteristics) ----
 T1 <- ternG(
   data = T1_data,
-  vars = NULL,
   exclude_vars = "Patient",
   group_var = "postop_PGD_ISHLT",
   descriptive = TRUE,
+  output_xlsx = "test.xlsx",
+  output_docx = "test.docx",
   consider_normality = TRUE,
   print_normality = FALSE
 )

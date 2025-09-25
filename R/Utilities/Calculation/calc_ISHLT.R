@@ -1,5 +1,41 @@
 #! INPUTS
 # column names for varaiables, tibble to add columns to
+calc_PGD <- function(clinical_data,
+postop_MCS_Impella5.5_DEPENDENT_col = "postop_MCS_Impella5.5_DEPENDENT",
+                     postop_MCS_Impella5.5_col = "postop_MCS_Impella5.5",
+                     postop_MCS_RVAD_col = "postop_MCS_RVAD",
+                     postop_MCS_IABP_col = "postop_MCS_IABP",
+                     postop_VA_ECMO_col = "postop_VA_ECMO",
+                     postop_CVP_col = "postop_CVP",
+                     postop_cardiac_index_col = "postop_cardiac_index",
+                     postop_LVEF_median_col = "postop_LVEF_median",
+                     postop_inotrope_score_col = "postop_inotrope_score") 
+                     
+                     {
+  clinical_data %>%
+    mutate(
+      ISHLT_PGD_grade = case_when(
+        # Check for missing data in all relevant columns
+        is.na(.data[[postop_MCS_Impella5.5_DEPENDENT_col]]) &
+          is.na(.data[[postop_MCS_Impella5.5_col]]) &
+          is.na(.data[[postop_MCS_RVAD_col]]) &
+          is.na(.data[[postop_MCS_IABP_col]]) &
+          is.na(.data[[postop_VA_ECMO_col]]) &
+          is.na(.data[[postop_CVP_col]]) &
+          is.na(.data[[postop_cardiac_index_col]]) &
+          (is.na(.data[[postop_LVEF_median_col]]) | .data[[postop_LVEF_median_col]] == 0) &
+          (is.na(.data[[postop_inotrope_score_col]]) | .data[[postop_inotrope_score_col]] == 0) ~ NA_character_,
+        
+        # Severe PGD criteria
+        .data[[postop_MCS_Impella5.5_DEPENDENT_col]] == "Y" |
+          .data[[postop_MCS_RVAD_col]] == "Y" |
+          .data[[postop_VA_ECMO_col]] == "Y" ~ "Severe",
+        
+        # Moderate PGD criteria
+        ( (.data[[postop_LVEF_median_col]] < 40 & !is.na(.data[[postop_LVE
+
+
+
 
 #! OUTPUTS
 # adds column to input tibble: ISHLT PGD GRADE (mild moderate, severe, none)
