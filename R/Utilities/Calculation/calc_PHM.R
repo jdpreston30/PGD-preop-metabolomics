@@ -1,5 +1,3 @@
-#! ORIGINAL EXCEL FORMULA
-# =IF(Q41="Female", (6.82 * (R41/100)^0.54 * S41^0.61) + (10.59 * O41^-0.32 * (R41/100)^1.135 * S41^0.315), (8.25 * (R41/100)^0.54 * S41^0.61) + (11.25 * O41^-0.32 * (R41/100)^1.135 * S41^0.315))
 calc_PHM <- function(clinical_metadata, 
                      donor_age_col = "donor_age",
                      donor_sex_col = "donor_sex",
@@ -16,22 +14,3 @@ calc_PHM <- function(clinical_metadata,
 
   return(clinical_metadata)
 }
-
-# testing the function
-clinical_metadata <- clinical_metadata_i
-clinical_metadata_with_PHM <- calc_PHM(clinical_metadata)
-names(clinical_metadata_with_PHM)
-summary(clinical_metadata_with_PHM$donor_PHM_calc)
-
-sum(clinical_metadata_with_PHM$donor_PHM_calc != clinical_metadata$donor_PHM, na.rm = TRUE)
-
-
-#! ORIGINAL COLUMNS
-# donor_age = O
-# donor_sex = Q
-# donor_weight = S
-# donor_height = R
-
-#! REFERENCE COLUMN TO COMPARE
-# donor_PHM
-
