@@ -12,10 +12,18 @@ calc_PHM <- function(clinical_metadata,
         .data[[donor_sex_col]] == "Female" ~ (6.82 * (.data[[donor_height_col]] / 100)^0.54 * .data[[donor_weight_col]]^0.61) + (10.59 * .data[[donor_age_col]]^-0.32 * (.data[[donor_height_col]] / 100)^1.135 * .data[[donor_weight_col]]^0.315),
         TRUE ~ (8.25 * (.data[[donor_height_col]] / 100)^0.54 * .data[[donor_weight_col]]^0.61) + (11.25 * .data[[donor_age_col]]^-0.32 * (.data[[donor_height_col]] / 100)^1.135 * .data[[donor_weight_col]]^0.315)
       )
-    }
+    )
 
   return(clinical_metadata)
 }
+
+# testing the function
+clinical_metadata <- clinical_metadata_i
+clinical_metadata_with_PHM <- calc_PHM(clinical_metadata)
+names(clinical_metadata_with_PHM)
+summary(clinical_metadata_with_PHM$donor_PHM)
+
+sum(is.na(clinical_metadata_with_PHM$donor_PHM))
 
 
 #! ORIGINAL COLUMNS
@@ -27,23 +35,3 @@ calc_PHM <- function(clinical_metadata,
 #! REFERENCE COLUMN TO COMPARE
 # donor_PHM
 
-calc_radial <- function(clinical_data, 
-                        rap_col, 
-                        age_col, 
-                        dm_col, 
-                        inotrope_col, 
-                        donor_age_col, 
-                        ischemic_time_col) {
-  # Check for missing values in required columns
-  required_cols <- c(rap_col, age_col, dm_col, inotrope_col, donor_age_col, ischemic_time_col)
-  col_names <- c("RAP", "Age", "Diabetes", "Inotrope", "Donor Age", "Ischemic Time")
-  
-  for (i in seq_along(required_cols)) {
-    col <- required_cols[i]
-    na_count <- sum(is.na(clinical_data[[col]]))
-    if (na_count > 0) {
-      warning(paste0("Missing values detected: ", na_count, " NA(s) in ", col_names[i], 
-                     " column (", col, "). Radial score calculation may be incomplete for affected patients."))
-    }
-  }
-}
