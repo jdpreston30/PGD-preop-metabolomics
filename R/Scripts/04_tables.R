@@ -33,29 +33,33 @@ T1 <- ternG(
   data = T1_data,
   exclude_vars = "Patient",
   group_var = "severe_PGD",
+  force_ordinal = c("demographics_BMI"),
   descriptive = TRUE,
-  output_xlsx = "test.xlsx",
-  output_docx = "test.docx",
+  output_docx = "T1.docx",
   consider_normality = TRUE,
-  print_normality = FALSE
+  print_normality = TRUE
 )
 #+ 4.2: Table 2 (Donor Characteristics) ----
 T2 <- ternG(
   data = T2_data,
   vars = NULL,
   exclude_vars = "Patient",
-  group_var = "postop_PGD_ISHLT",
+  group_var = "severe_PGD",
+  force_ordinal = c("donor_PHM"),
   descriptive = TRUE,
+  output_docx = "T2.docx",
   consider_normality = TRUE,
-  print_normality = FALSE
+  print_normality = TRUE
 )
 #+ 4.3: Table 3 (Table 3. Procurement/Surgical Factors and Perioperative/Post-Transplant Outcomes) ----
 T3 <- ternG(
   data = T3_data,
   vars = NULL,
   exclude_vars = "Patient",
-  group_var = "postop_PGD_ISHLT",
+  group_var = "severe_PGD",
+  force_ordinal = c("postop_CVP", "postop_cardiac_index", "survival_days"),
   descriptive = TRUE,
+  output_docx = "T3.docx",
   consider_normality = TRUE,
-  print_normality = FALSE
+  print_normality = TRUE
 )

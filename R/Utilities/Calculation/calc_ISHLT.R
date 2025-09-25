@@ -1,6 +1,5 @@
 calc_ISHLT <- function(clinical_metadata_i,
                        impella_dep_col = "postop_MCS_Impella5.5_DEPENDENT",
-                       mcs_impella_col = "postop_MCS_Impella5.5",
                        rvad_col = "postop_MCS_RVAD",
                        iabp_col = "postop_MCS_IABP",
                        ecmo_col = "postop_VA_ECMO",
@@ -15,7 +14,6 @@ calc_ISHLT <- function(clinical_metadata_i,
   # Check column names exist
   missing_cols <- c()
   for (col in c(impella_dep_col,
-                mcs_impella_col,
                 rvad_col,
                 iabp_col,
                 ecmo_col,
