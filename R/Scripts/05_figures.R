@@ -14,7 +14,6 @@ blank_plot <- ggplot2::ggplot() +
   ggplot2::theme(
     plot.tag = ggplot2::element_text(color = "white")
   )
-
 #- 5.0.1: Figure 1 ----
 #! WIll need to do the raster grob thing from biorender like we did for the kegg enrich
 #- 5.0.2: Figure 2 ----
