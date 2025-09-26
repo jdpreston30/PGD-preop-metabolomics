@@ -97,56 +97,16 @@ make_heatmap <- function(
   # Heatmap matrix: features x samples
   M <- t(X)
 
-  # ---- Sample clustering & clades ----
+  # ---- Sample clustering for dendrogram only ----
   Mz <- t(scale(t(M), center = TRUE, scale = TRUE))
   Mz[is.na(Mz)] <- 0
   d_cols <- dist(t(Mz), method = "euclidean")
   hc_cols <- hclust(d_cols, method = "complete")
 
-  # Map back to original Patient_ID
-  id_map <- setNames(dat[[patient_var]], sample_ids)
-  clades_raw <- stats::cutree(hc_cols, k = n_clades)
-
-  # Assign clusters based on dendrogram order: leftmost = Cluster 1, rightmost = Cluster 2
-  # Get the order of samples from the dendrogram
-  ordered_samples <- names(clades_raw)[hc_cols$order]
-
-  # Find which raw cluster appears first (leftmost) in the dendrogram order
-  first_cluster_raw <- clades_raw[ordered_samples[1]]
-
-  # Assign final cluster numbers: leftmost cluster becomes Cluster 1, rightmost becomes Cluster 2
-  clades <- ifelse(clades_raw == first_cluster_raw, 1, 2)
-
-  ids_ordered_clean <- names(clades)[hc_cols$order]
-  ids_ordered_orig <- unname(id_map[ids_ordered_clean])
-
-  cluster_df <- tibble::tibble(
-    Patient_ID = ids_ordered_orig,
-    Cluster    = unname(clades[ids_ordered_clean])
-  )
-
-  cluster_lists <- lapply(seq_len(n_clades), function(i) {
-    cluster_df %>%
-      dplyr::filter(Cluster == i) %>%
-      dplyr::pull(Patient_ID)
-  })
-  names(cluster_lists) <- paste0("cluster", seq_len(n_clades), "_ids")
-
   # ---- Column annotation (aligned to columns of M) ----
-  # Build annotation with grouping variable and clusters
-  # Start with grouping variable annotation (will be on bottom)
+  # Simple annotation with just the grouping variable
   ann_col <- data.frame(row.names = sample_ids)
   ann_col[[group_var]] <- dat[[group_var]]
-
-  # Add cluster annotation (will be on top)
-  # Create a mapping from sample_ids to final cluster assignments
-  cluster_mapping <- setNames(cluster_df$Cluster, cluster_df$Patient_ID)
-  original_ids <- unname(id_map[sample_ids]) # Convert sample_ids back to original Patient_IDs
-  cluster_labels <- paste0("Cluster ", cluster_mapping[original_ids])
-  names(cluster_labels) <- sample_ids
-
-  # Use standard factor levels - legend order controlled by color order
-  ann_col$Cluster <- factor(cluster_labels[sample_ids], levels = c("Cluster 1", "Cluster 2"))
 
   # Reorder rows of ann_col to match M's columns
   ann_col <- ann_col[colnames(M), , drop = FALSE]
@@ -154,17 +114,8 @@ make_heatmap <- function(
   # ---- Annotation color lists ----
   ann_colors <- list()
 
-  # Add grouping variable colors (will display at bottom)
+  # Add grouping variable colors
   ann_colors[[group_var]] <- group_colors
-
-  # Add cluster colors (will display at top)
-  if (!is.null(cluster_colors)) {
-    ann_colors$Cluster <- cluster_colors[c("Cluster 1", "Cluster 2")]
-  } else {
-    # Default cluster colors if not provided
-    default_cluster_colors <- c("Cluster 1" = "#94001E", "Cluster 2" = "#03507D")
-    ann_colors$Cluster <- default_cluster_colors
-  }
 
   # ---- Heatmap (for screen) ----
   heatmap_plot <- pheatmap::pheatmap(
@@ -211,9 +162,6 @@ make_heatmap <- function(
     top_features = top_features,
     ann_col = ann_col,
     ann_colors = ann_colors,
-    cluster_df = cluster_df, # Updated from clade_df
-    clusters = clades, # Updated from clades
-    cluster_lists = cluster_lists, # Updated from clade_lists
     heatmap_plot = heatmap_plot # Plot object for patchwork
   )
 }
