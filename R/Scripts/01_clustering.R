@@ -7,9 +7,7 @@ heatmap_result <- make_heatmap(
   group_colors = c("Severe" = "#800017", "No PGD" = "#113d6a", "Non-Severe" = "#4A5D23"),
   top_features = NULL,
   feature_selector = "none",
-  group_levels = c("Severe", "Non-Severe", "No PGD"),
-  n_clades = 2,
-  cluster_colors = c("Cluster 1" = "#94001E", "Cluster 2" = "#03507D")
+  group_levels = c("Severe", "Non-Severe", "No PGD")
 )
 #+ 1.2: Run PLSDA on UFT data 
 #- 1.2.1: For No PGD vs Severe ----
