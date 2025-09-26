@@ -1,13 +1,22 @@
 #* 1: PCA and PLS-DA Analysis
 #+ 1.1: Run Heatmap
 heatmap_result <- make_heatmap(
-  data = UFT_filtered,
+  data = UFT_filtered %>%
+    filter(PGD_grade_tier != "Non-Severe"),
   group_var = "PGD_grade_tier",
   patient_var = "Patient",
   group_colors = c("Severe" = "#800017", "No PGD" = "#113d6a", "Non-Severe" = "#4A5D23"),
   top_features = 250,
   feature_selector = "variance",
-  top_features = 250,
+  group_levels = c("Severe", "Non-Severe", "No PGD")
+)
+heatmap_result <- make_heatmap(
+  data = UFT_filtered %>%
+    filter(PGD_grade_tier != "No PGD"),
+  group_var = "PGD_grade_tier",
+  patient_var = "Patient",
+  group_colors = c("Severe" = "#800017", "No PGD" = "#113d6a", "Non-Severe" = "#4A5D23"),
+  top_features = 100,
   feature_selector = "anova",
   group_levels = c("Severe", "Non-Severe", "No PGD")
 )
