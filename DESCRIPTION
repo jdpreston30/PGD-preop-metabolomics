@@ -31,6 +31,10 @@ Imports:
     scales,
     viridis,
     data.table,
+    raster,
+    magick,
+    grid,
+    patchwork,
     mixOmics,
     TernTablesR
 Remotes:
