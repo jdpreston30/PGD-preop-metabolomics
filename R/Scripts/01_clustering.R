@@ -1,49 +1,20 @@
-#* 1: PCA and PLS-DA Analysis ----
-#+ 1.1: Run PCA on UFT data ----
-uft_plsda_tier <- make_PCA(
-  UFT_filtered,
+#* 1: PCA and PLS-DA Analysis
+#+ 1.1: Run Heatmap
+heatmap_result <- make_heatmap(
+  data = UFT_filtered,
   group_var = "PGD_grade_tier",
-  method = "PLSDA", 
-  ellipse_colors = c("Severe" = "#D8919A", "No PGD" = "#87A6C7", "Non-Severe" = "#9CAF88"), 
-  point_colors = c("Severe" = "#800017", "No PGD" = "#113d6a", "Non-Severe" = "#4A5D23"), 
-  show_patient_labels = FALSE, 
-  label_size = 2
+  patient_var = "Patient",
+  group_colors = c("Severe" = "#800017", "No PGD" = "#113d6a", "Non-Severe" = "#4A5D23"),
+  top_features = NULL,
+  feature_selector = "none",
+  group_levels = c("Severe", "Non-Severe", "No PGD"),
+  n_clades = 2,
+  cluster_colors = c("Cluster 1" = "#94001E", "Cluster 2" = "#03507D")
 )
-uft_plsda_severe <- make_PCA(
-  UFT_filtered,
-  group_var = "severe_PGD",
-  method = "PLSDA", 
-  show_patient_labels = FALSE, 
-  label_size = 2
-)
-uft_plsda_any <- make_PCA(
-  UFT_filtered,
-  group_var = "any_PGD",
-  method = "PLSDA",
-  show_patient_labels = FALSE,
-  label_size = 2
-)
-uft_plsda_severe_pure <- make_PCA(
-  UFT_filtered %>%
-    filter(PGD_grade_tier != "Non-Severe"),
-  group_var = "severe_PGD",
-  method = "PLSDA",
-  show_patient_labels = FALSE,
-  label_size = 2
-)
-uft_plsda_severe_mod_nonmod <- make_PCA(
-  UFT_filtered %>%
-    filter(PGD_grade_tier != "No PGD"),
-  group_var = "PGD_grade_tier",
-  method = "PLSDA",
-  ellipse_colors = c("Severe" = "#D8919A", "No PGD" = "#87A6C7", "Non-Severe" = "#9CAF88"), 
-  point_colors = c("Severe" = "#800017", "No PGD" = "#113d6a", "Non-Severe" = "#4A5D23"), 
-  show_patient_labels = FALSE,
-  label_size = 2
-)
-uft_plsda_severe_mod_no <- make_PCA(
-  UFT_filtered %>%
-    filter(PGD_grade_tier != "Severe"),
+#+ 1.2: Run PLSDA on UFT data 
+#- 1.2.1: For No PGD vs Severe ----
+plsda_nosev <- make_PCA(
+  UFT_filtered  %>% filter(PGD_grade_tier != "Non-Severe"),
   group_var = "PGD_grade_tier",
   method = "PLSDA",
   ellipse_colors = c("Severe" = "#D8919A", "No PGD" = "#87A6C7", "Non-Severe" = "#9CAF88"),
@@ -51,15 +22,13 @@ uft_plsda_severe_mod_no <- make_PCA(
   show_patient_labels = FALSE,
   label_size = 2
 )
-
-# Save plots as 5x5 PNG at 300 DPI
-ggsave("uft_plsda_tier.png", plot = uft_plsda_tier$plot, width = 5, height = 5, dpi = 300, units = "in", bg = "white")
-ggsave("uft_plsda_severe.png", plot = uft_plsda_severe$plot, width = 5, height = 5, dpi = 300, units = "in", bg = "white")
-ggsave("uft_plsda_any.png", plot = uft_plsda_any$plot, width = 5, height = 5, dpi = 300, units = "in", bg = "white")
-ggsave("uft_plsda_severe_pure.png", plot = uft_plsda_severe_pure$plot, width = 5, height = 5, dpi = 300, units = "in", bg = "white")
-ggsave("uft_plsda_severe_mod_nonmod.png", plot = uft_plsda_severe_mod_nonmod$plot, width = 5, height = 5, dpi = 300, units = "in", bg = "white")
-ggsave("uft_plsda_severe_mod_no.png", plot = uft_plsda_severe_mod_no$plot, width = 5, height = 5, dpi = 300, units = "in", bg = "white")
-# #+ 1.4: Post-hoc demographic analysis of PCA clusters
-#   #- 1.4.1: Create PCA cluster groups based on clear PC1 separation
-
-
+#- 1.2.2: For No PGD vs Severe ----
+plsda_modsev <- make_PCA(
+  UFT_filtered %>% filter(PGD_grade_tier != "No PGD"),
+  group_var = "PGD_grade_tier",
+  method = "PLSDA",
+  ellipse_colors = c("Severe" = "#D8919A", "No PGD" = "#87A6C7", "Non-Severe" = "#9CAF88"),
+  point_colors = c("Severe" = "#800017", "No PGD" = "#113d6a", "Non-Severe" = "#4A5D23"),
+  show_patient_labels = FALSE,
+  label_size = 2
+)
