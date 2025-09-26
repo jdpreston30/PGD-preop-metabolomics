@@ -48,7 +48,7 @@ Figure_2 <- patchwork::wrap_plots(
   heights = c(1, 1, 0.5, 0.5) # 50% heatmap, 50% bottom split
 ) +
   patchwork::plot_annotation(
-    title = "Figure 1",
+    title = "Figure 2",
     tag_levels = "A",
     theme = ggplot2::theme(
       plot.title.position = "plot",
