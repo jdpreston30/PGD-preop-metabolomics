@@ -15,7 +15,7 @@ blank_plot <- ggplot2::ggplot() +
     plot.tag = ggplot2::element_text(color = "white")
   )
 #- 5.0.1: Figure 1 ----
-#! WIll need to do the raster grob thing from biorender like we did for the kegg enrich
+fig1 <- grid::rasterGrob(as.raster(magick::image_read("Outputs/fig1.png")), interpolate = TRUE)
 #- 5.0.2: Figure 2 ----
 2A <- heatmap
 2B <- plsda_nosev
@@ -37,8 +37,6 @@ blank_plot <- ggplot2::ggplot() +
 4F <- classes_modsev
 #+ 5.1: Figure 1----
 #!!! Raster grob biorender
-kegg_grob <- rasterGrob(as.raster(image_read("Outputs/Grob/variant_enrichment_plot_KEGG.png")), interpolate = TRUE)
-enrichment_grob <- rasterGrob(as.raster(image_read("Outputs/Grob/enrichment_network.png")), interpolate = TRUE)
 
 #+ 5.2: Figure 2 ----
 Figure_2 <- patchwork::wrap_plots(
@@ -142,7 +140,7 @@ Figure_4 <- patchwork::wrap_plots(
 print_to_png(Figure_3, "Figure 3")
 #+ 5.4: Supplemental Figure 1 - MFN Pathway Enrichment
 #- 5.4.1: Load in MFN plot as grob
-mfn_grob <- rasterGrob(as.raster(image_read("Outputs/Grob/variant_enrichment_plot_MFN.png")), interpolate = TRUE)
+mfn_grob <- grid::rasterGrob(as.raster(magick::image_read("Outputs/Grob/variant_enrichment_plot_MFN.png")), interpolate = TRUE)
 #- 5.4.2: Convert grob to ggplot
 mfn_as_plot <- ggplot2::ggplot() +
   ggplot2::annotation_custom(mfn_grob, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) +
@@ -164,18 +162,18 @@ print_to_png(Supplemental_Figure_1, "Supplemental Figure 1")
 {
   png_files <- c(
     here::here("Figures", "Figure 1.png"),
-    here::here("Figures", "Figure 2.png"),
-    here::here("Figures", "Figure 3.png"),
-    here::here("Figures", "Figure 4.png"),
-    here::here("Figures", "Supplemental Figure 1.png")
+    here::here("Figures", "Figure 2.png")
+    # here::here("Figures", "Figure 3.png"),
+    # here::here("Figures", "Figure 4.png"),
+    # here::here("Figures", "Supplemental Figure 1.png")
   )
 
   # Read them in
-  imgs <- lapply(png_files, image_read)
+  imgs <- lapply(png_files, magick::image_read)
 
   # Combine into a single PDF
   pdf_file <- here::here("Figures", "Figures_Compiled.pdf")
-  image_write(image_join(imgs), path = pdf_file, format = "pdf")
+  magick::image_write(magick::image_join(imgs), path = pdf_file, format = "pdf")
 
   message("✅ Combined PDF saved: ", pdf_file)
 }
