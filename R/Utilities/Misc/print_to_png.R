@@ -35,7 +35,8 @@ print_to_png <- function(plot, filename, width = 8.5, height = 11, dpi = 600,
     height = height,
     dpi = dpi,
     units = "in",
-    device = "png"
+    device = "png",
+    bg = "white"
   )
 
   # Auto-open in Preview only on first run (or if specified)

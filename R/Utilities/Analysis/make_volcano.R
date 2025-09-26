@@ -11,6 +11,7 @@
 #' @param x_limits Optional vector of length 2 specifying x-axis limits c(min, max). If NULL, auto-scales.
 #' @param y_limits Optional vector of length 2 specifying y-axis limits c(min, max). If NULL, auto-scales.
 #' @return List containing volcano_data and volcano_plot
+#' @import ggplot2 scales
 #' @export
 make_volcano <- function(data, 
                         group_var, 
@@ -167,7 +168,7 @@ make_volcano <- function(data,
     volcano_data,
     ggplot2::aes(x = log2_fc, y = neg_log10_p, color = Legend)
   ) +
-    ggplot2::geom_point(size = 2, na.rm = TRUE) +
+    ggplot2::geom_point(size = 0.5, na.rm = TRUE) +
     ggplot2::scale_color_manual(
       values = setNames(c("gray70", up_color, down_color), 
                        c("Not Significant", 
@@ -175,42 +176,88 @@ make_volcano <- function(data,
                          paste("Down in", group_names[2]))),
       name = NULL
     ) +
-    ggplot2::theme_light(base_family = "Arial") +
+    ggplot2::theme_minimal(base_family = "Arial") +
     ggplot2::labs(
-      x = expression(log[2]("Fold Change")),
-      y = expression(-log[10](p))
+      x = expression(bold("log")[2]*bold("(Fold Change)")),
+      y = expression(bold("-log")[10]*bold("(p)"))
+    ) +
+    ggplot2::theme(
+      axis.title.x = ggplot2::element_text(size = 12.5, face = "bold", color = "black"),
+      axis.title.y = ggplot2::element_text(size = 12.5, face = "bold", color = "black")
     ) +
     ggplot2::geom_hline(yintercept = -log10(p_threshold), linetype = "dashed", color = "black") +
     ggplot2::geom_vline(xintercept = c(-fc_threshold, fc_threshold), linetype = "dashed", color = "black") +
     ggplot2::scale_x_continuous(
-      limits = x_range
+      limits = x_range,
+      breaks = function(x) {
+        range_val <- diff(range(x))
+        if (range_val <= 2) seq(ceiling(x[1]), floor(x[2]), 0.5)
+        else if (range_val <= 6) seq(ceiling(x[1]), floor(x[2]), 1)
+        else seq(ceiling(x[1]), floor(x[2]), 2)
+      },
+      minor_breaks = function(x) {
+        range_val <- diff(range(x))
+        if (range_val <= 2) seq(ceiling(x[1]), floor(x[2]), 0.25)
+        else if (range_val <= 6) seq(ceiling(x[1]), floor(x[2]), 0.5)
+        else seq(ceiling(x[1]), floor(x[2]), 1)
+      },
+      expand = c(0.02, 0)
     ) +
     ggplot2::scale_y_continuous(
-      limits = y_range
+      limits = y_range,
+      breaks = function(x) {
+        range_val <- diff(range(x))
+        if (range_val <= 3) seq(0, ceiling(x[2]), 0.5)
+        else if (range_val <= 6) seq(0, ceiling(x[2]), 1)
+        else seq(0, ceiling(x[2]), 2)
+      },
+      minor_breaks = function(x) {
+        range_val <- diff(range(x))
+        if (range_val <= 3) seq(0, ceiling(x[2]), 0.25)
+        else if (range_val <= 6) seq(0, ceiling(x[2]), 0.5)
+        else seq(0, ceiling(x[2]), 1)
+      },
+      expand = c(0.02, 0)
     ) +
     ggplot2::theme(
-      # Axis titles and labels
-      axis.title.x = ggplot2::element_text(size = 15, face = "bold", color = "black"),
-      axis.title.y = ggplot2::element_text(size = 15, face = "bold", color = "black"),
-      axis.text.x = ggplot2::element_text(size = 12, face = "bold", color = "black"),
-      axis.text.y = ggplot2::element_text(size = 12, face = "bold", color = "black"),
-      legend.position = "none", # ✅ hides all legends
-
-      # # Legend
-      # legend.position = c(0.05, 0.95), # top-left inside plot
-      # legend.justification = c("left", "top"),
-      # legend.background = ggplot2::element_rect(fill = alpha("white", 0.7), color = NA),
-      # legend.key = ggplot2::element_blank(),
-      # legend.title = ggplot2::element_blank(),
-      # legend.text = ggplot2::element_text(size = 10, face = "bold", color = "black"),
-
-      # General
-      strip.text = ggplot2::element_text(size = 12, face = "bold", color = "black"),
-      panel.border = ggplot2::element_rect(color = "black", fill = NA, linewidth = 1.2),
-      axis.ticks = ggplot2::element_blank()
+      # Remove aspect ratio - let user control via export
+      plot.margin = grid::unit(c(2, 8, 8, 8), "pt"),
+      
+      # Legend styling - top left corner
+      legend.position = c(0.02, 0.98),  # Top left corner
+      legend.justification = c(0, 1),   # Anchor at top left of legend box
+      legend.direction = "vertical",
+      legend.box = "vertical", 
+      legend.background = ggplot2::element_blank(),  # Remove box around legend
+      legend.box.margin = ggplot2::margin(0, 0, 0, 0),
+      legend.margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 0),
+      legend.key = ggplot2::element_blank(),  # Remove background from legend keys
+      legend.key.width = grid::unit(0.3, "cm"),
+      legend.key.height = grid::unit(0.3, "cm"), 
+      legend.key.size = grid::unit(0.3, "cm"),
+      legend.spacing.y = grid::unit(0.05, "cm"),  # Tighter spacing
+      legend.text = ggplot2::element_text(size = 7, face = "plain"),  # Smaller, not bold
+      legend.title = ggplot2::element_blank(),
+      
+      # Axis styling - matching PCA sizes
+      axis.title = ggplot2::element_text(size = 12.5, face = "bold", color = "black"),
+      axis.title.x = ggplot2::element_text(size = 12.5, face = "bold", color = "black"),
+      axis.title.y = ggplot2::element_text(size = 12.5, face = "bold", color = "black", margin = ggplot2::margin(r = 0), hjust = 0.5),
+      axis.text = ggplot2::element_text(size = 11, face = "bold", color = "black"),
+      
+      # Use proper axis lines instead of panel border for better tick control
+      axis.line = ggplot2::element_line(color = "black", linewidth = 0.5),
+      axis.ticks = ggplot2::element_line(color = "black", linewidth = 0.5),
+      axis.ticks.length = ggplot2::unit(0.15, "cm"),
+      
+      # Panel styling - clean background, no border since we use axis.line
+      panel.grid.major = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank(), 
+      panel.border = ggplot2::element_blank(),
+      panel.background = ggplot2::element_blank()
     ) +
     ggplot2::guides(color = ggplot2::guide_legend(
-      override.aes = list(shape = 16, size = 3) # legend dots smaller
+      override.aes = list(shape = 16, size = 0.5) # legend dots same size as plot dots
     ))
 
   list(

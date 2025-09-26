@@ -176,9 +176,9 @@ make_PCA <- function(data, group_var, patient_var = "Patient", method = "PCA", p
       legend.title = ggplot2::element_blank(),
       
       # Axis styling
-      axis.title = ggplot2::element_text(size = 25, face = "bold"),
-      axis.title.y = ggplot2::element_text(margin = ggplot2::margin(r = 0), hjust = 0.5),
-      axis.text = ggplot2::element_text(size = 22, face = "bold", color = "black"),
+      axis.title = ggplot2::element_text(size = 12.5, face = "bold"),
+      axis.title.y = ggplot2::element_text(size = 12.5, face = "bold", margin = ggplot2::margin(r = 0), hjust = 0.5),
+      axis.text = ggplot2::element_text(size = 11, face = "bold", color = "black"),
       
       # Panel styling
       panel.grid.major = ggplot2::element_line(color = "gray80", linewidth = 0.8, linetype = "solid"),

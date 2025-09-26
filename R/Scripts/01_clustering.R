@@ -30,8 +30,9 @@ volcano_nosev <- make_volcano(
   fc_threshold = log2(1.5), 
   p_threshold = 0.05,
   x_limits = c(-6, 6),
-  y_limits = c(-0.5, 5)
+  y_limits = c(0, 5)
 )
+print_to_png(plot = volcano_nosev$volcano_plot, filename = "volcano_nosev.png", width = 4, height = 3, dpi = 600, output_dir = "Figures", auto_open = TRUE)
 
 volcano_modsev <- make_volcano(
   data = UFT_filtered %>% filter(PGD_grade_tier != "No PGD"),
@@ -40,5 +41,6 @@ volcano_modsev <- make_volcano(
   fc_threshold = log2(1.5),
   p_threshold = 0.05,
   x_limits = c(-6, 6),
-  y_limits = c(-0.5, 5)
+  y_limits = c(0, 5)
 )
+print_to_png(plot = volcano_modsev$volcano_plot, filename = "volcano_modsev.png", width = 3, height = 3, dpi = 600, output_dir = "Figures", auto_open = TRUE)
