@@ -21,8 +21,10 @@ blank_plot <- ggplot2::ggplot() +
 2A <- heatmap
 2B <- plsda_nosev
 2C <- plsda_modsev
-2D <- volcano_nosev
-2E <- volcano_modsev
+2D <- blank_plot
+2E <- blank_plot
+# 2D <- volcano_nosev
+# 2E <- volcano_modsev
 #- 5.0.3: Figure 3 ----
 3A <- pathway_enrichment
 3B <- network_nosev

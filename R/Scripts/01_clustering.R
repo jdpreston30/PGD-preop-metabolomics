@@ -7,6 +7,8 @@ heatmap_result <- make_heatmap(
   group_colors = c("Severe" = "#800017", "No PGD" = "#113d6a", "Non-Severe" = "#4A5D23"),
   top_features = 250,
   feature_selector = "variance",
+  top_features = 250,
+  feature_selector = "anova",
   group_levels = c("Severe", "Non-Severe", "No PGD")
 )
 #+ 1.2: Run PLSDA on UFT data 
