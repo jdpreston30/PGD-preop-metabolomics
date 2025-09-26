@@ -113,17 +113,25 @@ make_volcano <- function(data,
   volcano_data <- ttest_results
   volcano_data$neg_log10_p <- -log10(volcano_data$p_value)
   
-  # Classify significance
+  # Classify significance with custom legend text
   volcano_data$Legend <- "Not Significant"
-  volcano_data$Legend[volcano_data$p_value < p_threshold & volcano_data$log2_fc > fc_threshold] <- 
-    paste("Up in", group_names[2])
-  volcano_data$Legend[volcano_data$p_value < p_threshold & volcano_data$log2_fc < -fc_threshold] <- 
-    paste("Down in", group_names[2])
+  
+  # Determine legend labels based on comparison type
+  if ("Non-Severe" %in% group_names && "Severe" %in% group_names) {
+    # Non-Severe vs Severe comparison: both are "Up in" labels
+    up_label <- "Up in Severe PGD"
+    down_label <- "Up in Non-Severe PGD"
+  } else {
+    # Other comparisons (e.g., No PGD vs Severe): traditional up/down
+    up_label <- "Up in Severe PGD"
+    down_label <- "Down in Severe PGD"
+  }
+  
+  volcano_data$Legend[volcano_data$p_value < p_threshold & volcano_data$log2_fc > fc_threshold] <- up_label
+  volcano_data$Legend[volcano_data$p_value < p_threshold & volcano_data$log2_fc < -fc_threshold] <- down_label
   
   volcano_data$Legend <- factor(volcano_data$Legend, 
-                               levels = c("Not Significant", 
-                                         paste("Up in", group_names[2]),
-                                         paste("Down in", group_names[2])))
+                               levels = c("Not Significant", up_label, down_label))
   
   # ---- Handle axis limits and warnings ----
   # X-axis limits
@@ -171,9 +179,7 @@ make_volcano <- function(data,
     ggplot2::geom_point(size = 0.5, na.rm = TRUE) +
     ggplot2::scale_color_manual(
       values = setNames(c("gray70", up_color, down_color), 
-                       c("Not Significant", 
-                         paste("Up in", group_names[2]),
-                         paste("Down in", group_names[2]))),
+                       c("Not Significant", up_label, down_label)),
       name = NULL
     ) +
     ggplot2::theme_minimal(base_family = "Arial") +
@@ -257,7 +263,7 @@ make_volcano <- function(data,
       panel.background = ggplot2::element_blank()
     ) +
     ggplot2::guides(color = ggplot2::guide_legend(
-      override.aes = list(shape = 16, size = 0.5) # legend dots same size as plot dots
+      override.aes = list(shape = 16, size = 0.75) # legend dots 1.5x larger than plot dots
     ))
 
   list(

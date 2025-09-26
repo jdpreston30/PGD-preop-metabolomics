@@ -43,4 +43,4 @@ volcano_modsev <- make_volcano(
   x_limits = c(-6, 6),
   y_limits = c(0, 5)
 )
-print_to_png(plot = volcano_modsev$volcano_plot, filename = "volcano_modsev.png", width = 3, height = 3, dpi = 600, output_dir = "Figures", auto_open = TRUE)
+print_to_png(plot = volcano_modsev$volcano_plot, filename = "volcano_modsev.png", width = 4, height = 3, dpi = 600, output_dir = "Figures", auto_open = TRUE)
