@@ -84,7 +84,7 @@ make_PCA <- function(data, group_var, patient_var = "Patient", method = "PCA", p
     }
     scores <- model$variates$X[, c(comp_x, comp_y), drop = FALSE]
     explained <- round(model$prop_expl_var$X[c(comp_x, comp_y)] * 100)
-    comp_label <- "Comp"
+    comp_label <- "LV"
   }
 
   # _Prepare plot data

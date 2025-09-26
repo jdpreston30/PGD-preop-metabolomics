@@ -1,54 +1,67 @@
 #' Create heatmap with optional feature selection (ANOVA / variance / MAD)
-#' and optional T_stage annotation. Returns plot object for patchwork.
+#' and configurable annotation. Returns plot object for patchwork.
 #'
-#' @param data                 Data frame with Patient_ID, Variant, optional T_stage, then feature columns
-#' @param variant_colors       Named color vector for Variant (names = levels)
+#' @param data                 Data frame with Patient_ID, annotation variable, and feature columns
+#' @param group_var            Character string specifying the column name to use for grouping/annotation
+#' @param patient_var          Character string specifying the Patient ID column name (default: "Patient_ID")
+#' @param group_colors         Named color vector for the grouping variable (names = levels)
 #' @param top_features         NULL (default: show all features). If numeric >0, keep top N by `feature_selector`.
 #' @param feature_selector     One of c("none","anova","variance","mad"). Default "none".
-#' @param variant_levels       Factor order for Variant (default c("PTC","FV-PTC","FTC"))
-#' @param n_clades             Number of clades to extract from sample HCA (default 2)
-#' @param annotate_t_stage     Logical; if TRUE and T_stage exists, add as column annotation
-#' @param T_stage_colors       Optional named color vector for T_stage; include "T1","T2","T3","T4". "Unknown" added if missing.
-#' @param cluster_colors       Named color vector for cluster annotation (e.g., c("Cluster 1" = "#color1", "Cluster 2" = "#color2"))
-#' @return List with plot object, M, Mz, hc_cols, clade_df, clade_lists, ann_col, ann_colors, etc.
+#' @param group_levels         Factor order for the grouping variable (optional)
+#' @return List with plot object, M, Mz, hc_cols, ann_col, ann_colors, etc.
 #' @export
 make_heatmap <- function(
     data,
-    variant_colors = c("PTC" = "#DF8D0A", "FV-PTC" = "#23744E", "FTC" = "#194992"),
+    group_var,
+    patient_var = "Patient_ID",
+    group_colors = c("Severe" = "#D8919A", "No PGD" = "#87A6C7", "Non-Severe" = "#9CAF88"),
     top_features = NULL,
     feature_selector = c("none", "anova", "variance", "mad"),
-    variant_levels = c("PTC", "FV-PTC", "FTC"),
-    n_clades = 2,
-    annotate_t_stage = FALSE,
-    T_stage_colors = c("T1-T2" = "#dfba37", "T3-T4" = "#72061c"),
-    cluster_colors = c("Cluster 1" = "#94001E", "Cluster 2" = "#03507D")) {
+    group_levels = NULL) {
   feature_selector <- match.arg(feature_selector)
 
   # ---- Checks ----
-  stopifnot(all(c("Patient_ID", "Variant") %in% names(data)))
-  has_t <- "T_stage" %in% names(data)
+  if (!group_var %in% names(data)) {
+    stop(paste("Group variable", group_var, "not found in data"))
+  }
+  if (!patient_var %in% names(data)) {
+    stop(paste("Patient variable", patient_var, "not found in data"))
+  }
 
-  # Keep ID/Variant/(optional)T_stage up front
+  # Keep ID and grouping variable up front, then everything else
   dat <- dplyr::select(
     data,
-    dplyr::any_of(c("Patient_ID", "Variant", if (has_t) "T_stage")),
+    dplyr::all_of(c(patient_var, group_var)),
     dplyr::everything()
   )
 
-  # Coerce Variant to factor in desired order
-  dat$Variant <- factor(dat$Variant, levels = variant_levels)
+  # Coerce grouping variable to factor in desired order (if specified)
+  if (!is.null(group_levels)) {
+    dat[[group_var]] <- factor(dat[[group_var]], levels = group_levels)
+  } else {
+    dat[[group_var]] <- factor(dat[[group_var]])
+  }
 
-  # Build matrix: samples x features (drop ID/Variant/T_stage)
-  drop_cols <- c("Patient_ID", "Variant", if (has_t) "T_stage")
-  X <- as.matrix(dplyr::select(dat, -dplyr::all_of(drop_cols)))
+  # Identify factor columns (excluding Patient and grouping variable)
+  factor_cols <- sapply(dat, is.factor)
+  cols_to_exclude <- c(patient_var, group_var)
+  other_factor_cols <- names(factor_cols)[factor_cols & !names(factor_cols) %in% cols_to_exclude]
+  
+  # Build matrix: samples x features (drop ID, grouping variable, and other factor columns)
+  drop_cols <- c(cols_to_exclude, other_factor_cols)
+  numeric_cols <- !names(dat) %in% drop_cols
+  X <- as.matrix(dplyr::select(dat, dplyr::all_of(names(dat)[numeric_cols])))
+  
+  # Check that we have numeric data
+  if (ncol(X) == 0) stop("No numeric columns found for heatmap")
   stopifnot(all(vapply(as.data.frame(X), is.numeric, TRUE)))
 
   # Sample IDs (use make.names for uniqueness + valid rownames)
-  sample_ids <- make.names(dat$Patient_ID, unique = TRUE)
+  sample_ids <- make.names(dat[[patient_var]], unique = TRUE)
   rownames(X) <- sample_ids
 
   # Group factor for ANOVA ranking
-  group <- dat$Variant
+  group <- dat[[group_var]]
 
   # ---- Optional feature ranking/selection ----
   if (!is.null(top_features) && is.numeric(top_features) && top_features > 0 &&
@@ -91,19 +104,19 @@ make_heatmap <- function(
   hc_cols <- hclust(d_cols, method = "complete")
 
   # Map back to original Patient_ID
-  id_map <- setNames(dat$Patient_ID, sample_ids)
+  id_map <- setNames(dat[[patient_var]], sample_ids)
   clades_raw <- stats::cutree(hc_cols, k = n_clades)
-  
+
   # Assign clusters based on dendrogram order: leftmost = Cluster 1, rightmost = Cluster 2
   # Get the order of samples from the dendrogram
   ordered_samples <- names(clades_raw)[hc_cols$order]
-  
+
   # Find which raw cluster appears first (leftmost) in the dendrogram order
   first_cluster_raw <- clades_raw[ordered_samples[1]]
-  
+
   # Assign final cluster numbers: leftmost cluster becomes Cluster 1, rightmost becomes Cluster 2
   clades <- ifelse(clades_raw == first_cluster_raw, 1, 2)
-  
+
   ids_ordered_clean <- names(clades)[hc_cols$order]
   ids_ordered_orig <- unname(id_map[ids_ordered_clean])
 
@@ -120,103 +133,38 @@ make_heatmap <- function(
   names(cluster_lists) <- paste0("cluster", seq_len(n_clades), "_ids")
 
   # ---- Column annotation (aligned to columns of M) ----
-  # Build annotation in REVERSE order since pheatmap displays first column at bottom
-  # Start with variant annotation (will be on bottom - first column)
-  ann_col <- data.frame(Variant = dat$Variant, row.names = sample_ids)
+  # Build annotation with grouping variable and clusters
+  # Start with grouping variable annotation (will be on bottom)
+  ann_col <- data.frame(row.names = sample_ids)
+  ann_col[[group_var]] <- dat[[group_var]]
 
-  # Add T-stage annotation if requested (will be in middle - second column)
-  if (annotate_t_stage && has_t) {
-    # Turn T_stage into character - no need to handle NA since dataset is complete
-    t_raw <- as.character(dat$T_stage)
-
-    # Handle both individual T stages (T1, T2, T3, T4) and binned stages (T1-T2, T3-T4)
-    # If values already start with "T" (e.g., "T3" or "T1-T2"), keep them;
-    # if they look numeric (e.g., "3"), prepend "T".
-    needs_T <- grepl("^[0-9]+$", t_raw)
-    t_clean <- ifelse(needs_T, paste0("T", t_raw), t_raw)
-
-    # Factor with canonical order (no Unknown needed since dataset is complete)
-    # First check what format we have in the data
-    unique_vals <- unique(t_clean)
-    if (any(grepl("-", unique_vals))) {
-      # We have binned values like "T1-T2", "T3-T4"
-      t_lvls <- c("T1-T2", "T3-T4")
-    } else {
-      # We have individual values like "T1", "T2", "T3", "T4"
-      t_lvls <- c("T1", "T2", "T3", "T4")
-    }
-    
-    ann_col$`T Stage` <- factor(t_clean, levels = t_lvls)  # Use "T Stage" as column name for display
-  }
-  
-  # Add cluster annotation last (will be on top - last column)
+  # Add cluster annotation (will be on top)
   # Create a mapping from sample_ids to final cluster assignments
   cluster_mapping <- setNames(cluster_df$Cluster, cluster_df$Patient_ID)
-  original_ids <- unname(id_map[sample_ids])  # Convert sample_ids back to original Patient_IDs
+  original_ids <- unname(id_map[sample_ids]) # Convert sample_ids back to original Patient_IDs
   cluster_labels <- paste0("Cluster ", cluster_mapping[original_ids])
   names(cluster_labels) <- sample_ids
-  
+
   # Use standard factor levels - legend order controlled by color order
   ann_col$Cluster <- factor(cluster_labels[sample_ids], levels = c("Cluster 1", "Cluster 2"))
-  ann_col$Variant <- dat$Variant
 
   # Reorder rows of ann_col to match M's columns
   ann_col <- ann_col[colnames(M), , drop = FALSE]
 
   # ---- Annotation color lists ----
-  # Build colors in same order as ann_col data frame (pheatmap displays in reverse)
   ann_colors <- list()
-  
-  # Add variant colors first (matches first column - will display at bottom)
-  ann_colors$Variant <- variant_colors
 
-  if (annotate_t_stage && has_t) {
-    # Seed T-stage colors if not provided
-    if (is.null(T_stage_colors)) T_stage_colors <- c()
-    
-    
-    # Get the levels that actually appear in the data
-    needed <- levels(ann_col$`T Stage`)  # Use "T Stage" column name
-    
-    # Find any missing colors and assign defaults
-    missing <- setdiff(needed, names(T_stage_colors))
-    if (length(missing)) {
-      # Check if we have binned values and provide appropriate defaults
-      if (any(grepl("-", missing))) {
-        # Default colors for binned values
-        default_binned <- c("T1-T2" = "#4575b4", "T3-T4" = "#d73027")
-        fill_cols <- default_binned[missing]
-        # For any still missing, use grays
-        still_missing <- missing[is.na(fill_cols)]
-        if (length(still_missing)) {
-          gray_cols <- grDevices::gray.colors(length(still_missing), start = 0.3, end = 0.7)
-          names(gray_cols) <- still_missing
-          fill_cols[still_missing] <- gray_cols
-        }
-      } else {
-        # Default for individual T stages
-        fill_cols <- grDevices::gray.colors(length(missing), start = 0.3, end = 0.7)
-        names(fill_cols) <- missing
-      }
-      T_stage_colors <- c(T_stage_colors, fill_cols)
-    }
-    
-    ann_colors$`T Stage` <- T_stage_colors[needed]  # Use "T Stage" as key
-  }
-  
-  # Add cluster colors last (matches last column - will display at top)
-  # Order colors so Cluster 1 appears on top in legend
+  # Add grouping variable colors (will display at bottom)
+  ann_colors[[group_var]] <- group_colors
+
+  # Add cluster colors (will display at top)
   if (!is.null(cluster_colors)) {
-    # Keep the standard order of cluster colors
     ann_colors$Cluster <- cluster_colors[c("Cluster 1", "Cluster 2")]
   } else {
     # Default cluster colors if not provided
     default_cluster_colors <- c("Cluster 1" = "#94001E", "Cluster 2" = "#03507D")
     ann_colors$Cluster <- default_cluster_colors
   }
-  
-  # Add variant colors last (bottom annotation)
-  ann_colors$Variant <- variant_colors
 
   # ---- Heatmap (for screen) ----
   heatmap_plot <- pheatmap::pheatmap(
@@ -249,7 +197,7 @@ make_heatmap <- function(
     show_colnames = FALSE,
     fontsize = 8,
     na_col = "#DDDDDD",
-    silent = TRUE,  # Prevents auto-display
+    silent = TRUE, # Prevents auto-display
     legend_labels = "Z-Score"
   )
 
@@ -263,9 +211,9 @@ make_heatmap <- function(
     top_features = top_features,
     ann_col = ann_col,
     ann_colors = ann_colors,
-    cluster_df = cluster_df,  # Updated from clade_df
-    clusters = clades,        # Updated from clades
-    cluster_lists = cluster_lists,  # Updated from clade_lists
-    heatmap_plot = heatmap_plot  # Plot object for patchwork
+    cluster_df = cluster_df, # Updated from clade_df
+    clusters = clades, # Updated from clades
+    cluster_lists = cluster_lists, # Updated from clade_lists
+    heatmap_plot = heatmap_plot # Plot object for patchwork
   )
 }

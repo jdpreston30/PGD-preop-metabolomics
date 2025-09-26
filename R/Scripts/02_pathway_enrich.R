@@ -20,5 +20,3 @@ pathway_enrich_data_severe <- mummichog_ttests(
   group1_value = "N",
   group2_value = "Y"
 )
-
-
