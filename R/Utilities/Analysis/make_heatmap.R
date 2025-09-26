@@ -6,7 +6,7 @@
 #' @param patient_var          Character string specifying the Patient ID column name (default: "Patient_ID")
 #' @param group_colors         Named color vector for the grouping variable (names = levels)
 #' @param top_features         NULL (default: show all features). If numeric >0, keep top N by `feature_selector`.
-#' @param feature_selector     One of c("none","anova","variance","mad"). Default "none".
+#' @param feature_selector     One of c("none","anova","ttest","variance","mad"). Default "none".
 #' @param group_levels         Factor order for the grouping variable (optional)
 #' @return List with plot object, M, Mz, hc_cols, ann_col, ann_colors, etc.
 #' @export
@@ -16,7 +16,7 @@ make_heatmap <- function(
     patient_var = "Patient_ID",
     group_colors = c("Severe" = "#D8919A", "No PGD" = "#87A6C7", "Non-Severe" = "#9CAF88"),
     top_features = NULL,
-    feature_selector = c("none", "anova", "variance", "mad"),
+    feature_selector = c("none", "anova", "ttest", "variance", "mad"),
     group_levels = NULL) {
   feature_selector <- match.arg(feature_selector)
 
@@ -74,6 +74,23 @@ make_heatmap <- function(
           fit <- aov(x ~ group)
           summary(fit)[[1]][["Pr(>F)"]][1]
         })
+        order(pvals, na.last = TRUE) # ascending p
+      },
+      "ttest" = {
+        # Check if exactly 2 groups for t-test
+        n_groups <- length(levels(group))
+        if (n_groups != 2) {
+          warning(paste("t-test requires exactly 2 groups, but found", n_groups, "groups. Switching to ANOVA."))
+          pvals <- apply(X, 2, function(x) {
+            fit <- aov(x ~ group)
+            summary(fit)[[1]][["Pr(>F)"]][1]
+          })
+        } else {
+          pvals <- apply(X, 2, function(x) {
+            t_result <- t.test(x ~ group)
+            t_result$p.value
+          })
+        }
         order(pvals, na.last = TRUE) # ascending p
       },
       "variance" = {
