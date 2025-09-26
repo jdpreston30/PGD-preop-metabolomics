@@ -1,5 +1,13 @@
 #* 5: Figure Creation
 #!!!!!!!!!!! May need
+  permanova_1B <- permanova_1B + theme_pub_simple(border_linewidth = 0.5)
+  pca_1C <- pca_1C + theme_pub_pca(border_linewidth = 0.5)
+  pca_1D <- pca_1D + theme_pub_pca(border_linewidth = 0.5)
+  pca_1E <- pca_1E + theme_pub_pca(border_linewidth = 0.5)
+  pca_1F <- pca_1F + theme_pub_pca(border_linewidth = 0.5)
+
+#+ 5.0: Assign figures
+#- 5.0.1.0 Blank plot ----
 blank_plot <- ggplot2::ggplot() +
   ggplot2::theme_void() +
   ggplot2::labs(tag = NULL) + # this removes the letter completely
@@ -7,12 +15,6 @@ blank_plot <- ggplot2::ggplot() +
     plot.tag = ggplot2::element_text(color = "white")
   )
 
-  permanova_1B <- permanova_1B + theme_pub_simple(border_linewidth = 0.5)
-  pca_1C <- pca_1C + theme_pub_pca(border_linewidth = 0.5)
-  pca_1D <- pca_1D + theme_pub_pca(border_linewidth = 0.5)
-  pca_1E <- pca_1E + theme_pub_pca(border_linewidth = 0.5)
-  pca_1F <- pca_1F + theme_pub_pca(border_linewidth = 0.5)
-#+ 5.0: Assign figures
 #- 5.0.1: Figure 1 ----
 #! WIll need to do the raster grob thing from biorender like we did for the kegg enrich
 #- 5.0.2: Figure 2 ----
@@ -34,6 +36,9 @@ blank_plot <- ggplot2::ggplot() +
 4F <- classes_modsev
 #+ 5.1: Figure 1----
 #!!! Raster grob biorender
+kegg_grob <- rasterGrob(as.raster(image_read("Outputs/Grob/variant_enrichment_plot_KEGG.png")), interpolate = TRUE)
+enrichment_grob <- rasterGrob(as.raster(image_read("Outputs/Grob/enrichment_network.png")), interpolate = TRUE)
+
 #+ 5.2: Figure 2 ----
 Figure_2 <- patchwork::wrap_plots(
   # Top 50%: Heatmap spanning full width
@@ -59,8 +64,7 @@ Figure_2 <- patchwork::wrap_plots(
 print_to_png(Figure_1, "Figure 1")
 #+ 5.3: Figure 3 - Pathway Enrichment-----
 #- 5.3.1: Load in KEGG and enrichment plots
-kegg_grob <- rasterGrob(as.raster(image_read("Outputs/Grob/variant_enrichment_plot_KEGG.png")), interpolate = TRUE)
-enrichment_grob <- rasterGrob(as.raster(image_read("Outputs/Grob/enrichment_network.png")), interpolate = TRUE)
+
 #- 5.3.2: Convert grob to ggplot for KEGG
 kegg_as_plot <- ggplot2::ggplot() +
   ggplot2::annotation_custom(
