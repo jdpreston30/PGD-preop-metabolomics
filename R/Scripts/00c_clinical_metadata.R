@@ -71,4 +71,5 @@ T3_data <- clinical_metadata %>%
   select(Patient, severe_PGD, all_of(T3))
 #+ 0d.5: Store PGD specifics for later joining ----
 PGD_specifics <- clinical_metadata %>%
-  select(Patient, postop_PGD_grade_ISHLT, severe_PGD, PGD_grade_tier, postop_PGD_binary_ISHLT)
+  select(Patient, postop_PGD_grade_ISHLT, severe_PGD, PGD_grade_tier, postop_PGD_binary_ISHLT) %>%
+  mutate(any_PGD = as.factor(if_else(postop_PGD_grade_ISHLT %in% c("Mild", "Moderate", "Severe"), "Y", "N", missing = "N")))
