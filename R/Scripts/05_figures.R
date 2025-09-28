@@ -1,10 +1,10 @@
 #* 5: Figure Creation
-#!!!!!!!!!!! May need
-  permanova_1B <- permanova_1B + theme_pub_simple(border_linewidth = 0.5)
-  pca_1C <- pca_1C + theme_pub_pca(border_linewidth = 0.5)
-  pca_1D <- pca_1D + theme_pub_pca(border_linewidth = 0.5)
-  pca_1E <- pca_1E + theme_pub_pca(border_linewidth = 0.5)
-  pca_1F <- pca_1F + theme_pub_pca(border_linewidth = 0.5)
+#!!!!!!!!!!! May need, not currently used
+  # permanova_1B <- permanova_1B + theme_pub_simple(border_linewidth = 0.5)
+  # pca_1C <- pca_1C + theme_pub_pca(border_linewidth = 0.5)
+  # pca_1D <- pca_1D + theme_pub_pca(border_linewidth = 0.5)
+  # pca_1E <- pca_1E + theme_pub_pca(border_linewidth = 0.5)
+  # pca_1F <- pca_1F + theme_pub_pca(border_linewidth = 0.5)
 
 #+ 5.0: Assign figures
 #- 5.0.1.0 Blank plot ----
@@ -17,17 +17,17 @@ blank_plot <- ggplot2::ggplot() +
 #- 5.0.1: Figure 1 ----
 fig1 <- grid::rasterGrob(as.raster(magick::image_read("Outputs/fig1.png")), interpolate = TRUE)
 #- 5.0.2: Figure 2 ----
-2A <- heatmap
-2B <- plsda_nosev
-2C <- plsda_modsev
-2D <- blank_plot
-2E <- blank_plot
+heatmap_2A <- heatmap
+plsda_2B <- plsda_nosev
+plsda_2C <- plsda_modsev
+blank_2D <- blank_plot
+blank_2E <- blank_plot
 # 2D <- volcano_nosev
 # 2E <- volcano_modsev
 #- 5.0.3: Figure 3 ----
-3A <- pathway_enrichment
-3B <- network_nosev
-3C <- network_modsev
+pathway_enrichment_3A <- pathway_enrichment
+network_3B <- network_nosev
+network_3C <- network_modsev
 #- 5.0.4: Figure 4 ----
 4A <- pls_bar_nosev
 4B <- superclasses_nosev
@@ -40,12 +40,26 @@ fig1 <- grid::rasterGrob(as.raster(magick::image_read("Outputs/fig1.png")), inte
 
 #+ 5.2: Figure 2 ----
 Figure_2 <- patchwork::wrap_plots(
-  # Top 50%: Heatmap spanning full width
-  heatmap_1A,
-  # Bottom 50%: Vertical PERMANOVA (left) + 4 PCAs (2x2 grid, right)
-  permanova_1B, pca_1C, pca_1D, pca_1E, pca_1F,
-  design = "AAAA\nAAAA\nBBCD\nBBEF", # Heatmap top 50%, vertical bar + 2x2 PCAs bottom 50%
-  heights = c(1, 1, 0.5, 0.5) # 50% heatmap, 50% bottom split
+  # Top 40%: heatmap_2A spanning full width (100%)
+  heatmap_2A,
+  # Middle 20%: plsda_2B (left 50%) + plsda_2C (right 50%)
+  plsda_2B, 
+  plsda_2C,
+  # Bottom 40% (placeholder for now)
+  blank_2D,
+  blank_2E,
+  # # Bottom 40%: Volcano 2D (left) + Volcano 2E (right) #! not done yet, commented out for now
+  # volcano_2D, volcano_2E,
+
+  # Bottom 40%: Vertical PERMANOVA (left) + 4 PCAs (2x2 grid, right) #! might not need this
+  # permanova_2B, pca_2C, pca_2D, pca_2E, pca_2F, #! might not need this
+  
+  design = "
+    A
+    CD
+    EF
+  ", # Top 40% heatmaps (A), Middle 20% PLSDAs (C,D), Bottom 40% blank plots (E,F)
+  heights = c(2, 1, 2) # 40% top (2/5), 20% middle (1/5), 40% bottom (2/5)
 ) +
   patchwork::plot_annotation(
     title = "Figure 2",
@@ -60,7 +74,8 @@ Figure_2 <- patchwork::wrap_plots(
     plot.tag.position = c(0, 0.98),
     plot.tag = ggplot2::element_text(size = 14, face = "bold", vjust = 0, hjust = 0, family = "Arial", color = "black")
   )
-print_to_png(Figure_1, "Figure 1")
+print_to_png(Figure_2, "Figure 2")
+
 #+ 5.3: Figure 3 - Pathway Enrichment-----
 #- 5.3.1: Load in KEGG and enrichment plots
 
