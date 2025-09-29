@@ -17,8 +17,8 @@
 #' @return List containing the plot, model object, scores, scores_df, and explained variance
 #' @export
 make_PCA <- function(data, group_var, patient_var = "Patient", method = "PCA", plot_title = "",
-                     ellipse_colors = c("Y" = "#D8919A", "N" = "#87A6C7", "Control" = "#B0B0B0"),
-                     point_colors = c("Y" = "#800017", "N" = "#113d6a", "Control" = "#4c4c4c"),
+                     ellipse_colors = c("Severe" = "#D8919A", "No PGD" = "#87A6C7", "Non-Severe" = "#9CAF88"),
+                     point_colors = c("Severe" = "#800017", "No PGD" = "#113d6a", "Non-Severe" = "#4A5D23"),
                      point_size = 3, comp_x = 1, comp_y = 2, ncomp = 2, 
                      show_patient_labels = FALSE, label_size = 3, show_legend = TRUE) {
   # _Data preparation

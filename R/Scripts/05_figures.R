@@ -5,25 +5,14 @@
   # pca_1D <- pca_1D + theme_pub_pca(border_linewidth = 0.5)
   # pca_1E <- pca_1E + theme_pub_pca(border_linewidth = 0.5)
   # pca_1F <- pca_1F + theme_pub_pca(border_linewidth = 0.5)
-
 #+ 5.0: Assign figures
-#- 5.0.1.0 Blank plot ----
-blank_plot <- ggplot2::ggplot() +
-  ggplot2::theme_void() +
-  ggplot2::labs(tag = NULL) + # this removes the letter completely
-  ggplot2::theme(
-    plot.tag = ggplot2::element_text(color = "white")
-  )
 #- 5.0.1: Figure 1 ----
-fig1 <- grid::rasterGrob(as.raster(magick::image_read("Outputs/fig1.png")), interpolate = TRUE)
+fig1 <- grid::rasterGrob(as.raster(magick::image_read("Figures/Raw/fig1.png")), interpolate = TRUE)
 #- 5.0.2: Figure 2 ----
-heatmap_2A <- heatmap
-plsda_2B <- plsda_nosev
-plsda_2C <- plsda_modsev
-blank_2D <- blank_plot
-blank_2E <- blank_plot
-# 2D <- volcano_nosev
-# 2E <- volcano_modsev
+plsda_2A <- plsda_nosev
+plsda_2B <- plsda_modsev
+blank_2C <- volcano_nosev
+blank_2D <- volcano_modsev
 #- 5.0.3: Figure 3 ----
 pathway_enrichment_3A <- pathway_enrichment
 network_3B <- network_nosev
@@ -36,7 +25,31 @@ network_3C <- network_modsev
 4E <- superclasses_modsev
 4F <- classes_modsev
 #+ 5.1: Figure 1----
-#!!! Raster grob biorender
+Figure_1 <- patchwork::wrap_plots(
+  # Top 50%: fig1 raster grob spanning full width
+  ggplot2::ggplot() +
+    ggplot2::annotation_custom(fig1, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) +
+    ggplot2::theme_void() +
+    ggplot2::theme(plot.margin = grid::unit(c(0, 0, 0, 0), "in")),
+  # Bottom 50%: blank plot
+  blank_plot,  
+  design = "
+    A
+    B
+  ",
+  heights = c(1, 1) # 50% top, 50% bottom
+) +
+  patchwork::plot_annotation(
+    title = "Figure 1",
+    theme = ggplot2::theme(
+      plot.title.position = "plot",
+      plot.title = ggplot2::element_text(hjust = 0, face = "bold", family = "Arial", size = 16),
+      plot.margin = grid::unit(c(0.3, 0.5, 0.3, 0.5), "in")
+    )
+  )
+
+print_to_png(Figure_1, "Figure 1")
+
 
 #+ 5.2: Figure 2 ----
 Figure_2 <- patchwork::wrap_plots(

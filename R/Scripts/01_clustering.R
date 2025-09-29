@@ -21,19 +21,17 @@ plsda_modsev <- make_PCA(
   label_size = 2
 )
 #+ 1.2: Run PLSDA on UFT data
-
-
+#- 1.2.1: For No PGD vs Severe ----
 volcano_nosev <- make_volcano(
   data = UFT_filtered  %>% filter(PGD_grade_tier != "Non-Severe"),
   group_var = "PGD_grade_tier",
-  group_levels = c("No PGD", "Severe"), 
-  fc_threshold = log2(1.5), 
+  group_levels = c("No PGD", "Severe"),
+  fc_threshold = log2(1.5),
   p_threshold = 0.05,
   x_limits = c(-6, 6),
   y_limits = c(0, 5)
 )
-print_to_png(plot = volcano_nosev$volcano_plot, filename = "volcano_nosev.png", width = 4, height = 3, dpi = 600, output_dir = "Figures", auto_open = TRUE)
-
+#- 1.2.2: For Moderate PGD vs Severe ----
 volcano_modsev <- make_volcano(
   data = UFT_filtered %>% filter(PGD_grade_tier != "No PGD"),
   group_var = "PGD_grade_tier",
@@ -43,4 +41,3 @@ volcano_modsev <- make_volcano(
   x_limits = c(-6, 6),
   y_limits = c(0, 5)
 )
-print_to_png(plot = volcano_modsev$volcano_plot, filename = "volcano_modsev.png", width = 4, height = 3, dpi = 600, output_dir = "Figures", auto_open = TRUE)

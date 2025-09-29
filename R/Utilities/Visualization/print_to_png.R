@@ -5,12 +5,23 @@
 #' @param width Width in inches (default: 8.5)
 #' @param height Height in inches (default: 11)
 #' @param dpi Resolution in DPI (default: 300 for high quality)
-#' @param output_dir Directory to save the PNG (default: "Outputs")
+#' @param output_dir Directory to save the PNG (default: from config$paths$figures)
 #' @param auto_open Whether to automatically open in Preview on first run (default: TRUE)
 #' @return Invisible path to the created PNG file
 #' @export
-print_to_png <- function(plot, filename, width = 8.5, height = 11, dpi = 600,
-                         output_dir = "Figures", auto_open = TRUE) {
+print_to_png <- function(plot, filename, width = 8.5, height = 11, dpi = 300,
+                         output_dir = NULL, auto_open = TRUE) {
+  
+  # Use config path if output_dir not specified
+  if (is.null(output_dir)) {
+    if (exists("config") && !is.null(config$paths$figures)) {
+      output_dir <- config$paths$figures
+    } else {
+      # Fallback if config not loaded
+      output_dir <- "/Users/jdp2019/Desktop/PGD_figures"
+      warning("Config not found, using fallback path: ", output_dir)
+    }
+  }
   # Ensure filename has .png extension
   if (!grepl("\\.png$", filename, ignore.case = TRUE)) {
     filename <- paste0(filename, ".png")

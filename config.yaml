@@ -12,6 +12,7 @@ paths:
   sample_type: /Users/jdp2019/Library/CloudStorage/OneDrive-Emory/Research/MS_raw_data/Chan_studies_MS_raw/PGD studies/Chan_PGD_9_2025/sample_type.xlsx
   # Output paths (relative to project root)
   output: "./Outputs"
+  figures: "/Users/jdp2019/Desktop/PGD_figures"
   
   # Script and utility paths
   scripts: "R/Scripts/"
