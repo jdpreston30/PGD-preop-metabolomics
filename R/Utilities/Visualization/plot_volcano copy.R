@@ -161,7 +161,7 @@ plot_volcano <- function(volcano_results,
     ) +
     ggplot2::guides(color = ggplot2::guide_legend(
       override.aes = list(shape = 16, size = 0.75) # legend dots 1.5x larger than plot dots
-    ))
+    ))  + coord_cartesian(clip = "off")
 
   return(volcano_plot)
 }
