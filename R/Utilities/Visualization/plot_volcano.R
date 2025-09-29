@@ -132,7 +132,7 @@ plot_volcano <- function(volcano_results,
       legend.key.height = grid::unit(0.3, "cm"), 
       legend.key.size = grid::unit(0.3, "cm"),
       legend.spacing.y = grid::unit(0.05, "cm"),  # Tighter spacing
-      legend.text = ggplot2::element_text(size = 8, face = "plain"),  # Match PCA size
+      legend.text = ggplot2::element_text(size = 7, face = "bold"),  # Match PCA size
       legend.title = ggplot2::element_blank(),
       
       # Make legend positioning more robust against patchwork interference
@@ -140,13 +140,13 @@ plot_volcano <- function(volcano_results,
       
       # Axis styling - matching PCA sizes
       axis.title = ggplot2::element_text(size = 12.5, face = "bold", color = "black"),
-      axis.title.x = ggplot2::element_text(size = 12.5, face = "bold", color = "black"),
-      axis.title.y = ggplot2::element_text(size = 12.5, face = "bold", color = "black", margin = ggplot2::margin(r = 0), hjust = 0.5),
+      axis.title.x = ggplot2::element_text(size = 12.5, face = "bold", color = "black", margin = ggplot2::margin(t = 2)),
+      axis.title.y = ggplot2::element_text(size = 12.5, face = "bold", color = "black", margin = ggplot2::margin(r = 8), hjust = 0.5),
       axis.text = ggplot2::element_text(size = 11, face = "bold", color = "black"),
       
       # Use proper axis lines instead of panel border for better tick control
-      axis.line = ggplot2::element_line(color = "black", linewidth = 0.5),
-      axis.ticks = ggplot2::element_line(color = "black", linewidth = 0.5),
+      axis.line = ggplot2::element_line(color = "black", linewidth = 0.6),
+      axis.ticks = ggplot2::element_line(color = "black", linewidth = 0.6),
       axis.ticks.length = ggplot2::unit(0.15, "cm"),
       
       # Panel styling - clean background, no border since we use axis.line

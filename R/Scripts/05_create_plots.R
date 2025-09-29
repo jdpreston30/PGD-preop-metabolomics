@@ -17,16 +17,17 @@ volc_nosev <- plot_volcano(
 volc_modsev <- plot_volcano(
   volcano_results = volcano_modsev_data,
   x_limits = c(-6, 6),
-  y_limits = c(0, 5)
+  y_limits = c(0, 5),
+  down_color = "#4A5D23"  # Use green color matching Mild/Mod PGD in PCA plots
 )
 #+ 5.2: Assign plots for figure assembly
 #- 5.2.1: Figure 1
 p1A <- fig1
 #- 5.2.2: Figure 2
-p2A <- plsda_nosev
-p2B <- plsda_modsev
-p2C <- volc_nosev
-p2D <- volc_modsev
+p2A <- plsda_nosev      # PLS-DA No/Severe (top left)
+p2B <- volc_nosev       # Volcano No/Severe (top right)
+p2C <- plsda_modsev     # PLS-DA Mod/Severe (bottom left)
+p2D <- volc_modsev      # Volcano Mod/Severe (bottom right)
 #- 5.2.3: Figure 3
 # p3A <- pathway_enrichment
 # p3B <- network_nosev

@@ -1,5 +1,4 @@
 #* 6 Render Figures
-
 #+ 6.1: Figure 1
 Figure_1 <- patchwork::wrap_plots(
   ggplot2::ggplot() +
@@ -23,17 +22,18 @@ Figure_1 <- patchwork::wrap_plots(
   )
 #+ 6.2: Figure 2 
 Figure_2 <- patchwork::wrap_plots(
-  p2A + ggplot2::labs(tag = "A") + ggplot2::theme(plot.tag.position = c(0, 0.85), plot.tag = ggplot2::element_text(size = 14, face = "bold", vjust = 0, hjust = 0, family = "Arial", color = "black")), 
-  p2B + ggplot2::labs(tag = "B") + ggplot2::theme(plot.tag.position = c(0, 0.85), plot.tag = ggplot2::element_text(size = 14, face = "bold", vjust = 0, hjust = 0, family = "Arial", color = "black")), 
-  p2C + ggplot2::labs(tag = "C") + ggplot2::theme(plot.tag.position = c(0, 0.98), plot.tag = ggplot2::element_text(size = 14, face = "bold", vjust = 0, hjust = 0, family = "Arial", color = "black")), 
-  p2D + ggplot2::labs(tag = "D") + ggplot2::theme(plot.tag.position = c(0, 0.98), plot.tag = ggplot2::element_text(size = 14, face = "bold", vjust = 0, hjust = 0, family = "Arial", color = "black")),
+  p2A + ggplot2::labs(tag = "A") + ggplot2::theme(plot.tag.position = c(0, 0.92), plot.tag = ggplot2::element_text(size = 14, face = "bold", vjust = 0, hjust = 0, family = "Arial", color = "black")), 
+  p2B + ggplot2::labs(tag = "B") + ggplot2::theme(plot.tag.position = c(0, 0.92), plot.tag = ggplot2::element_text(size = 14, face = "bold", vjust = 0, hjust = 0, family = "Arial", color = "black")), 
+  p2C + ggplot2::labs(tag = "C") + ggplot2::theme(plot.tag.position = c(0, 0.92), plot.tag = ggplot2::element_text(size = 14, face = "bold", vjust = 0, hjust = 0, family = "Arial", color = "black")), 
+  p2D + ggplot2::labs(tag = "D") + ggplot2::theme(plot.tag.position = c(0, 0.92), plot.tag = ggplot2::element_text(size = 14, face = "bold", vjust = 0, hjust = 0, family = "Arial", color = "black")),
   blank_plot, blank_plot,
   design = "
     AB
     CD
     EF
-  ", # Top 40% heatmaps (A), Middle 20% PLSDAs (C,D), Bottom 40% blank plots (E,F)
-  heights = c(2, 2, 2) # Equal height for all three rows
+  ", # Top row: PLS-DA nosev (A), volcano nosev (B); Second row: PLS-DA modsev (C), volcano modsev (D); Bottom row: blank space (E,F)
+  heights = c(2, 2, 3), # Larger blank space to push plots up
+  widths = c(4, 5) # PLS-DA plots 40% (2/5), volcano plots 60% (3/5)
 ) +
   patchwork::plot_annotation(
     title = "Figure 2\n",

@@ -85,6 +85,9 @@ plot_PCA <- function(pca_results, plot_title = "",
       x = paste0(comp_label, comp_x, " (", explained[1], "%)"),
       y = paste0(comp_label, comp_y, " (", explained[2], "%)")
     ) +
+    # Force complete frame by duplicating axes
+    ggplot2::scale_x_continuous(sec.axis = ggplot2::dup_axis(name = NULL, labels = NULL)) +
+    ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL, labels = NULL)) +
     ggplot2::theme_minimal(base_family = "Arial") +
     ggplot2::theme(
       # Square aspect ratio and margins (from your original)
@@ -96,26 +99,40 @@ plot_PCA <- function(pca_results, plot_title = "",
       legend.direction = "horizontal",
       legend.box = "horizontal",
       legend.box.margin = ggplot2::margin(0, 0, 0, 0),
-      legend.margin = ggplot2::margin(t = 0, r = 0, b = -3, l = 0),
+      legend.margin = ggplot2::margin(t = 0, r = 0, b = -10, l = 0),  # Increased negative bottom margin to pull legend closer
       legend.key.width = grid::unit(0.35, "cm"),
       legend.key.height = grid::unit(0.35, "cm"),
       legend.key.size = grid::unit(0.35, "cm"),
       legend.spacing.x = grid::unit(0, "cm"),
       legend.text.align = -10,
-      legend.text = ggplot2::element_text(size = 8, face = "plain"),
+      legend.text = ggplot2::element_text(size = 7, face = "bold"),
       legend.title = ggplot2::element_blank(),
       
       # Axis styling (matching volcano plot exactly)
       axis.title = ggplot2::element_text(size = 12.5, face = "bold", color = "black"),
-      axis.title.x = ggplot2::element_text(size = 12.5, face = "bold", color = "black"),
-      axis.title.y = ggplot2::element_text(size = 12.5, face = "bold", color = "black", margin = ggplot2::margin(r = 0), hjust = 0.5),
+      axis.title.x = ggplot2::element_text(size = 12.5, face = "bold", color = "black", margin = ggplot2::margin(t = 2)),
+      axis.title.y = ggplot2::element_text(size = 12.5, face = "bold", color = "black", margin = ggplot2::margin(r = 2), hjust = 0.5),
       axis.text = ggplot2::element_text(size = 11, face = "bold", color = "black"),
       
-      # Panel styling (your original that you liked!)
-      panel.grid.major = ggplot2::element_line(color = "gray80", linewidth = 0.8, linetype = "solid"),
+      # Panel styling - complete frame using axis lines (matches volcano exactly)
+      panel.grid.major = ggplot2::element_line(color = "gray80", linewidth = 0.3, linetype = "solid"),
       panel.grid.minor = ggplot2::element_blank(),
-      panel.border = ggplot2::element_rect(color = "black", fill = NA, linewidth = 3.2),
+      panel.border = ggplot2::element_blank(),  # Remove panel border
       panel.background = ggplot2::element_blank(),
+      
+      # Create complete frame using axis lines (all four sides)
+      axis.line = ggplot2::element_line(color = "black", linewidth = 0.6),
+      axis.line.x.bottom = ggplot2::element_line(color = "black", linewidth = 0.6),
+      axis.line.x.top = ggplot2::element_line(color = "black", linewidth = 0.6),
+      axis.line.y.left = ggplot2::element_line(color = "black", linewidth = 0.6),
+      axis.line.y.right = ggplot2::element_line(color = "black", linewidth = 0.6),
+      # Ticks only on bottom and left (primary axes)
+      axis.ticks.x.bottom = ggplot2::element_line(color = "black", linewidth = 0.6),
+      axis.ticks.y.left = ggplot2::element_line(color = "black", linewidth = 0.6),
+      axis.ticks.length = ggplot2::unit(0.15, "cm"),
+      # No ticks on top and right (secondary axes)
+      axis.ticks.x.top = ggplot2::element_blank(),
+      axis.ticks.y.right = ggplot2::element_blank(),
       
       # Title styling
       plot.title = ggplot2::element_text(size = 14, face = "bold", hjust = 0.5, color = "black")

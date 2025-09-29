@@ -9,7 +9,7 @@
 #' @param auto_open Whether to automatically open in Preview on first run (default: TRUE)
 #' @return Invisible path to the created PNG file
 #' @export
-print_to_png <- function(plot, filename, width = 8.5, height = 11, dpi = 300,
+print_to_png <- function(plot, filename, width = 8.5, height = 11, dpi = 600,
                          output_dir = NULL, auto_open = TRUE) {
   
   # Use config path if output_dir not specified
