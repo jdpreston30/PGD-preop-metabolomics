@@ -1,26 +1,24 @@
-#' Create heatmap with optional feature selection (ANOVA / variance / MAD)
-#' and configurable annotation. Returns plot object for patchwork.
+#' Run heatmap analysis with optional feature selection
 #'
-#' @param data                 Data frame with Patient_ID, annotation variable, and feature columns
-#' @param group_var            Character string specifying the column name to use for grouping/annotation
-#' @param patient_var          Character string specifying the Patient ID column name (default: "Patient_ID")
-#' @param group_colors         Named color vector for the grouping variable (names = levels)
-#' @param top_features         NULL (default: show all features). If numeric >0, keep top N by `feature_selector`.
-#' @param feature_selector     One of c("none","anova","ttest","variance","mad"). Default "none".
-#' @param group_levels         Factor order for the grouping variable (optional)
-#' @return List with plot object, M, Mz, hc_cols, ann_col, ann_colors, etc.
+#' @param data Data frame with Patient_ID, annotation variable, and feature columns
+#' @param group_var Character string specifying the column name to use for grouping/annotation
+#' @param patient_var Character string specifying the Patient ID column name (default: "Patient_ID")
+#' @param top_features NULL (default: show all features). If numeric >0, keep top N by `feature_selector`.
+#' @param feature_selector One of c("none","anova","ttest","variance","mad"). Default "none".
+#' @param group_levels Factor order for the grouping variable (optional)
+#' @return List with processed matrices, clustering results, and annotation data
 #' @export
-make_heatmap <- function(
+run_heatmap <- function(
     data,
     group_var,
     patient_var = "Patient_ID",
-    group_colors = c("Severe PGD" = "#D8919A", "No PGD" = "#87A6C7", "Mild/Moderate PGD" = "#9CAF88"),
     top_features = NULL,
     feature_selector = c("none", "anova", "ttest", "variance", "mad"),
     group_levels = NULL) {
+  
   feature_selector <- match.arg(feature_selector)
 
-  #  Checks 
+  # ---- Checks ----
   if (!group_var %in% names(data)) {
     stop(paste("Group variable", group_var, "not found in data"))
   }
@@ -128,57 +126,18 @@ make_heatmap <- function(
   # Reorder rows of ann_col to match M's columns
   ann_col <- ann_col[colnames(M), , drop = FALSE]
 
-  #  Annotation color lists 
-  ann_colors <- list()
-
-  # Add grouping variable colors
-  ann_colors[[group_var]] <- group_colors
-
-  #  Heatmap (for screen) 
-  heatmap_plot <- pheatmap::pheatmap(
-    M,
-    scale = "row",
-    color = colorRampPalette(rev(RColorBrewer::brewer.pal(11, "RdBu")))(255),
-    clustering_distance_rows = "euclidean",
-    clustering_distance_cols = "euclidean",
-    clustering_method = "complete",
-    annotation_col = ann_col,
-    annotation_colors = ann_colors,
-    show_rownames = FALSE,
-    show_colnames = FALSE,
-    fontsize = 10,
-    na_col = "#DDDDDD",
-    legend_labels = "Z-Score"
-  )
-
-  # Create heatmap plot object for patchwork
-  heatmap_plot <- pheatmap::pheatmap(
-    M,
-    scale = "row",
-    color = colorRampPalette(rev(RColorBrewer::brewer.pal(11, "RdBu")))(255),
-    clustering_distance_rows = "euclidean",
-    clustering_distance_cols = "euclidean",
-    clustering_method = "complete",
-    annotation_col = ann_col,
-    annotation_colors = ann_colors,
-    show_rownames = FALSE,
-    show_colnames = FALSE,
-    fontsize = 8,
-    na_col = "#DDDDDD",
-    silent = TRUE, # Prevents auto-display
-    legend_labels = "Z-Score"
-  )
-
+  # Return analysis results
   list(
     M = M,
     Mz = Mz,
     hc_cols = hc_cols,
     sample_ids = sample_ids,
     group = group,
+    group_var = group_var,
+    patient_var = patient_var,
     feature_selector = feature_selector,
     top_features = top_features,
     ann_col = ann_col,
-    ann_colors = ann_colors,
-    heatmap_plot = heatmap_plot # Plot object for patchwork
+    original_data = dat
   )
 }

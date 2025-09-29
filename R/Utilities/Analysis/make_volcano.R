@@ -1,59 +1,114 @@
-#' Create volcano plot with automatic t-tests on feature table
-#'
-#' @param data Data frame with patient IDs, grouping variable, and feature columns
-#' @param group_var Character string specifying the column name to use for grouping
-#' @param patient_var Character string specifying the Patient ID column name (default: "Patient")
-#' @param group_levels Optional vector specifying factor levels for grouping (must be exactly 2 levels)
-#' @param fc_threshold Fold change threshold for significance (default: log2(1.5) = 0.585)
-#' @param p_threshold P-value threshold for significance (default: 0.05)
-#' @param up_color Color for upregulated features (default: "#800017")
-#' @param down_color Color for downregulated features (default: "#113d6a")
-#' @param x_limits Optional vector of length 2 specifying x-axis limits c(min, max). If NULL, auto-scales.
-#' @param y_limits Optional vector of length 2 specifying y-axis limits c(min, max). If NULL, auto-scales.
-#' @return List containing volcano_data and volcano_plot
-#' @import ggplot2 scales
-#' @export
-make_volcano <- function(data, 
-                        group_var, 
-                        patient_var = "Patient",
-                        group_levels = NULL,
-                        fc_threshold = log2(1.5),
-                        p_threshold = 0.05,
-                        up_color = "#800017",
-                        down_color = "#113d6a",
-                        x_limits = NULL,
-                        y_limits = NULL) {
-  
-  #  Data preparation 
-  if (!group_var %in% names(data)) {
-    stop(paste("Group variable", group_var, "not found in data"))
-  }
-  if (!patient_var %in% names(data)) {
-    stop(paste("Patient variable", patient_var, "not found in data"))
-  }
-  
-  dat <- as.data.frame(data)
-  
-  # Set up grouping variable
-  if (!is.null(group_levels)) {
-    dat[[group_var]] <- factor(dat[[group_var]], levels = group_levels)
-  } else {
-    dat[[group_var]] <- factor(dat[[group_var]])
-  }
-  
-  # Check for exactly 2 groups
-  n_groups <- length(levels(dat[[group_var]]))
-  if (n_groups != 2) {
-    stop(paste("Volcano plot requires exactly 2 groups, but found", n_groups, "groups"))
-  }
-  
-  # Identify numeric columns (exclude patient and grouping variables)
-  factor_cols <- sapply(dat, is.factor)
-  cols_to_exclude <- c(patient_var, group_var)
-  other_factor_cols <- names(factor_cols)[factor_cols & !names(factor_cols) %in% cols_to_exclude]
-  drop_cols <- c(cols_to_exclude, other_factor_cols)
-  numeric_cols <- !names(dat) %in% drop_cols
-  
+#' Create volcano plot with automatic t-tests on feature table (wrapper function)#' Create volcano plot with automatic t-tests on feature table
+
+#'#'
+
+#' This function maintains backward compatibility while using the new modular approach.#' @param data Data frame with patient IDs, grouping variable, and feature columns
+
+#' For more control, use run_volcano() followed by plot_volcano() directly.#' @param group_var Character string specifying the column name to use for grouping
+
+#'#' @param patient_var Character string specifying the Patient ID column name (default: "Patient")
+
+#' @param data Data frame with patient IDs, grouping variable, and feature columns#' @param group_levels Optional vector specifying factor levels for grouping (must be exactly 2 levels)
+
+#' @param group_var Character string specifying the column name to use for grouping#' @param fc_threshold Fold change threshold for significance (default: log2(1.5) = 0.585)
+
+#' @param patient_var Character string specifying the Patient ID column name (default: "Patient")#' @param p_threshold P-value threshold for significance (default: 0.05)
+
+#' @param group_levels Optional vector specifying factor levels for grouping (must be exactly 2 levels)#' @param up_color Color for upregulated features (default: "#800017")
+
+#' @param fc_threshold Fold change threshold for significance (default: log2(1.5) = 0.585)#' @param down_color Color for downregulated features (default: "#113d6a")
+
+#' @param p_threshold P-value threshold for significance (default: 0.05)#' @param x_limits Optional vector of length 2 specifying x-axis limits c(min, max). If NULL, auto-scales.
+
+#' @param up_color Color for upregulated features (default: "#800017")#' @param y_limits Optional vector of length 2 specifying y-axis limits c(min, max). If NULL, auto-scales.
+
+#' @param down_color Color for downregulated features (default: "#113d6a")#' @return List containing volcano_data and volcano_plot
+
+#' @param x_limits Optional vector of length 2 specifying x-axis limits c(min, max). If NULL, auto-scales.#' @import ggplot2 scales
+
+#' @param y_limits Optional vector of length 2 specifying y-axis limits c(min, max). If NULL, auto-scales.#' @export
+
+#' @return List containing volcano_data and volcano_plotmake_volcano <- function(data, 
+
+#' @import ggplot2 scales                        group_var, 
+
+#' @export                        patient_var = "Patient",
+
+make_volcano <- function(data,                         group_levels = NULL,
+
+                        group_var,                         fc_threshold = log2(1.5),
+
+                        patient_var = "Patient",                        p_threshold = 0.05,
+
+                        group_levels = NULL,                        up_color = "#800017",
+
+                        fc_threshold = log2(1.5),                        down_color = "#113d6a",
+
+                        p_threshold = 0.05,                        x_limits = NULL,
+
+                        up_color = "#800017",                        y_limits = NULL) {
+
+                        down_color = "#113d6a",  
+
+                        x_limits = NULL,  #  Data preparation 
+
+                        y_limits = NULL) {  if (!group_var %in% names(data)) {
+
+      stop(paste("Group variable", group_var, "not found in data"))
+
+  # Run volcano analysis  }
+
+  volcano_data <- run_volcano(  if (!patient_var %in% names(data)) {
+
+    data = data,    stop(paste("Patient variable", patient_var, "not found in data"))
+
+    group_var = group_var,  }
+
+    patient_var = patient_var,  
+
+    group_levels = group_levels,  dat <- as.data.frame(data)
+
+    fc_threshold = fc_threshold,  
+
+    p_threshold = p_threshold  # Set up grouping variable
+
+  )  if (!is.null(group_levels)) {
+
+      dat[[group_var]] <- factor(dat[[group_var]], levels = group_levels)
+
+  # Create volcano plot  } else {
+
+  volcano_plot <- plot_volcano(    dat[[group_var]] <- factor(dat[[group_var]])
+
+    volcano_data = volcano_data,  }
+
+    fc_threshold = fc_threshold,  
+
+    p_threshold = p_threshold,  # Check for exactly 2 groups
+
+    up_color = up_color,  n_groups <- length(levels(dat[[group_var]]))
+
+    down_color = down_color,  if (n_groups != 2) {
+
+    x_limits = x_limits,    stop(paste("Volcano plot requires exactly 2 groups, but found", n_groups, "groups"))
+
+    y_limits = y_limits  }
+
+  )  
+
+    # Identify numeric columns (exclude patient and grouping variables)
+
+  # Return in original format for backward compatibility  factor_cols <- sapply(dat, is.factor)
+
+  return(list(  cols_to_exclude <- c(patient_var, group_var)
+
+    volcano_data = volcano_data,  other_factor_cols <- names(factor_cols)[factor_cols & !names(factor_cols) %in% cols_to_exclude]
+
+    volcano_plot = volcano_plot  drop_cols <- c(cols_to_exclude, other_factor_cols)
+
+  ))  numeric_cols <- !names(dat) %in% drop_cols
+
+}  
   if (sum(numeric_cols) == 0) {
     stop("No numeric columns found for t-tests")
   }
@@ -117,10 +172,10 @@ make_volcano <- function(data,
   volcano_data$Legend <- "Not Significant"
   
   # Determine legend labels based on comparison type
-  if ("Mild/Moderate PGD" %in% group_names && "Severe PGD" %in% group_names) {
-    # Mild/Moderate PGD vs Severe PGD comparison: both are "Up in" labels
+  if ("Mild/Mod. PGD" %in% group_names && "Severe PGD" %in% group_names) {
+    # Mild/Mod. PGD vs Severe PGD comparison: both are "Up in" labels
     up_label <- "Up in Severe PGD"
-    down_label <- "Up in Mild/Moderate PGD"
+    down_label <- "Up in Mild/Mod. PGD"
   } else {
     # Other comparisons (e.g., No PGD vs Severe): traditional up/down
     up_label <- "Up in Severe PGD"
@@ -270,8 +325,29 @@ make_volcano <- function(data,
       override.aes = list(shape = 16, size = 0.75) # legend dots 1.5x larger than plot dots
     ))
 
+  
+  # Run the analysis using the modular function
+  volcano_results <- run_volcano(
+    data = data,
+    group_var = group_var,
+    patient_var = patient_var,
+    group_levels = group_levels,
+    fc_threshold = fc_threshold,
+    p_threshold = p_threshold
+  )
+  
+  # Create the plot using the modular function
+  volcano_plot <- plot_volcano(
+    volcano_results = volcano_results,
+    up_color = up_color,
+    down_color = down_color,
+    x_limits = x_limits,
+    y_limits = y_limits
+  )
+  
+  # Return results in the same format as the original function for backward compatibility
   list(
-    volcano_data = volcano_data,
+    volcano_data = volcano_results$volcano_data,
     volcano_plot = volcano_plot
   )
 }
