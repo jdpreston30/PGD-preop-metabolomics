@@ -24,7 +24,7 @@ make_volcano <- function(data,
                         x_limits = NULL,
                         y_limits = NULL) {
   
-  # ---- Data preparation ----
+  #  Data preparation 
   if (!group_var %in% names(data)) {
     stop(paste("Group variable", group_var, "not found in data"))
   }
@@ -64,7 +64,7 @@ make_volcano <- function(data,
   message("Performing t-tests on ", ncol(feature_data), " features between ", 
           paste(levels(group), collapse = " vs "))
   
-  # ---- Perform t-tests ----
+  #  Perform t-tests 
   ttest_results <- data.frame(
     feature = colnames(feature_data),
     p_value = NA,
@@ -109,7 +109,7 @@ make_volcano <- function(data,
   # Remove failed tests
   ttest_results <- ttest_results[!is.na(ttest_results$p_value), ]
   
-  # ---- Create volcano data ----
+  #  Create volcano data 
   volcano_data <- ttest_results
   volcano_data$neg_log10_p <- -log10(volcano_data$p_value)
   
@@ -133,7 +133,7 @@ make_volcano <- function(data,
   volcano_data$Legend <- factor(volcano_data$Legend, 
                                levels = c("Not Significant", up_label, down_label))
   
-  # ---- Handle axis limits and warnings ----
+  #  Handle axis limits and warnings 
   # X-axis limits
   if (!is.null(x_limits)) {
     if (length(x_limits) != 2) {
@@ -171,7 +171,7 @@ make_volcano <- function(data,
     y_range <- c(-0.25, max(volcano_data$neg_log10_p, na.rm = TRUE) * 1.1)
   }
   
-  # ---- Create plot ----
+  #  Create plot 
   volcano_plot <- ggplot2::ggplot(
     volcano_data,
     ggplot2::aes(x = log2_fc, y = neg_log10_p, color = Legend)

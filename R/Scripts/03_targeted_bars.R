@@ -1,6 +1,6 @@
 
-#* 2: Metabolomic Features vs PGD Analysis ----
-#+ 2.1: T-tests for all metabolomic features against PGD status ----
+#* 2: Metabolomic Features vs PGD Analysis 
+#+ 2.1: T-tests for all metabolomic features against PGD status 
 cat("\n=== METABOLOMIC FEATURES vs PGD ANALYSIS ===\n")
 
 # Get metabolomic feature columns (exclude Patient and PGD)

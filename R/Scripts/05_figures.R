@@ -1,24 +1,24 @@
 #* 5: Figure Creation
-#+ 5.0: Assign figures----
-#- 5.0.1: Figure 1 ----
+#+ 5.0: Assign figures
+#- 5.0.1: Figure 1 
 fig1 <- grid::rasterGrob(as.raster(magick::image_read("Figures/Raw/fig1.png")), interpolate = TRUE)
-#- 5.0.2: Figure 2 ----
+#- 5.0.2: Figure 2 
 plsda_2A <- plsda_nosev$plot
 plsda_2B <- plsda_modsev$plot
 volc_2C <- volcano_nosev$volcano_plot
 volc_2D <- volcano_modsev$volcano_plot
-#- 5.0.3: Figure 3 ----
+#- 5.0.3: Figure 3 
 # pathway_enrichment_3A <- pathway_enrichment
 # network_3B <- network_nosev
 # network_3C <- network_modsev
-#- 5.0.4: Figure 4 ----
+#- 5.0.4: Figure 4 
 # 4A <- pls_bar_nosev
 # 4B <- superclasses_nosev
 # 4C <- classes_nosev
 # 4D <- pls_bar_modsev
 # 4E <- superclasses_modsev
 # 4F <- classes_modsev
-#+ 5.1: Figure 1----
+#+ 5.1: Figure 1
 Figure_1 <- patchwork::wrap_plots(
   ggplot2::ggplot() +
     ggplot2::annotation_custom(fig1, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) +
@@ -39,7 +39,7 @@ Figure_1 <- patchwork::wrap_plots(
       plot.margin = grid::unit(c(0.3, 0.5, 0.3, 0.5), "in")
     )
   )
-#+ 5.2: Figure 2 ----
+#+ 5.2: Figure 2 
 Figure_2 <- patchwork::wrap_plots(
   plsda_2A + ggplot2::labs(tag = "A") + ggplot2::theme(plot.tag.position = c(0, 0.98), plot.tag = ggplot2::element_text(size = 14, face = "bold", vjust = 0, hjust = 0, family = "Arial", color = "black")), 
   plsda_2B + ggplot2::labs(tag = "B") + ggplot2::theme(plot.tag.position = c(0, 0.98), plot.tag = ggplot2::element_text(size = 14, face = "bold", vjust = 0, hjust = 0, family = "Arial", color = "black")), 

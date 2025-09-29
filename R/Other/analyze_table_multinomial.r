@@ -2,7 +2,7 @@ analyze_table_multinomial <- function(data, multinomial_vars) {
       # Filter only multinomial variables that exist in the dataset
       multinomial_vars <- multinomial_vars[multinomial_vars %in% colnames(data)]
 
-      # ---- Process Multinomial Variables ----
+      #  Process Multinomial Variables 
       multinomial_results <- map_dfr(multinomial_vars, function(var) {
         if (!var %in% colnames(data)) {
           return(NULL)
