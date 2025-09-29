@@ -43,7 +43,7 @@ clinical_metadata <- clinical_metadata_i %>%
     postop_PGD_grade_ISHLT == "Severe", "Y", "N", missing = "N"
   )) %>%
   mutate(PGD_grade_tier = case_when(
-    postop_PGD_grade_ISHLT %in% c("Moderate", "Mild") ~ "Mild/Moderate PGD",
+    postop_PGD_grade_ISHLT %in% c("Moderate", "Mild") ~ "Mild/Mod. PGD",
     postop_PGD_grade_ISHLT == "Severe" ~ "Severe PGD",
     postop_PGD_grade_ISHLT == "N" ~ "No PGD",
     TRUE ~ NA_character_
