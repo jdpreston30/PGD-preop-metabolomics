@@ -25,7 +25,7 @@ T3 <- c("operative_IT_minutes", "operative_CPB_minutes", "postop_LVEF_median", "
         "survival", "survival_days")
 #+ 0d.1: Import Clinical metadata ----
 #- 0d.1.1: Clinical Data ----
-preop_i <- read_xlsx(config$paths$clinical_metadata, sheet = "Preop", na = c("", "NA", "-")) %>%
+preop_i <- suppressWarnings(read_xlsx(config$paths$clinical_metadata, sheet = "Preop", na = c("", "NA", "-"))) %>%
   filter(Patient %in% analyzed_patients)
 periop_i <- read_xlsx(config$paths$clinical_metadata, sheet = "Periop", na = c("", "NA", "-")) %>%
   filter(Patient %in% analyzed_patients)

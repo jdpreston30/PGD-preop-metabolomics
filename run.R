@@ -11,7 +11,11 @@ source("R/Scripts/00b_setup.R")}
 source("R/Scripts/00d_FTs.R")}
 #+ Analysis----
 source("R/Scripts/01_clustering.R")
+# source("R/Scripts/02_pathway_enrich.R")
+# source("R/Scripts/03_targeted_bars.R")
+# source("R/Scripts/04_tables.R")
 #+ Visualization----
+# source("R/Scripts/05_figures.R")
 
 
 

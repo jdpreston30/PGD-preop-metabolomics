@@ -230,7 +230,7 @@ make_volcano <- function(data,
       plot.margin = grid::unit(c(2, 8, 8, 8), "pt"),
       
       # Legend styling - top left corner
-      legend.position = c(0.02, 0.98),  # Top left corner
+      legend.position.inside = c(0.02, 0.98),  # Updated from legend.position for ggplot2 3.5.0+
       legend.justification = c(0, 1),   # Anchor at top left of legend box
       legend.direction = "vertical",
       legend.box = "vertical", 
