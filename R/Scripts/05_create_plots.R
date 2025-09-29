@@ -11,13 +11,13 @@ plsda_modsev <- plot_PCA(
 )
 volc_nosev <- plot_volcano(
   volcano_results = volcano_nosev_data,
-  x_limits = c(-6, 6),
-  y_limits = c(0, 5)
+  x_limits = c(-6, 6.235),
+  y_limits = c(0, 5.1)
 )
 volc_modsev <- plot_volcano(
   volcano_results = volcano_modsev_data,
-  x_limits = c(-6, 6),
-  y_limits = c(0, 5),
+  x_limits = c(-6, 6.235),
+  y_limits = c(0, 5.1),
   down_color = "#4A5D23"  # Use green color matching Mild/Mod PGD in PCA plots
 )
 #+ 5.2: Assign plots for figure assembly

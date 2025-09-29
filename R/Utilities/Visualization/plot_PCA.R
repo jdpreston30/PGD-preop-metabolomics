@@ -13,7 +13,7 @@
 plot_PCA <- function(pca_results, plot_title = "",
                      ellipse_colors = c("Severe PGD" = "#D8919A", "No PGD" = "#87A6C7", "Mild/Mod. PGD" = "#9CAF88"),
                      point_colors = c("Severe PGD" = "#800017", "No PGD" = "#113d6a", "Mild/Mod. PGD" = "#4A5D23"),
-                     point_size = 2, show_patient_labels = FALSE, label_size = 3, show_legend = TRUE) {
+                     point_size = 1.5, show_patient_labels = FALSE, label_size = 3, show_legend = TRUE) {
   
   # Extract data from results
   scores_df <- pca_results$scores_df
@@ -86,13 +86,13 @@ plot_PCA <- function(pca_results, plot_title = "",
       y = paste0(comp_label, comp_y, " (", explained[2], "%)")
     ) +
     # Force complete frame by duplicating axes
-    ggplot2::scale_x_continuous(sec.axis = ggplot2::dup_axis(name = NULL, labels = NULL)) +
-    ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL, labels = NULL)) +
+  ggplot2::scale_x_continuous(sec.axis = ggplot2::dup_axis(name = NULL, labels = NULL), expand = expansion(mult = 0.02)) +
+  ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL, labels = NULL), expand = expansion(mult = 0.02)) +
     ggplot2::theme_minimal(base_family = "Arial") +
     ggplot2::theme(
       # Square aspect ratio and margins (from your original)
-      aspect.ratio = 1,
-      plot.margin = grid::unit(c(2, 8, 8, 8), "pt"),
+  aspect.ratio = 1,
+  plot.margin = grid::unit(c(0, 0, 0, 0), "pt"),
       
       # Legend styling - conditional based on show_legend parameter (your original style)
       legend.position = if (show_legend) "top" else "none",
@@ -108,31 +108,19 @@ plot_PCA <- function(pca_results, plot_title = "",
       legend.text = ggplot2::element_text(size = 7, face = "bold"),
       legend.title = ggplot2::element_blank(),
       
-      # Axis styling (matching volcano plot exactly)
-      axis.title = ggplot2::element_text(size = 12.5, face = "bold", color = "black"),
-      axis.title.x = ggplot2::element_text(size = 12.5, face = "bold", color = "black", margin = ggplot2::margin(t = 2)),
-      axis.title.y = ggplot2::element_text(size = 12.5, face = "bold", color = "black", margin = ggplot2::margin(r = 2), hjust = 0.5),
-      axis.text = ggplot2::element_text(size = 11, face = "bold", color = "black"),
-      
-      # Panel styling - complete frame using axis lines (matches volcano exactly)
-      panel.grid.major = ggplot2::element_line(color = "gray80", linewidth = 0.3, linetype = "solid"),
+      # Remove axis titles and text
+      axis.title = ggplot2::element_blank(),
+      axis.title.x = ggplot2::element_blank(),
+      axis.title.y = ggplot2::element_blank(),
+      axis.text = ggplot2::element_blank(),
+
+      # Panel styling - use panel.border for frame
+      panel.grid.major = ggplot2::element_line(color = "gray80", linewidth = 0.1, linetype = "solid"),
       panel.grid.minor = ggplot2::element_blank(),
-      panel.border = ggplot2::element_blank(),  # Remove panel border
+      panel.border = ggplot2::element_rect(color = "black", fill = NA, linewidth = 0.6),
       panel.background = ggplot2::element_blank(),
-      
-      # Create complete frame using axis lines (all four sides)
-      axis.line = ggplot2::element_line(color = "black", linewidth = 0.6),
-      axis.line.x.bottom = ggplot2::element_line(color = "black", linewidth = 0.6),
-      axis.line.x.top = ggplot2::element_line(color = "black", linewidth = 0.6),
-      axis.line.y.left = ggplot2::element_line(color = "black", linewidth = 0.6),
-      axis.line.y.right = ggplot2::element_line(color = "black", linewidth = 0.6),
-      # Ticks only on bottom and left (primary axes)
-      axis.ticks.x.bottom = ggplot2::element_line(color = "black", linewidth = 0.6),
-      axis.ticks.y.left = ggplot2::element_line(color = "black", linewidth = 0.6),
-      axis.ticks.length = ggplot2::unit(0.15, "cm"),
-      # No ticks on top and right (secondary axes)
-      axis.ticks.x.top = ggplot2::element_blank(),
-      axis.ticks.y.right = ggplot2::element_blank(),
+      axis.line = ggplot2::element_blank(),
+      axis.ticks = ggplot2::element_blank(),
       
       # Title styling
       plot.title = ggplot2::element_text(size = 14, face = "bold", hjust = 0.5, color = "black")
