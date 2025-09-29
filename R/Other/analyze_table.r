@@ -6,7 +6,7 @@ analyze_table <- function(data, cont_vars, dichotomous_vars, dichotomous_nominal
       dichotomous_nominal_vars <- dichotomous_nominal_vars[dichotomous_nominal_vars %in% colnames(data)]
       ordinal_vars <- ordinal_vars[ordinal_vars %in% colnames(data)]
 
-      # ---- Continuous Variables ----
+      #  Continuous Variables 
       continuous_results <- map_dfr(cont_vars, function(var) {
         group_stats <- data %>%
           group_by(postop_PGD) %>%
@@ -33,7 +33,7 @@ analyze_table <- function(data, cont_vars, dichotomous_vars, dichotomous_nominal
         )
       })
 
-      # ---- Ordinal Variables ----
+      #  Ordinal Variables 
       ordinal_results <- map_dfr(ordinal_vars, function(var) {
         group_stats <- data %>%
           group_by(postop_PGD) %>%
@@ -77,7 +77,7 @@ analyze_table <- function(data, cont_vars, dichotomous_vars, dichotomous_nominal
         )
       })
 
-      # ---- Dichotomous Variables ----
+      #  Dichotomous Variables 
       dichotomous_results <- map_dfr(dichotomous_vars, function(var) {
         table_counts <- data %>%
           group_by(postop_PGD, !!sym(var)) %>%

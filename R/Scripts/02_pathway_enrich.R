@@ -1,5 +1,5 @@
 #* 2: Pathway Enrichment Analysis
-#+ 2.1: Run Mummichog Ttest function ----
+#+ 2.1: Run Mummichog Ttest function 
 UFT_severe<- UFT %>%
   left_join(clinical_metadata %>%
     select(Patient, severe_PGD), by = "Patient") %>%

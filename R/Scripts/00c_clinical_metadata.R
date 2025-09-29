@@ -11,8 +11,8 @@ table_vars <- config$analysis$cohort$table_variables
 T1 <- table_vars$T1
 T2 <- table_vars$T2
 T3 <- table_vars$T3
-#+ 0d.1: Import Clinical metadata ----
-#- 0d.1.1: Clinical Data ----
+#+ 0d.1: Import Clinical metadata 
+#- 0d.1.1: Clinical Data 
 preop_i <- read_clinical_sheet("Preop", analyzed_patients, suppress_warnings = TRUE)
 periop_i <- read_clinical_sheet("Periop", analyzed_patients)
 outcomes_i <- read_clinical_sheet("Outcomes", analyzed_patients)
@@ -48,14 +48,14 @@ clinical_metadata <- clinical_metadata_i %>%
     postop_PGD_grade_ISHLT == "N" ~ "No PGD",
     TRUE ~ NA_character_
   ))
-#+ 0d.4: Break into components for the final tables ----
+#+ 0d.4: Break into components for the final tables 
 T1_data <- clinical_metadata %>%
   select(Patient, severe_PGD, all_of(T1))
 T2_data <- clinical_metadata %>%
   select(Patient, severe_PGD, all_of(T2))
 T3_data <- clinical_metadata %>%
   select(Patient, severe_PGD, all_of(T3))
-#+ 0d.5: Store PGD specifics for later joining ----
+#+ 0d.5: Store PGD specifics for later joining 
 PGD_specifics <- clinical_metadata %>%
   select(
     Patient, postop_PGD_grade_ISHLT, severe_PGD, 

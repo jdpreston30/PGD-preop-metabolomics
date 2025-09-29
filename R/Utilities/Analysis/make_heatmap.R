@@ -20,7 +20,7 @@ make_heatmap <- function(
     group_levels = NULL) {
   feature_selector <- match.arg(feature_selector)
 
-  # ---- Checks ----
+  #  Checks 
   if (!group_var %in% names(data)) {
     stop(paste("Group variable", group_var, "not found in data"))
   }
@@ -63,7 +63,7 @@ make_heatmap <- function(
   # Group factor for ANOVA ranking
   group <- dat[[group_var]]
 
-  # ---- Optional feature ranking/selection ----
+  #  Optional feature ranking/selection 
   if (!is.null(top_features) && is.numeric(top_features) && top_features > 0 &&
     feature_selector != "none") {
     top_n <- min(top_features, ncol(X))
@@ -114,13 +114,13 @@ make_heatmap <- function(
   # Heatmap matrix: features x samples
   M <- t(X)
 
-  # ---- Sample clustering for dendrogram only ----
+  #  Sample clustering for dendrogram only 
   Mz <- t(scale(t(M), center = TRUE, scale = TRUE))
   Mz[is.na(Mz)] <- 0
   d_cols <- dist(t(Mz), method = "euclidean")
   hc_cols <- hclust(d_cols, method = "complete")
 
-  # ---- Column annotation (aligned to columns of M) ----
+  #  Column annotation (aligned to columns of M) 
   # Simple annotation with just the grouping variable
   ann_col <- data.frame(row.names = sample_ids)
   ann_col[[group_var]] <- dat[[group_var]]
@@ -128,13 +128,13 @@ make_heatmap <- function(
   # Reorder rows of ann_col to match M's columns
   ann_col <- ann_col[colnames(M), , drop = FALSE]
 
-  # ---- Annotation color lists ----
+  #  Annotation color lists 
   ann_colors <- list()
 
   # Add grouping variable colors
   ann_colors[[group_var]] <- group_colors
 
-  # ---- Heatmap (for screen) ----
+  #  Heatmap (for screen) 
   heatmap_plot <- pheatmap::pheatmap(
     M,
     scale = "row",

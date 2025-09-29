@@ -1,10 +1,10 @@
 #* 4: Create Tables
 #+ 4.0: Examine Normality
-#- 4.0.1: Create Temporary binded version to test ----
+#- 4.0.1: Create Temporary binded version to test 
 normality_test_data <- T1_data %>%
   left_join(T2_data, by = "Patient") %>%
   left_join(T3_data, by = "Patient")
-#- 4.0.2: Test normality with TernTablesR ----
+#- 4.0.2: Test normality with TernTablesR 
 normality_test <- ternG(
       data = normality_test_data,
       vars = NULL,
@@ -28,7 +28,7 @@ normality_test <- ternG(
       )
     ) %>%
   arrange(Normality_Status)
-#+ 4.1: Table 1 (Recipient Preoperative Characteristics) ----
+#+ 4.1: Table 1 (Recipient Preoperative Characteristics) 
 T1 <- ternG(
   data = T1_data,
   exclude_vars = "Patient",
@@ -39,7 +39,7 @@ T1 <- ternG(
   consider_normality = TRUE,
   print_normality = TRUE
 )
-#+ 4.2: Table 2 (Donor Characteristics) ----
+#+ 4.2: Table 2 (Donor Characteristics) 
 T2 <- ternG(
   data = T2_data,
   vars = NULL,
@@ -51,7 +51,7 @@ T2 <- ternG(
   consider_normality = TRUE,
   print_normality = TRUE
 )
-#+ 4.3: Table 3 (Table 3. Procurement/Surgical Factors and Perioperative/Post-Transplant Outcomes) ----
+#+ 4.3: Table 3 (Table 3. Procurement/Surgical Factors and Perioperative/Post-Transplant Outcomes) 
 T3 <- ternG(
   data = T3_data,
   vars = NULL,
