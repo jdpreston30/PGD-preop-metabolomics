@@ -117,10 +117,10 @@ make_volcano <- function(data,
   volcano_data$Legend <- "Not Significant"
   
   # Determine legend labels based on comparison type
-  if ("Non-Severe" %in% group_names && "Severe" %in% group_names) {
-    # Non-Severe vs Severe comparison: both are "Up in" labels
+  if ("Mild/Moderate PGD" %in% group_names && "Severe PGD" %in% group_names) {
+    # Mild/Moderate PGD vs Severe PGD comparison: both are "Up in" labels
     up_label <- "Up in Severe PGD"
-    down_label <- "Up in Non-Severe PGD"
+    down_label <- "Up in Mild/Moderate PGD"
   } else {
     # Other comparisons (e.g., No PGD vs Severe): traditional up/down
     up_label <- "Up in Severe PGD"
@@ -229,7 +229,7 @@ make_volcano <- function(data,
       # Remove aspect ratio - let user control via export
       plot.margin = grid::unit(c(2, 8, 8, 8), "pt"),
       
-      # Legend styling - top left corner
+      # Legend styling - top left corner (more robust for patchwork)
       legend.position.inside = c(0.02, 0.98),  # Updated from legend.position for ggplot2 3.5.0+
       legend.justification = c(0, 1),   # Anchor at top left of legend box
       legend.direction = "vertical",
@@ -244,6 +244,10 @@ make_volcano <- function(data,
       legend.spacing.y = grid::unit(0.05, "cm"),  # Tighter spacing
       legend.text = ggplot2::element_text(size = 7, face = "plain"),  # Smaller, not bold
       legend.title = ggplot2::element_blank(),
+      
+      # Make legend positioning more robust against patchwork interference
+      legend.box.just = "left",
+      legend.justification.inside = c(0, 1),
       
       # Axis styling - matching PCA sizes
       axis.title = ggplot2::element_text(size = 12.5, face = "bold", color = "black"),
