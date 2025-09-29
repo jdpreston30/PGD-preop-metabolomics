@@ -4,12 +4,12 @@
 # Paths configuration  
 paths: 
   # Raw data path (update this to your data location)
-  TFT: /Users/ailintang/Library/CloudStorage/OneDrive-Emory/Chan_studies_MS_raw/PGD studies/Chan_PGD_9_2025/MetaboJanitoR/Outputs/MSMICA/global_KEGG/MSMICA_Feature_Tables/MSMICA_20p_halfmin_log2.csv
-  TFT_key: /Users/ailintang/Library/CloudStorage/OneDrive-Emory/Chan_studies_MS_raw/PGD studies/Chan_PGD_9_2025/MetaboJanitoR/Outputs/MSMICA/global_KEGG/MSMICA_Feature_Tables/MSMICA_feature_key.csv
-  UFT_full: /Users/ailintang/Library/CloudStorage/OneDrive-Emory/Chan_studies_MS_raw/PGD studies/Chan_PGD_9_2025/MetaboJanitoR/Outputs/Untargeted/UFT_full_halfmin_log2.csv
-  UFT_filtered: /Users/ailintang/Library/CloudStorage/OneDrive-Emory/Chan_studies_MS_raw/PGD studies/Chan_PGD_9_2025/MetaboJanitoR/Outputs/Untargeted/UFT_20p_halfmin_log2.csv
+  TFT: /Users/ailintang/Library/CloudStorage/OneDrive-Emory/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/MetaboJanitoR/Outputs/MSMICA/global_KEGG/MSMICA_Feature_Tables/MSMICA_20p_halfmin_log2.csv
+  TFT_key: /Users/ailintang/Library/CloudStorage/OneDrive-Emory/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/MetaboJanitoR/Outputs/MSMICA/global_KEGG/MSMICA_Feature_Tables/MSMICA_feature_key.csv
+  UFT_full: /Users/ailintang/Library/CloudStorage/OneDrive-Emory/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/MetaboJanitoR/Outputs/Untargeted/UFT_full_halfmin_log2.csv
+  UFT_filtered: /Users/ailintang/Library/CloudStorage/OneDrive-Emory/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/MetaboJanitoR/Outputs/Untargeted/UFT_20p_halfmin_log2.csv
   clinical_metadata: /Users/ailintang/Library/CloudStorage/OneDrive-Emory/Chan Lab - Chan Lab Projects/Transplant Multi-Omics - OHT/OHT Clinical Data Master Sheet.xlsx
-  sample_type: /Users/ailintang/Library/CloudStorage/OneDrive-Emory/Chan_studies_MS_raw/PGD studies/Chan_PGD_9_2025/sample_type.xlsx
+  sample_type: /Users/ailintang/Library/CloudStorage/OneDrive-Emory/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/sample_type.xlsx
   output: "./Outputs"
   
   # Script and utility paths

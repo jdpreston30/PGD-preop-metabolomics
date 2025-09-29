@@ -1,35 +1,22 @@
-#' Create PCA or PLS-DA plot from analysis results
-#'
-#' @param pca_results Results object from run_PCA function
-#' @param plot_title Optional title for the plot (default: "")
-#' @param ellipse_colors Named vector of colors for ellipses (light colors)
-#' @param point_colors Named vector of colors for points (dark colors)
-#' @param point_size Size of the points (default: 3 for standalone, 0.5 for multi-panel)
-#' @param show_patient_labels Logical, whether to show Patient IDs as text labels (default: FALSE)
-#' @param label_size Size of patient ID labels when show_patient_labels = TRUE (default: 3)
-#' @param show_legend Logical, whether to show the legend (default: TRUE)
-#' @return ggplot object
-#' @export
 plot_PCA <- function(pca_results, plot_title = "",
                      ellipse_colors = c("Severe PGD" = "#D8919A", "No PGD" = "#87A6C7", "Mild/Mod. PGD" = "#9CAF88"),
                      point_colors = c("Severe PGD" = "#800017", "No PGD" = "#113d6a", "Mild/Mod. PGD" = "#4A5D23"),
-                     point_size = 1.5, show_patient_labels = FALSE, label_size = 3, show_legend = TRUE) {
-  
+                     point_size = 1.2, show_patient_labels = FALSE, label_size = 3, show_legend = TRUE,
+                     x_limits = NULL, y_limits = NULL, x_expand = NULL, y_expand = NULL) {
   # Extract data from results
   scores_df <- pca_results$scores_df
   explained <- pca_results$explained_variance
   comp_x <- pca_results$comp_x
   comp_y <- pca_results$comp_y
   comp_label <- pca_results$comp_label
-  
+
   # Identify NA values and create separate datasets
   na_mask <- is.na(scores_df$Class)
   scores_df_complete <- scores_df[!na_mask, , drop = FALSE]
   scores_df_na <- scores_df[na_mask, , drop = FALSE]
 
-  # _Create PCA plot
+  # Create PCA plot
   pca_plot <- ggplot2::ggplot() +
-    # Plot complete cases with colors and ellipses
     {
       if (nrow(scores_df_complete) > 0) {
         list(
@@ -46,7 +33,6 @@ plot_PCA <- function(pca_results, plot_title = "",
         )
       }
     } +
-    # Plot NA values as open circles without color
     {
       if (nrow(scores_df_na) > 0) {
         ggplot2::geom_point(
@@ -56,7 +42,6 @@ plot_PCA <- function(pca_results, plot_title = "",
         )
       }
     } +
-    # Add patient labels if requested
     {
       if (show_patient_labels) {
         list(
@@ -77,7 +62,6 @@ plot_PCA <- function(pca_results, plot_title = "",
         )
       }
     } +
-    # Set colors and styling
     ggplot2::scale_fill_manual(values = ellipse_colors, na.value = "grey50") +
     ggplot2::scale_color_manual(values = point_colors, na.value = "grey50") +
     ggplot2::labs(
@@ -85,21 +69,25 @@ plot_PCA <- function(pca_results, plot_title = "",
       x = paste0(comp_label, comp_x, " (", explained[1], "%)"),
       y = paste0(comp_label, comp_y, " (", explained[2], "%)")
     ) +
-    # Force complete frame by duplicating axes
-  ggplot2::scale_x_continuous(sec.axis = ggplot2::dup_axis(name = NULL, labels = NULL), expand = expansion(mult = 0.02)) +
-  ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL, labels = NULL), expand = expansion(mult = 0.02)) +
+    ggplot2::scale_x_continuous(
+      limits = x_limits,
+      sec.axis = ggplot2::dup_axis(name = NULL, labels = NULL),
+      expand = ggplot2::expansion(mult = 0.02)
+    ) +
+    ggplot2::scale_y_continuous(
+      limits = y_limits,
+      sec.axis = ggplot2::dup_axis(name = NULL, labels = NULL),
+      expand = ggplot2::expansion(mult = 0.02)
+    ) +
     ggplot2::theme_minimal(base_family = "Arial") +
     ggplot2::theme(
-      # Square aspect ratio and margins (from your original)
-  aspect.ratio = 1,
-  plot.margin = grid::unit(c(0, 0, 0, 0), "pt"),
-      
-      # Legend styling - conditional based on show_legend parameter (your original style)
+      aspect.ratio = 1,
+      plot.margin = grid::unit(c(0, 0, 0, 0), "pt"),
       legend.position = if (show_legend) "top" else "none",
       legend.direction = "horizontal",
       legend.box = "horizontal",
       legend.box.margin = ggplot2::margin(0, 0, 0, 0),
-      legend.margin = ggplot2::margin(t = 0, r = 0, b = -10, l = 0),  # Increased negative bottom margin to pull legend closer
+      legend.margin = ggplot2::margin(t = 0, r = 0, b = -10, l = 0),
       legend.key.width = grid::unit(0.35, "cm"),
       legend.key.height = grid::unit(0.35, "cm"),
       legend.key.size = grid::unit(0.35, "cm"),
@@ -107,24 +95,33 @@ plot_PCA <- function(pca_results, plot_title = "",
       legend.text.align = -10,
       legend.text = ggplot2::element_text(size = 7, face = "bold"),
       legend.title = ggplot2::element_blank(),
-      
-      # Remove axis titles and text
-      axis.title = ggplot2::element_blank(),
-      axis.title.x = ggplot2::element_blank(),
-      axis.title.y = ggplot2::element_blank(),
-      axis.text = ggplot2::element_blank(),
-
-      # Panel styling - use panel.border for frame
+      axis.ticks = ggplot2::element_line(color = "black", linewidth = 0.6),
+      axis.ticks.x.top = ggplot2::element_blank(),
+      axis.ticks.y.right = ggplot2::element_blank(),
+      axis.text = ggplot2::element_text(size = 11, face = "bold", color = "black"),
+      axis.title.y = ggplot2::element_text(
+        size = 12.5, face = "bold", color = "black",
+        margin = ggplot2::margin(r = -5)  # nudges the label to the right
+      ),
+      axis.title.x = ggplot2::element_text(
+        size = 12.5, face = "bold", color = "black",
+        margin = ggplot2::margin(t = 5)  # nudges the label to the right
+      ),
       panel.grid.major = ggplot2::element_line(color = "gray80", linewidth = 0.1, linetype = "solid"),
       panel.grid.minor = ggplot2::element_blank(),
-      panel.border = ggplot2::element_rect(color = "black", fill = NA, linewidth = 0.6),
+      panel.border = ggplot2::element_rect(color = "black", fill = NA, linewidth = 1.15),
       panel.background = ggplot2::element_blank(),
       axis.line = ggplot2::element_blank(),
-      axis.ticks = ggplot2::element_blank(),
-      
-      # Title styling
       plot.title = ggplot2::element_text(size = 14, face = "bold", hjust = 0.5, color = "black")
     )
   
+  if (!is.null(x_expand) && !is.null(y_expand)) {
+    pca_plot <- pca_plot + ggplot2::expand_limits(x = x_expand, y = y_expand)
+  } else if (!is.null(x_expand)) {
+    pca_plot <- pca_plot + ggplot2::expand_limits(x = x_expand)
+  } else if (!is.null(y_expand)) {
+    pca_plot <- pca_plot + ggplot2::expand_limits(y = y_expand)
+  }
+
   return(pca_plot)
 }

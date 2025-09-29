@@ -24,10 +24,15 @@ volc_modsev <- plot_volcano(
 #- 5.2.1: Figure 1
 p1A <- fig1
 #- 5.2.2: Figure 2
-p2A <- plsda_nosev      # PLS-DA No/Severe (top left)
-p2B <- volc_nosev       # Volcano No/Severe (top right)
-p2C <- plsda_modsev     # PLS-DA Mod/Severe (bottom left)
-p2D <- volc_modsev      # Volcano Mod/Severe (bottom right)
+p2A <- plsda_nosev + theme(plot.margin = grid::unit(c(0, 0, -20, 0), "cm"))
+p2B <- volc_nosev + theme(plot.margin = grid::unit(c(0, 0, -20, 0), "cm"))
+p2C <- plsda_modsev + theme(plot.margin = grid::unit(c(-20, 0, 0, 0), "cm"))
+p2D <- volc_modsev + theme(plot.margin = grid::unit(c(-20, 0, 0, 0), "cm"))
+
+# Figure_2 <- (p2A + p2B) /
+#   (p2C + p2D) +
+#   patchwork::plot_layout(heights = c(1, 1)) &
+#   theme(plot.margin = margin(0, 0, 0, 0))
 #- 5.2.3: Figure 3
 # p3A <- pathway_enrichment
 # p3B <- network_nosev
