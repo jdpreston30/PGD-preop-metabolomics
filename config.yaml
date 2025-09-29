@@ -24,6 +24,68 @@ analysis:
   project_name: "Postop_PGD_9_2024"
   description: "PGD Preop Metabolomics Analysis"
   
+  # Study cohort and variable definitions
+  cohort:
+    # Patient cohort definition
+    patient_range: 
+      start: 1
+      end: 64
+      excluded: [22, 49]  # H22 and H49 not included in analysis
+    
+    # Table variable groups for publication
+    table_variables:
+      T1: # Demographics and preoperative characteristics
+        - demographics_age_tpx
+        - demographics_race
+        - demographics_sex
+        - demographics_BMI
+        - comorbidities_smoking_hx
+        - comorbidities_DM
+        - comorbidities_prior_cardiac_surg
+        - preop_temp_MCS
+        - preop_IABP
+        - preop_imeplla5.5
+        - preop_VA_ECMO
+        - preop_LVAD
+        - rx_preop_inotrope
+        - rx_preop_amiodarone
+        - preop_RADIAL_calc
+        - rx_preop_ASA
+      
+      T2: # Donor characteristics
+        - donor_age
+        - donor_sex
+        - donor_sex_mismatch
+        - donor_PHM_calc
+        - donor_LVEF
+        - donor_drug_use
+        - donor_PHS_risk
+        - donor_DBD_DCD
+        - donor_COD_simplified
+      
+      T3: # Perioperative and postoperative outcomes
+        - operative_IT_minutes
+        - operative_CPB_minutes
+        - postop_LVEF_median
+        - postop_CVP
+        - postop_cardiac_index
+        - postop_inotrope_score
+        - postop_MCS_IABP
+        - postop_VA_ECMO
+        - postop_MCS_Impella5.5
+        - postop_MCS_RVAD
+        - postop_ICU_LOS
+        - postop_RRT_needed
+        - postop_CRRT
+        - postop_stroke
+        - postop_30_day_LVEF
+        - postop_hospital_LOS
+        - ACR_2R_or_greater
+        - survival_30
+        - survival_90
+        - survival
+        - survival_days
+  
   # Environment preferences
   tibble_options:
     print_max: 100

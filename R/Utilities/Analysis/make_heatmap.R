@@ -14,7 +14,7 @@ make_heatmap <- function(
     data,
     group_var,
     patient_var = "Patient_ID",
-    group_colors = c("Severe" = "#D8919A", "No PGD" = "#87A6C7", "Non-Severe" = "#9CAF88"),
+    group_colors = c("Severe PGD" = "#D8919A", "No PGD" = "#87A6C7", "Mild/Moderate PGD" = "#9CAF88"),
     top_features = NULL,
     feature_selector = c("none", "anova", "ttest", "variance", "mad"),
     group_levels = NULL) {
