@@ -229,12 +229,13 @@ make_volcano <- function(data,
       # Remove aspect ratio - let user control via export
       plot.margin = grid::unit(c(2, 8, 8, 8), "pt"),
       
-      # Legend styling - top left corner (more robust for patchwork)
-      legend.position.inside = c(0.02, 0.98),  # Updated from legend.position for ggplot2 3.5.0+
+      # Legend styling - top left corner (using robust approach for all ggplot2 versions)
+      legend.position = c(0.02, 0.98),  # Position inside plot area
       legend.justification = c(0, 1),   # Anchor at top left of legend box
       legend.direction = "vertical",
       legend.box = "vertical", 
       legend.background = ggplot2::element_blank(),  # Remove box around legend
+      legend.box.background = ggplot2::element_blank(),  # Also remove box background
       legend.box.margin = ggplot2::margin(0, 0, 0, 0),
       legend.margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 0),
       legend.key = ggplot2::element_blank(),  # Remove background from legend keys
@@ -247,7 +248,6 @@ make_volcano <- function(data,
       
       # Make legend positioning more robust against patchwork interference
       legend.box.just = "left",
-      legend.justification.inside = c(0, 1),
       
       # Axis styling - matching PCA sizes
       axis.title = ggplot2::element_text(size = 12.5, face = "bold", color = "black"),
