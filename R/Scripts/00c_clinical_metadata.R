@@ -13,21 +13,21 @@ T2 <- table_vars$T2
 T3 <- table_vars$T3
 #+ 0d.1: Import Clinical metadata ----
 #- 0d.1.1: Clinical Data ----
-preop_i <- read_clinical_sheet("Preop", suppress_warnings = TRUE)
-periop_i <- read_clinical_sheet("Periop")
-outcomes_i <- read_clinical_sheet("Outcomes")
-match_run_i <- read_clinical_sheet("Match Run")
+preop_i <- read_clinical_sheet("Preop", analyzed_patients, suppress_warnings = TRUE)
+periop_i <- read_clinical_sheet("Periop", analyzed_patients)
+outcomes_i <- read_clinical_sheet("Outcomes", analyzed_patients)
+match_run_i <- read_clinical_sheet("Match Run", analyzed_patients)
 #- 0d.1.2: Sample Type Data
 sample_type <- read_xlsx(config$paths$sample_type) %>%
   filter(Patient %in% analyzed_patients)
-#+ 0d.2: Combine clinical metadata into one tibble; format variables ----
+#+ 0d.2: Combine clinical metadata into one tibble; format variables
 clinical_metadata_i <- preop_i %>%
   left_join(periop_i, by = "Patient") %>%
   left_join(outcomes_i, by = "Patient") %>%
   left_join(match_run_i, by = "Patient") %>%
   select(-ends_with(".x"), -ends_with(".y")) %>%
   mutate(across(where(is.character), as.factor))
-#+ 0d.4: Compute RADIAL score, PHM, and ISHLT PGD Status ----
+#+ 0d.4: Compute RADIAL score, PHM, and ISHLT PGD Status
 clinical_metadata <- clinical_metadata_i %>%
   calc_radial(
     rap_col = "preop_RAP",
