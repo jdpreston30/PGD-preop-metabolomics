@@ -3,6 +3,8 @@
 #- Select YAML
 config <- yaml::read_yaml(here::here("config.yaml"))
 config <- yaml::read_yaml(here::here("config_AT.yaml"))
+config <- yaml::read_yaml(here::here("config_laptop.yaml"))
+
 #- Run Scripts 
 {source("R/Scripts/00a_environment_setup.R")
 source("R/Scripts/00b_setup.R")}
@@ -20,7 +22,6 @@ source("R/Scripts/04_tables.R")
 #- Data Note Shown
 source("R/Scripts/06_data_not_shown.R")
 #+
-
 source("R/Scripts/01_clustering.R")
 
 {

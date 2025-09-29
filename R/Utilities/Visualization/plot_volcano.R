@@ -146,16 +146,16 @@ plot_volcano <- function(volcano_results,
       
       # Axis styling - matching PCA sizes
       axis.title = ggplot2::element_text(size = 12.5, face = "bold", color = "black"),
-  axis.title.x = ggplot2::element_text(size = 12.5, face = "bold", color = "black", margin = ggplot2::margin(t = 5)),
-  axis.title.y = ggplot2::element_text(size = 12.5, face = "bold", color = "black", margin = ggplot2::margin(r = 0), hjust = 0.5),
+      axis.title.x = ggplot2::element_text(size = 12.5, face = "bold", color = "black", margin = ggplot2::margin(t = 5)),
+      axis.title.y = ggplot2::element_text(size = 12.5, face = "bold", color = "black", margin = ggplot2::margin(r = 5), hjust = 0.5),
       axis.text = ggplot2::element_text(size = 11, face = "bold", color = "black"),
       
-  # Panel styling - clean background, use panel.border for perfect square axes intersection
+  # Panel styling - clean background, keep only bottom and left axes lines
   panel.grid.major = ggplot2::element_blank(),
   panel.grid.minor = ggplot2::element_blank(), 
-  panel.border = ggplot2::element_blank(),
   panel.background = ggplot2::element_blank(),
-  axis.line = ggplot2::element_line(color = "black", linewidth = 0.6),
+  axis.line.x.bottom = ggplot2::element_line(color = "black", linewidth = 0.6),
+  axis.line.y.left = ggplot2::element_line(color = "black", linewidth = 0.6),
   axis.ticks = ggplot2::element_line(color = "black", linewidth = 0.6),
   axis.ticks.length = ggplot2::unit(0.15, "cm"),
     ) +

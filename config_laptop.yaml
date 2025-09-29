@@ -4,15 +4,15 @@
 # Paths configuration  
 paths:
   # Raw data path (update this to your data location)
-  TFT: /Users/JoshsMacbook2015/Library/CloudStorage/OneDrive-EmoryUniversity/Research/MS_raw_data/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/MetaboJanitoR/Outputs/MSMICA/global_KEGG/MSMICA_Feature_Tables/MSMICA_20p_halfmin_log2.csv
-  TFT_key: /Users/JoshsMacbook2015/Library/CloudStorage/OneDrive-EmoryUniversity/Research/MS_raw_data/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/MetaboJanitoR/Outputs/MSMICA/global_KEGG/MSMICA_Feature_Tables/MSMICA_feature_key.csv
-  UFT_full: /Users/JoshsMacbook2015/Library/CloudStorage/OneDrive-EmoryUniversity/Research/MS_raw_data/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/MetaboJanitoR/Outputs/Untargeted/UFT_full_halfmin_log2.csv
-  UFT_filtered: /Users/JoshsMacbook2015/Library/CloudStorage/OneDrive-EmoryUniversity/Research/MS_raw_data/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/MetaboJanitoR/Outputs/Untargeted/UFT_20p_halfmin_log2.csv
-  clinical_metadata: /Users/JoshsMacbook2015/Library/CloudStorage/OneDrive-EmoryUniversity/Research/Chan Lab - Transplant Multi-Omics - OHT/OHT Clinical Data Master Sheet.xlsx
-  sample_type: /Users/JoshsMacbook2015/Library/CloudStorage/OneDrive-EmoryUniversity/Research/MS_raw_data/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/sample_type.xlsx
+  TFT: /Users/jdp2019/Library/CloudStorage/OneDrive-Emory/Research/MS_raw_data/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/MetaboJanitoR/Outputs/MSMICA/global_KEGG/MSMICA_Feature_Tables/MSMICA_20p_halfmin_log2.csv
+  TFT_key: /Users/jdp2019/Library/CloudStorage/OneDrive-Emory/Research/MS_raw_data/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/MetaboJanitoR/Outputs/MSMICA/global_KEGG/MSMICA_Feature_Tables/MSMICA_feature_key.csv
+  UFT_full: /Users/jdp2019/Library/CloudStorage/OneDrive-Emory/Research/MS_raw_data/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/MetaboJanitoR/Outputs/Untargeted/UFT_full_halfmin_log2.csv
+  UFT_filtered: /Users/jdp2019/Library/CloudStorage/OneDrive-Emory/Research/MS_raw_data/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/MetaboJanitoR/Outputs/Untargeted/UFT_20p_halfmin_log2.csv
+  clinical_metadata: /Users/jdp2019/Library/CloudStorage/OneDrive-Emory/Research/Chan Lab - Transplant Multi-Omics - OHT/OHT Clinical Data Master Sheet.xlsx
+  sample_type: /Users/jdp2019/Library/CloudStorage/OneDrive-Emory/Research/MS_raw_data/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/sample_type.xlsx
   # Output paths (relative to project root)
   output: "./Outputs"
-  figures: "/Users/JoshsMacbook2015/Desktop/PGD_figures"
+  figures: "/Users/jdp2019/Desktop/PGD_figures"
   
   # Script and utility paths
   scripts: "R/Scripts/"
