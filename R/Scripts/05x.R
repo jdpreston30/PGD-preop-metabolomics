@@ -1,5 +1,13 @@
+
+
+
+
 #+ 5.3: Figure 3 - Pathway Enrichment-
 #- 5.3.1: Load in KEGG and enrichment plots
+
+
+
+
 
 #- 5.3.2: Convert grob to ggplot for KEGG
 kegg_as_plot <- ggplot2::ggplot() +

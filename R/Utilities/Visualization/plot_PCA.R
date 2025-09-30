@@ -107,7 +107,7 @@ plot_PCA <- function(pca_results, plot_title = "",
         size = 12.5, face = "bold", color = "black",
         margin = ggplot2::margin(t = 5)  # nudges the label to the right
       ),
-      panel.grid.major = ggplot2::element_line(color = "gray80", linewidth = 0.1, linetype = "solid"),
+      panel.grid.major = ggplot2::element_line(color = "gray80", linewidth = 0.15, linetype = "solid"),
       panel.grid.minor = ggplot2::element_blank(),
       panel.border = ggplot2::element_rect(color = "black", fill = NA, linewidth = 1.15),
       panel.background = ggplot2::element_blank(),
