@@ -21,7 +21,6 @@ pathway_enrich_allsev <- mummichog_ttests(
   group1_value = "No/Mild/Mod. PGD",
   group2_value = "Severe PGD"
 )
-#+ 2.2: Run Mummichog Analysis (Using MetaboAnalystR)
 #- 2.2.1: Run Mummichog Analysis for No vs Severe (MFN database)
 mummichog_nosev_mfn <- run_mummichog_analysis(
   ttest_results = pathway_enrich_nosev$results,
@@ -29,8 +28,7 @@ mummichog_nosev_mfn <- run_mummichog_analysis(
   database = "hsa_mfn",
   output_base_dir = "Outputs/mummichog",
   ppm_tolerance = 5,
-  rt_units = "seconds"
-  # Uses default dynamic p-value threshold (top 10% of peaks)
+  p_threshold = 0.05
 )
 #- 2.2.2: Run Mummichog Analysis for No vs Severe (KEGG database)  
 mummichog_nosev_kegg <- run_mummichog_analysis(
