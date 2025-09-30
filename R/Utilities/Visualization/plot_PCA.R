@@ -1,7 +1,7 @@
 plot_PCA <- function(pca_results, plot_title = "",
-                     ellipse_colors = c("Severe PGD" = "#D8919A", "No PGD" = "#87A6C7", "Mild/Mod. PGD" = "#9CAF88"),
-                     point_colors = c("Severe PGD" = "#800017", "No PGD" = "#113d6a", "Mild/Mod. PGD" = "#4A5D23"),
-                     point_size = 1.2, show_patient_labels = FALSE, label_size = 3, show_legend = TRUE,
+                     ellipse_colors = c("Severe PGD" = "#D8919A", "No PGD" = "#87A6C7", "Mild/Mod. PGD" = "#FF9966", "No/Mild/Mod. PGD" = "#9CAF88"),
+                     point_colors = c("Severe PGD" = "#800017", "No PGD" = "#113d6a", "Mild/Mod. PGD" = "#be5010ff", "No/Mild/Mod. PGD" = "#4A5D23"),
+                     point_size = 1.3, show_patient_labels = FALSE, label_size = 3, show_legend = TRUE,
                      x_limits = NULL, y_limits = NULL, x_expand = NULL, y_expand = NULL) {
   # Extract data from results
   scores_df <- pca_results$scores_df
@@ -72,12 +72,12 @@ plot_PCA <- function(pca_results, plot_title = "",
     ggplot2::scale_x_continuous(
       limits = x_limits,
       sec.axis = ggplot2::dup_axis(name = NULL, labels = NULL),
-      expand = ggplot2::expansion(mult = 0.02)
+      expand = ggplot2::expansion(mult = 0.05)
     ) +
     ggplot2::scale_y_continuous(
       limits = y_limits,
       sec.axis = ggplot2::dup_axis(name = NULL, labels = NULL),
-      expand = ggplot2::expansion(mult = 0.02)
+      expand = ggplot2::expansion(mult = 0.05)
     ) +
     ggplot2::theme_minimal(base_family = "Arial") +
     ggplot2::theme(
