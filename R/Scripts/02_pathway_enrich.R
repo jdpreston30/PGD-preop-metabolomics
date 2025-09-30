@@ -1,11 +1,9 @@
 #* 2: Pathway Enrichment Analysis
-#+ 2.1: Run Mummichog Ttest function 
+#+ 2.1: Run Mummichog Ttest function (no CSV outputs - direct tibble workflow)
 #- 2.1.1: For No PGD vs Severe
 pathway_enrich_nosev <- mummichog_ttests(
   data = UFT %>% filter(PGD_grade_tier != "Mild/Mod. PGD"),
   group_column = "PGD_grade_tier",
-  output_filename = "nosev.csv",
-  output_dir = "Outputs/mummichog/inputs",
   group1_value = "No PGD",
   group2_value = "Severe PGD"
 )
@@ -13,8 +11,6 @@ pathway_enrich_nosev <- mummichog_ttests(
 pathway_enrich_modsev <- mummichog_ttests(
   data = UFT %>% filter(PGD_grade_tier != "No PGD"),
   group_column = "PGD_grade_tier",
-  output_filename = "modsev.csv",
-  output_dir = "Outputs/mummichog/inputs",
   group1_value = "Mild/Mod. PGD",
   group2_value = "Severe PGD"
 )
@@ -22,50 +18,69 @@ pathway_enrich_modsev <- mummichog_ttests(
 pathway_enrich_allsev <- mummichog_ttests(
   data = UFT,
   group_column = "severe_PGD",
-  output_filename = "allsev.csv",
-  output_dir = "Outputs/mummichog/inputs",
   group1_value = "No/Mild/Mod. PGD",
   group2_value = "Severe PGD"
 )
-#+ 2.2: Run Mummichog (MFN and KEGG)
-library(MetaboAnalystR)
+#+ 2.2: Run Mummichog Analysis (Using MetaboAnalystR)
+#- 2.2.1: Run Mummichog Analysis for No vs Severe (MFN database)
+mummichog_nosev_mfn <- run_mummichog_analysis(
+  ttest_results = pathway_enrich_nosev$results,
+  analysis_name = "nosev",
+  database = "hsa_mfn",
+  output_base_dir = "Outputs/mummichog/outputs",
+  ppm_tolerance = 5,
+  p_threshold = 0.05
+)
+#- 2.2.2: Run Mummichog Analysis for No vs Severe (KEGG database)  
+mummichog_nosev_kegg <- run_mummichog_analysis(
+  ttest_results = pathway_enrich_nosev$results,
+  analysis_name = "nosev", 
+  database = "hsa_kegg",
+  output_base_dir = "Outputs/mummichog/outputs",
+  ppm_tolerance = 5,
+  p_threshold = 0.05
+)
 
-# Create output directories for MetaboAnalystR results
-dir.create("Outputs/MetaboAnalystR", showWarnings = FALSE, recursive = TRUE)
-dir.create("Outputs/MetaboAnalystR/nosev", showWarnings = FALSE, recursive = TRUE)
-dir.create("Outputs/MetaboAnalystR/nosev/MFN", showWarnings = FALSE, recursive = TRUE)
-dir.create("Outputs/MetaboAnalystR/nosev/KEGG", showWarnings = FALSE, recursive = TRUE)
-# Store original working directory
-original_wd <- getwd()
-# MFN Analysis
-cat("Running MFN analysis...\n")
-setwd("Outputs/MetaboAnalystR/nosev/MFN")
-mSet_mfn <- InitDataObjects("mass_all", "mummichog", FALSE, 150) %>%
-  SetPeakFormat("rmp") %>%
-  UpdateInstrumentParameters(5.0, "mixed", "yes", 0.02) %>%
-  Read.PeakListData("../../../../Outputs/mummichog/inputs/nosev.csv") %>%
-  SanityCheckMummichogData() %>%
-  SetPeakEnrichMethod("mum", "v2") %>%
-  SetMummichogPval(0.1) %>%
-  PerformPSEA("hsa_mfn", "current", 3, 100) %>%
-  PlotPeaks2Paths("metaboanalyst_mfn_", "png", 150, width=NA)
-setwd(original_wd)  # Return to original directory
+#- 2.2.3: Run Mummichog Analysis for Mild/Mod vs Severe (MFN database)
+mummichog_modsev_mfn <- run_mummichog_analysis(
+  ttest_results = pathway_enrich_modsev$results,
+  analysis_name = "modsev",
+  database = "hsa_mfn",
+  output_base_dir = "Outputs/mummichog/outputs",
+  ppm_tolerance = 5,
+  p_threshold = 0.05
+)
 
-# KEGG Analysis  
-cat("Running KEGG analysis...\n")
-setwd("Outputs/MetaboAnalystR/nosev/KEGG")
-mSet_kegg <- InitDataObjects("mass_all", "mummichog", FALSE, 150) %>%
-  SetPeakFormat("rmp") %>%
-  UpdateInstrumentParameters(5.0, "mixed", "yes", 0.02) %>%
-  Read.PeakListData("../../../../Outputs/mummichog/inputs/nosev.csv") %>%
-  SanityCheckMummichogData() %>%
-  SetPeakEnrichMethod("mum", "v2") %>%
-  SetMummichogPval(0.1) %>%
-  PerformPSEA("hsa_kegg", "current", 3, 100) %>%
-  PlotPeaks2Paths("metaboanalyst_kegg_", "png", 150, width=NA)
-setwd(original_wd)  # Return to original directory
+#- 2.2.4: Run Mummichog Analysis for Mild/Mod vs Severe (KEGG database)  
+mummichog_modsev_kegg <- run_mummichog_analysis(
+  ttest_results = pathway_enrich_modsev$results,
+  analysis_name = "modsev", 
+  database = "hsa_kegg",
+  output_base_dir = "Outputs/mummichog/outputs",
+  ppm_tolerance = 5,
+  p_threshold = 0.05
+)
 
-#+ 2.3: Read in Mummichog results
+#- 2.2.5: Run Mummichog Analysis for No+Mild/Mod vs Severe (MFN database)
+mummichog_allsev_mfn <- run_mummichog_analysis(
+  ttest_results = pathway_enrich_allsev$results,
+  analysis_name = "allsev",
+  database = "hsa_mfn",
+  output_base_dir = "Outputs/mummichog/outputs",
+  ppm_tolerance = 5,
+  p_threshold = 0.05
+)
+
+#- 2.2.6: Run Mummichog Analysis for No+Mild/Mod vs Severe (KEGG database)  
+mummichog_allsev_kegg <- run_mummichog_analysis(
+  ttest_results = pathway_enrich_allsev$results,
+  analysis_name = "allsev", 
+  database = "hsa_kegg",
+  output_base_dir = "Outputs/mummichog/outputs",
+  ppm_tolerance = 5,
+  p_threshold = 0.05
+)
+#+ 2.3: Read in Mummichog results (traditional approach - can be replaced by MetaboAnalystR results above)
 #- 2.3.1: Read KEGG pathway results
 {
 kegg_nosev_pathways <- readr::read_csv(here::here("Outputs/mummichog/outputs/KEGG/nosev_pathways_KEGG.csv"), show_col_types = FALSE) %>%

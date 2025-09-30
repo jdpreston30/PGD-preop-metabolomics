@@ -2,7 +2,7 @@
 #'
 #' @param data Data frame with grouping column (e.g., PGD) and feature columns
 #' @param group_column Name of the grouping column (default: "PGD")
-#' @param output_filename Filename for the exported CSV results
+#' @param output_filename Filename for the exported CSV results (optional - if NULL, no CSV is written)
 #' @param output_dir Directory path for output (default: "Outputs/mummichog_inputs/")
 #' @param group1_value Value representing the first group (default: "N")
 #' @param group2_value Value representing the second group (default: "Y")
@@ -10,7 +10,7 @@
 #' @export
 mummichog_ttests <- function(data,
                              group_column = "PGD",
-                             output_filename,
+                             output_filename = NULL,
                              output_dir = "Outputs/mummichog_inputs/",
                              group1_value = "N",
                              group2_value = "Y") {
@@ -117,17 +117,24 @@ mummichog_ttests <- function(data,
     # _Remove rows where feature parsing failed (invalid feature names)
     dplyr::filter(!is.na(m.z) & !is.na(mode))
 
-  # _Create output directory if it doesn't exist
-  if (!dir.exists(output_dir)) {
-    dir.create(output_dir, recursive = TRUE)
-    cat("Created output directory:", output_dir, "\n")
+  # _Export results (only if output_filename is provided)
+  output_path <- NULL
+  if (!is.null(output_filename)) {
+    # _Create output directory if it doesn't exist
+    if (!dir.exists(output_dir)) {
+      dir.create(output_dir, recursive = TRUE)
+      cat("Created output directory:", output_dir, "\n")
+    }
+    
+    # _Create full output path
+    output_path <- file.path(output_dir, output_filename)
+    
+    # _Export results
+    readr::write_csv(results_tibble, output_path)
+    cat("T-test results exported to:", output_path, "\n")
+  } else {
+    cat("No output filename provided - results returned without writing CSV\n")
   }
-  
-  # _Create full output path
-  output_path <- file.path(output_dir, output_filename)
-  
-  # _Export results
-  readr::write_csv(results_tibble, output_path)
 
   # _Display summary
   cat("T-test results exported to:", output_path, "\n")
@@ -143,7 +150,7 @@ mummichog_ttests <- function(data,
   return(list(
     results = results_tibble,
     n_features = nrow(results_tibble),
-    output_file = output_path,
+    output_file = output_path,  # Will be NULL if no CSV written
     group1_value = group1_value,
     group2_value = group2_value
   ))
