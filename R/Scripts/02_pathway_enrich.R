@@ -30,7 +30,7 @@ mummichog_nosev_mfn <- run_mummichog_analysis(
   instrumentOpt = 5.0,
   msModeOpt = "mixed",
   force_primary_ion = "yes",
-  pval_peak_cutoff = FALSE 
+  pval_peak_cutoff = TRUE 
 )
 #- 2.2.2: Run Mummichog Analysis for No vs Severe (KEGG database)  
 mummichog_nosev_kegg <- run_mummichog_analysis(
