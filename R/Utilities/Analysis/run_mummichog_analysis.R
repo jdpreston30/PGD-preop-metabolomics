@@ -51,9 +51,33 @@ run_mummichog_analysis <- function(
   
   library(MetaboAnalystR)
   
+  # FIRST: Create output directory and change to it immediately
+  cat("Original working directory:", getwd(), "\n")
+  cat("Trying to create output directory:", output_dir, "\n")
+  
+  if (!dir.exists(output_dir)) {
+    dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
+    cat("Created output directory:", output_dir, "\n")
+  } else {
+    cat("Output directory already exists:", output_dir, "\n")
+  }
+  
+  # Check if directory actually exists
+  if (dir.exists(output_dir)) {
+    cat("✓ Directory confirmed to exist:", output_dir, "\n")
+  } else {
+    cat("✗ ERROR: Directory does not exist after creation attempt!\n")
+    stop("Failed to create output directory")
+  }
+  
+  original_wd <- getwd()
+  setwd(output_dir)
+  cat("Working directory changed to:", getwd(), "\n")
+  cat("Files currently in this directory:", paste(list.files(), collapse = ", "), "\n")
+  
   # Set up database caching to avoid re-downloading
   # Get the project root directory (go up from current working directory)
-  project_root <- getwd()
+  project_root <- original_wd  # Use original working directory as project root
   while (!file.exists(file.path(project_root, "run.R")) && dirname(project_root) != project_root) {
     project_root <- dirname(project_root)
   }
@@ -74,13 +98,8 @@ run_mummichog_analysis <- function(
     stop("Database must be 'hsa_kegg' or 'hsa_mfn'")
   }
   
-  # Create output directory
-  dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
-  original_wd <- getwd()
-  setwd(output_dir)
-  
-  # Create temp CSV
-  temp_csv <- tempfile(fileext = ".csv")
+  # Create temp CSV file (we're already in output directory)
+  temp_csv <- "temp_input.csv"
   readr::write_csv(ttest_results, temp_csv)
   
   # Suppress common non-critical MetaboAnalystR warnings
@@ -152,10 +171,29 @@ run_mummichog_analysis <- function(
     mSet <- PlotPeaks2Paths(mSet, "peaks_to_paths_0_", "png", 150, width=NA)
     if (!is.list(mSet)) stop("mSet corrupted after PlotPeaks2Paths")
     cat("✓ PlotPeaks2Paths completed\n")
+    
+    # DEBUG: Check what's in the current directory
+    cat("=== DEBUGGING FILE CREATION ===\n")
+    cat("Current working directory:", getwd(), "\n")
+    created_files <- list.files(getwd(), full.names = FALSE)
+    cat("Files in current directory:", paste(created_files, collapse = ", "), "\n")
+    
+    # Check if specific expected files exist
+    expected_files <- c("scattermum.json", "peaks_to_paths_0_dpi150.png")
+    for (f in expected_files) {
+      if (file.exists(f)) {
+        cat("✓ Found expected file:", f, "\n")
+      } else {
+        cat("✗ Missing expected file:", f, "\n")
+      }
+    }
+    cat("=== END DEBUGGING ===\n")
   })
   
-  # Cleanup
-  file.remove(temp_csv)
+  # Cleanup - remove temp CSV but keep all analysis outputs
+  if (file.exists(temp_csv)) {
+    file.remove(temp_csv)
+  }
   setwd(original_wd)
   
   # Extract analysis settings from mSet object
@@ -179,12 +217,39 @@ run_mummichog_analysis <- function(
     }
   }
   
+  # Also try to extract the actual threshold from mSet regardless of our parameter
+  mset_threshold <- NULL
+  if(!is.null(mSet$dataSet$cutoff)) {
+    mset_threshold <- mSet$dataSet$cutoff
+  } else if(!is.null(mSet$analSet$mummi.cutoff)) {
+    mset_threshold <- mSet$analSet$mummi.cutoff
+  } else if(!is.null(mSet$paramSet$mumPvalCutoff)) {
+    mset_threshold <- mSet$paramSet$mumPvalCutoff
+  }
+  
+  # If we found a more precise threshold in mSet, use that for display
+  display_threshold <- if(!is.null(mset_threshold) && is.numeric(mset_threshold) && mset_threshold != 1.0) {
+    mset_threshold
+  } else {
+    actual_pval_threshold
+  }
+  
   # P-value method description
   pval_method_desc <- if (pval_peak_cutoff) {
     "Top 10% of peaks (dynamic)"
   } else {
     "All peaks (p < 1.0)"
   }
+  
+  # Create the p-value setting description
+  pval_setting_desc <- if (pval_peak_cutoff) {
+    "- SetMummichogPvalFromPercent: 0.1 (top 10% of peaks)\n\n"
+  } else {
+    "- SetMummichogPval: 1.0 (all peaks)\n\n"
+  }
+  
+  # Create the threshold description
+  threshold_desc <- if (pval_peak_cutoff) "calculated" else "set"
   
   # Create parameter summary markdown
   md_content <- paste0(
@@ -194,21 +259,18 @@ run_mummichog_analysis <- function(
     "**MetaboAnalystR 'Set' Function Outputs:**\n",
     "- SetPeakFormat: ", peak_format, "\n",
     "- SetPeakEnrichMethod: ", enrich_method, " (", version, ")\n",
-    if (pval_peak_cutoff) {
-      "- SetMummichogPvalFromPercent: 0.1 (top 10% of peaks)\n\n"
-    } else {
-      "- SetMummichogPval: 1.0 (all peaks)\n\n"
-    },
+    pval_setting_desc,
     "**Instrument Parameters (UpdateInstrumentParameters):**\n",
     "- instrumentOpt: ", instrumentOpt, "\n",
     "- msModeOpt: ", msModeOpt, "\n", 
     "- force_primary_ion: ", force_primary_ion, "\n",
     "- rt_frac: ", rt_frac, "\n\n",
     "**Analysis Parameters:**\n",
-    "- P-value method: ", pval_method_desc, "\n",
-    "- P-value threshold (", if (pval_peak_cutoff) "calculated" else "set", "): ", actual_pval_threshold, "\n",
+    "- Peak filtering method: ", pval_method_desc, "\n",
+    "- Peak filtering p-value threshold (", threshold_desc, "): ", display_threshold, "\n",
+    "- Pathway enrichment p-value threshold: 0.05 (fixed)\n",
     "- Minimum pathway size: 3\n",
-    "- Permutations: 100\n\n",
+    "- Permutations for background: 100\n\n",
     "**Input Data:**\n",
     "- Number of features: ", nrow(ttest_results), "\n",
     "- Output directory: ", output_dir, "\n"
@@ -216,10 +278,29 @@ run_mummichog_analysis <- function(
   
   # Write markdown file to output directory
   md_file <- file.path(output_dir, "analysis_parameters.md")
+  cat("=== WRITING MARKDOWN FILE ===\n")
+  cat("Attempting to write to:", md_file, "\n")
+  cat("Current working directory:", getwd(), "\n")
+  cat("Original working directory:", original_wd, "\n")
+  
   writeLines(md_content, md_file)
   
-  # Print p-value threshold at the very end
-  cat("P-value threshold used:", actual_pval_threshold, "\n")
+  # Verify the file was created
+  if (file.exists(md_file)) {
+    cat("✓ Markdown file successfully created at:", md_file, "\n")
+    cat("File size:", file.size(md_file), "bytes\n")
+  } else {
+    cat("✗ ERROR: Markdown file was NOT created!\n")
+  }
+  
+  # Print p-value thresholds at the very end
+  cat("=== P-VALUE SUMMARY ===\n")
+  cat("Peak filtering p-value threshold:", display_threshold, "(", pval_method_desc, ")\n")
+  if(!is.null(mset_threshold) && mset_threshold != display_threshold) {
+    cat("MetaboAnalystR internal threshold:", mset_threshold, "\n")
+  }
+  cat("Pathway enrichment p-value threshold: 0.05 (fixed by PerformPSEA)\n")
+  cat("Permutations for background estimation: 100\n")
   cat("Parameter summary saved to:", md_file, "\n")
   
   return(mSet)
