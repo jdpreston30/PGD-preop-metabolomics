@@ -27,162 +27,103 @@ mummichog_nosev_mfn <- run_mummichog_analysis(
   ttest_results = pathway_enrich_nosev$results,
   analysis_name = "nosev",
   database = "hsa_mfn",
-  output_base_dir = "Outputs/mummichog/outputs",
+  output_base_dir = "Outputs/mummichog",
   ppm_tolerance = 5,
-  p_threshold = 0.05
+  rt_units = "seconds"
+  # Uses default dynamic p-value threshold (top 10% of peaks)
 )
 #- 2.2.2: Run Mummichog Analysis for No vs Severe (KEGG database)  
 mummichog_nosev_kegg <- run_mummichog_analysis(
   ttest_results = pathway_enrich_nosev$results,
   analysis_name = "nosev", 
   database = "hsa_kegg",
-  output_base_dir = "Outputs/mummichog/outputs",
+  output_base_dir = "Outputs/mummichog",
   ppm_tolerance = 5,
-  p_threshold = 0.05
+  rt_units = "seconds"
+  # Uses default dynamic p-value threshold (top 10% of peaks)
 )
-
 #- 2.2.3: Run Mummichog Analysis for Mild/Mod vs Severe (MFN database)
 mummichog_modsev_mfn <- run_mummichog_analysis(
   ttest_results = pathway_enrich_modsev$results,
   analysis_name = "modsev",
   database = "hsa_mfn",
-  output_base_dir = "Outputs/mummichog/outputs",
+  output_base_dir = "Outputs/mummichog",
   ppm_tolerance = 5,
-  p_threshold = 0.05
+  rt_units = "seconds"
+  # Uses default dynamic p-value threshold (top 10% of peaks)
 )
-
 #- 2.2.4: Run Mummichog Analysis for Mild/Mod vs Severe (KEGG database)  
 mummichog_modsev_kegg <- run_mummichog_analysis(
   ttest_results = pathway_enrich_modsev$results,
   analysis_name = "modsev", 
   database = "hsa_kegg",
-  output_base_dir = "Outputs/mummichog/outputs",
+  output_base_dir = "Outputs/mummichog",
   ppm_tolerance = 5,
-  p_threshold = 0.05
+  rt_units = "seconds"
+  # Uses default dynamic p-value threshold (top 10% of peaks)
 )
-
 #- 2.2.5: Run Mummichog Analysis for No+Mild/Mod vs Severe (MFN database)
 mummichog_allsev_mfn <- run_mummichog_analysis(
   ttest_results = pathway_enrich_allsev$results,
   analysis_name = "allsev",
   database = "hsa_mfn",
-  output_base_dir = "Outputs/mummichog/outputs",
+  output_base_dir = "Outputs/mummichog",
   ppm_tolerance = 5,
-  p_threshold = 0.05
+  rt_units = "seconds"
+  # Uses default dynamic p-value threshold (top 10% of peaks)
 )
-
 #- 2.2.6: Run Mummichog Analysis for No+Mild/Mod vs Severe (KEGG database)  
 mummichog_allsev_kegg <- run_mummichog_analysis(
   ttest_results = pathway_enrich_allsev$results,
   analysis_name = "allsev", 
   database = "hsa_kegg",
-  output_base_dir = "Outputs/mummichog/outputs",
+  output_base_dir = "Outputs/mummichog",
   ppm_tolerance = 5,
-  p_threshold = 0.05
+  rt_units = "seconds"
+  # Uses default dynamic p-value threshold (top 10% of peaks)
 )
-#+ 2.3: Read in Mummichog results (traditional approach - can be replaced by MetaboAnalystR results above)
-#- 2.3.1: Read KEGG pathway results
-{
-kegg_nosev_pathways <- readr::read_csv(here::here("Outputs/mummichog/outputs/KEGG/nosev_pathways_KEGG.csv"), show_col_types = FALSE) %>%
-  rename(pathway_name = ...1) %>%
-  mutate(pathway_name = clean_pathway_names(pathway_name))
-kegg_modsev_pathways <- readr::read_csv(here::here("Outputs/mummichog/outputs/KEGG/modsev_pathways_KEGG.csv"), show_col_types = FALSE) %>%
-  rename(pathway_name = ...1) %>%
-  mutate(pathway_name = clean_pathway_names(pathway_name))
-kegg_allsev_pathways <- readr::read_csv(here::here("Outputs/mummichog/outputs/KEGG/allsev_pathways_KEGG.csv"), show_col_types = FALSE) %>%
-  rename(pathway_name = ...1) %>%
-  mutate(pathway_name = clean_pathway_names(pathway_name))
-}
-#- 2.3.2: Read MFN pathway results
-{
-mfn_nosev_pathways <- readr::read_csv(here::here("Outputs/mummichog/outputs/MFN/nosev_pathways_MFN.csv"), show_col_types = FALSE) %>%
-  rename(pathway_name = ...1) %>%
-  mutate(pathway_name = clean_pathway_names(pathway_name))
-mfn_modsev_pathways <- readr::read_csv(here::here("Outputs/mummichog/outputs/MFN/modsev_pathways_MFN.csv"), show_col_types = FALSE) %>%
-  rename(pathway_name = ...1) %>%
-  mutate(pathway_name = clean_pathway_names(pathway_name))
-mfn_allsev_pathways <- readr::read_csv(here::here("Outputs/mummichog/outputs/MFN/allsev_pathways_MFN.csv"), show_col_types = FALSE) %>%
-  rename(pathway_name = ...1) %>%
-  mutate(pathway_name = clean_pathway_names(pathway_name))
-}
-#+ 2.6: Enrichment Network Plots
-#- 2.6.2: No vs Severe PGD KEGG Network
-kegg_nosev_network_data <- kegg_nosev_pathways %>%
-  filter(`P(Fisher)` < 0.05) %>%
-  mutate(
-    pathway_ID = pathway_name,
-    enrichment_factor = Hits.sig / Expected,
-    p_value = as.numeric(`P(Fisher)`)
-  ) %>%
-  select(pathway_ID, pathway_name, enrichment_factor, p_value)
-
-# Build graph data
-kegg_nosev_graph_data <- build_enrichment_network(
-  kegg_nosev_network_data,
-  edge_thresh = 0.05,
-  prefer_hsa = TRUE,
-  seed = 123
+#+ 2.3: Create Pathway Enrichment Plots (using MetaboAnalystR JSON outputs)
+#- 2.3.1: Define JSON file paths once
+{mfn_json_files <- list(
+  nosev = "Outputs/mummichog/nosev/MFN/scattermum.json",
+  modsev = "Outputs/mummichog/modsev/MFN/scattermum.json",
+  allsev = "Outputs/mummichog/allsev/MFN/scattermum.json"
 )
-
-# Create plot
-kegg_nosev_network_plot <- plot_enrichment_network(
-  graph_data = kegg_nosev_graph_data,
-  save_path = "Outputs/Grob/kegg_nosev_network.png",
-  plot_title = "No vs. Severe PGD KEGG Network",
-  width = 10, height = 10, dpi = 600,
-  show_enrichment = FALSE
+kegg_json_files <- list(
+  nosev = "Outputs/mummichog/nosev/KEGG/scattermum.json",
+  modsev = "Outputs/mummichog/modsev/KEGG/scattermum.json",
+  allsev = "Outputs/mummichog/allsev/KEGG/scattermum.json"
 )
-
-#- 2.6.3: Mild/Mod vs Severe PGD KEGG Network
-kegg_modsev_network_data <- kegg_modsev_pathways %>%
-  filter(`P(Fisher)` < 0.05) %>%
-  mutate(
-    pathway_ID = pathway_name,
-    enrichment_factor = Hits.sig / Expected,
-    p_value = as.numeric(`P(Fisher)`)
-  ) %>%
-  select(pathway_ID, pathway_name, enrichment_factor, p_value)
-
-# Build graph data
-kegg_modsev_graph_data <- build_enrichment_network(
-  kegg_modsev_network_data,
-  edge_thresh = 0.05,
-  prefer_hsa = TRUE,
-  seed = 123
+combined_json_files <- list(
+  mfn = mfn_json_files,
+  kegg = kegg_json_files
+)}
+#- 2.3.2: Make MFN only plot
+pgd_enrichment_plot_mfn <- plot_mummichog_enrichment(
+  json_files = mfn_json_files,
+  combine_databases = FALSE,
+  p_threshold = 0.05,
+  enrichment_cap = 5,
+  size_range = c(5, 10),
+  size_breaks = c(5, 3, 1),
+  show_legend = TRUE,
+  save_path = "Figures/Raw/fig2a.png",
+  plot_width = 8,
+  plot_height = 6,
+  dpi = 600
 )
-
-# Create plot
-kegg_modsev_network_plot <- plot_enrichment_network(
-  graph_data = kegg_modsev_graph_data,
-  save_path = "Outputs/Grob/kegg_modsev_network.png",
-  plot_title = "Mild/Mod vs. Severe PGD KEGG Network",
-  width = 10, height = 10, dpi = 600,
-  show_enrichment = FALSE
+#- 2.3.1: Create combined MFN and KEGG enrichment plot from JSON outputs
+pgd_enrichment_plot_combined <- plot_mummichog_enrichment(
+  json_files = combined_json_files,
+  combine_databases = TRUE,
+  p_threshold = 0.05,
+  enrichment_cap = 8,
+  size_range = c(4, 8),
+  size_breaks = c(8, 6, 4, 2),
+  show_legend = TRUE,
+  save_path = "Figures/Raw/S1.png",
+  plot_width = 8.5,
+  plot_height = 9.8,
+  dpi = 600
 )
-
-#- 2.6.4: No+Mild/Mod vs Severe PGD KEGG Network
-kegg_allsev_network_data <- kegg_allsev_pathways %>%
-  filter(`P(Fisher)` < 0.05) %>%
-  mutate(
-    pathway_ID = pathway_name,
-    enrichment_factor = Hits.sig / Expected,
-    p_value = as.numeric(`P(Fisher)`)
-  ) %>%
-  select(pathway_ID, pathway_name, enrichment_factor, p_value)
-
-# Build graph data
-kegg_allsev_graph_data <- build_enrichment_network(
-  kegg_allsev_network_data,
-  edge_thresh = 0.05,
-  prefer_hsa = TRUE,
-  seed = 123
-)
-
-# Create plot
-kegg_allsev_network_plot <- plot_enrichment_network(
-  graph_data = kegg_allsev_graph_data,
-  save_path = "Outputs/Grob/kegg_allsev_network.png",
-  plot_title = "No+Mild/Mod vs. Severe PGD KEGG Network",
-  width = 10, height = 10, dpi = 600,
-  show_enrichment = FALSE
-)
+#+ 2.4: Create Enrichment Network Plot
