@@ -4,7 +4,6 @@
 config <- yaml::read_yaml(here::here("config.yaml"))
 config <- yaml::read_yaml(here::here("config_AT.yaml"))
 config <- yaml::read_yaml(here::here("config_laptop.yaml"))
-
 #- Run Scripts 
 {source("R/Scripts/00a_environment_setup.R")
 source("R/Scripts/00b_setup.R")}

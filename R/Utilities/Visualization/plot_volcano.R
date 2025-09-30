@@ -22,11 +22,20 @@ plot_volcano <- function(volcano_results,
   up_label <- volcano_results$up_label
   down_label <- volcano_results$down_label
   
-    # Set legend order: Up, Down, Not Significant
-    volcano_data$Legend <- factor(
-      volcano_data$Legend,
-      levels = c(up_label, down_label, "Not Significant")
-    )
+  # Create new labels that always say "Up in [group]"
+  # Extract group names from existing labels
+  up_group <- gsub("(Up in |Down in )", "", up_label)
+  down_group <- gsub("(Up in |Down in )", "", down_label)
+  
+  # Create new consistent labels
+  new_up_label <- paste("Up in", up_group)
+  new_down_label <- paste("Up in", down_group)
+  
+  # Set legend order: Up, Down, Not Significant
+  volcano_data$Legend <- factor(
+    volcano_data$Legend,
+    levels = c(up_label, down_label, "Not Significant")
+  )
   
   # ---- Handle axis limits and warnings ----
   # X-axis limits
@@ -74,6 +83,8 @@ plot_volcano <- function(volcano_results,
     ggplot2::geom_point(size = point_size, na.rm = TRUE) +
     ggplot2::scale_color_manual(
       values = setNames(c("gray70", up_color, down_color), 
+                       c("Not Significant", up_label, down_label)),
+      labels = setNames(c("Not Significant", new_up_label, new_down_label),
                        c("Not Significant", up_label, down_label)),
       name = NULL
     ) +

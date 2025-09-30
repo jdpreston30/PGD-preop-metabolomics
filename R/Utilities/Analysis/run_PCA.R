@@ -62,6 +62,9 @@ run_PCA <- function(data, group_var, patient_var = "Patient", method = "PCA",
     }
     scores <- model$x[, c(comp_x, comp_y), drop = FALSE]
     explained <- round((model$sdev^2 / sum(model$sdev^2))[c(comp_x, comp_y)] * 100)
+    # Calculate explained variance for first 10 components (or max available)
+    n_comp_all <- min(10, max_comp)
+    explained_all <- round((model$sdev^2 / sum(model$sdev^2))[1:n_comp_all] * 100, 2)
     comp_label <- "PC"
   } else {
     # PLS-DA using mixOmics
@@ -75,6 +78,9 @@ run_PCA <- function(data, group_var, patient_var = "Patient", method = "PCA",
     }
     scores <- model$variates$X[, c(comp_x, comp_y), drop = FALSE]
     explained <- round(model$prop_expl_var$X[c(comp_x, comp_y)] * 100)
+    # Calculate explained variance for first 10 components (or max available)
+    n_comp_all <- min(10, max_comp)
+    explained_all <- round(model$prop_expl_var$X[1:n_comp_all] * 100, 2)
     comp_label <- "LV"
   }
 
@@ -93,6 +99,7 @@ run_PCA <- function(data, group_var, patient_var = "Patient", method = "PCA",
     scores = scores,
     scores_df = scores_df,
     explained_variance = explained,
+    explained_variance_all = explained_all,
     comp_x = comp_x,
     comp_y = comp_y,
     comp_label = comp_label,

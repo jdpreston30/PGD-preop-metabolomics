@@ -47,3 +47,7 @@ cat(
   strrep("=", 60), "\n",
   "\n"
 )
+#+ 6.4: Mummichog Parameters
+#! nosev = p cutoff 0.1
+#! modsev = p cutoff 0.05
+#! allsev = p cutoff 0.1
