@@ -28,76 +28,69 @@ pathway_enrich_allsev <- mummichog_ttests(
   group2_value = "Severe PGD"
 )
 #+ 2.2: Run Mummichog (MFN and KEGG)
-#- 2.2.0: NOTE
-  #! All performed externally in Metaboanalyst
-#- 2.2.1: Interactive pause for external analysis
-cat("\n=== EXTERNAL ANALYSIS REQUIRED ===\n")
-cat("Before continuing, you must run pathway enrichment externally in MetaboAnalyst.ca\n")
-cat("using the CSV files generated in section 2.1.\n\n")
-cat("Type y to continue or n to stop pipeline progress: ")
-user_input <- readline()
-if (user_input != "y") {
-  if (user_input == "n") {
-    stop("Pipeline stopped by user request.")
-  } else {
-    stop("Invalid input. Please restart and type 'y' to continue or 'n' to stop.")
-  }
-}
+library(MetaboAnalystR)
+
+# Create output directories for MetaboAnalystR results
+dir.create("Outputs/MetaboAnalystR", showWarnings = FALSE, recursive = TRUE)
+dir.create("Outputs/MetaboAnalystR/nosev", showWarnings = FALSE, recursive = TRUE)
+dir.create("Outputs/MetaboAnalystR/nosev/MFN", showWarnings = FALSE, recursive = TRUE)
+dir.create("Outputs/MetaboAnalystR/nosev/KEGG", showWarnings = FALSE, recursive = TRUE)
+# Store original working directory
+original_wd <- getwd()
+# MFN Analysis
+cat("Running MFN analysis...\n")
+setwd("Outputs/MetaboAnalystR/nosev/MFN")
+mSet_mfn <- InitDataObjects("mass_all", "mummichog", FALSE, 150) %>%
+  SetPeakFormat("rmp") %>%
+  UpdateInstrumentParameters(5.0, "mixed", "yes", 0.02) %>%
+  Read.PeakListData("../../../../Outputs/mummichog/inputs/nosev.csv") %>%
+  SanityCheckMummichogData() %>%
+  SetPeakEnrichMethod("mum", "v2") %>%
+  SetMummichogPval(0.1) %>%
+  PerformPSEA("hsa_mfn", "current", 3, 100) %>%
+  PlotPeaks2Paths("metaboanalyst_mfn_", "png", 150, width=NA)
+setwd(original_wd)  # Return to original directory
+
+# KEGG Analysis  
+cat("Running KEGG analysis...\n")
+setwd("Outputs/MetaboAnalystR/nosev/KEGG")
+mSet_kegg <- InitDataObjects("mass_all", "mummichog", FALSE, 150) %>%
+  SetPeakFormat("rmp") %>%
+  UpdateInstrumentParameters(5.0, "mixed", "yes", 0.02) %>%
+  Read.PeakListData("../../../../Outputs/mummichog/inputs/nosev.csv") %>%
+  SanityCheckMummichogData() %>%
+  SetPeakEnrichMethod("mum", "v2") %>%
+  SetMummichogPval(0.1) %>%
+  PerformPSEA("hsa_kegg", "current", 3, 100) %>%
+  PlotPeaks2Paths("metaboanalyst_kegg_", "png", 150, width=NA)
+setwd(original_wd)  # Return to original directory
+
 #+ 2.3: Read in Mummichog results
 #- 2.3.1: Read KEGG pathway results
 {
 kegg_nosev_pathways <- readr::read_csv(here::here("Outputs/mummichog/outputs/KEGG/nosev_pathways_KEGG.csv"), show_col_types = FALSE) %>%
-  rename(pathway_name = ...1)
+  rename(pathway_name = ...1) %>%
+  mutate(pathway_name = clean_pathway_names(pathway_name))
 kegg_modsev_pathways <- readr::read_csv(here::here("Outputs/mummichog/outputs/KEGG/modsev_pathways_KEGG.csv"), show_col_types = FALSE) %>%
-  rename(pathway_name = ...1)
+  rename(pathway_name = ...1) %>%
+  mutate(pathway_name = clean_pathway_names(pathway_name))
 kegg_allsev_pathways <- readr::read_csv(here::here("Outputs/mummichog/outputs/KEGG/allsev_pathways_KEGG.csv"), show_col_types = FALSE) %>%
-  rename(pathway_name = ...1)
+  rename(pathway_name = ...1) %>%
+  mutate(pathway_name = clean_pathway_names(pathway_name))
 }
 #- 2.3.2: Read MFN pathway results
 {
 mfn_nosev_pathways <- readr::read_csv(here::here("Outputs/mummichog/outputs/MFN/nosev_pathways_MFN.csv"), show_col_types = FALSE) %>%
-  rename(pathway_name = ...1)
+  rename(pathway_name = ...1) %>%
+  mutate(pathway_name = clean_pathway_names(pathway_name))
 mfn_modsev_pathways <- readr::read_csv(here::here("Outputs/mummichog/outputs/MFN/modsev_pathways_MFN.csv"), show_col_types = FALSE) %>%
-  rename(pathway_name = ...1)
+  rename(pathway_name = ...1) %>%
+  mutate(pathway_name = clean_pathway_names(pathway_name))
 mfn_allsev_pathways <- readr::read_csv(here::here("Outputs/mummichog/outputs/MFN/allsev_pathways_MFN.csv"), show_col_types = FALSE) %>%
-  rename(pathway_name = ...1)
+  rename(pathway_name = ...1) %>%
+  mutate(pathway_name = clean_pathway_names(pathway_name))
 }
-#+ 2.4: Pathway Enrichment Plots
-source(here::here("R/Utilities/Visualization/plot_pathway_enrichment.R"))
-#- 2.4.1: Create MFN enrichment plot
-pgd_enrichment_plot_mfn <- plot_pathway_enrichment(
-  nosev_pathways = mfn_nosev_pathways,
-  modsev_pathways = mfn_modsev_pathways,
-  allsev_pathways = mfn_allsev_pathways,
-  p_method = "fisher",
-  enrichment_cap = 5,
-  size_range = c(5, 10),
-  size_breaks = c(5, 3, 1),
-  show_legend = TRUE,
-  save_path = "Outputs/Grob/pgd_enrichment_plot_mfn.png",
-  plot_width = 8,
-  plot_height = 7,
-  dpi = 600
-)
-#- 2.4.1: Create KEGG enrichment plot
-pgd_enrichment_plot_kegg <- plot_pathway_enrichment(
-  nosev_pathways = kegg_nosev_pathways,
-  modsev_pathways = kegg_modsev_pathways,
-  allsev_pathways = kegg_allsev_pathways,
-  p_method = "fisher", # Could use "gamma" or "both" for multiple plots
-  enrichment_cap = 8,
-  size_range = c(4, 8),
-  size_breaks = c(8, 6, 4, 2),
-  show_legend = FALSE,
-  save_path = "Outputs/Grob/pgd_enrichment_plot_kegg.png",
-  plot_width = 8,
-  plot_height = 7,
-  dpi = 600
-)
 #+ 2.6: Enrichment Network Plots
-#- 2.6.1: Source modular functions
-source(here::here("R/Utilities/Analysis/build_enrichment_network.R"))
-source(here::here("R/Utilities/Visualization/plot_enrichment_network.R"))
 #- 2.6.2: No vs Severe PGD KEGG Network
 kegg_nosev_network_data <- kegg_nosev_pathways %>%
   filter(`P(Fisher)` < 0.05) %>%

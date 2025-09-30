@@ -7,7 +7,10 @@
 #' @param nosev_pathways Data frame containing nosev pathway results
 #' @param modsev_pathways Data frame containing modsev pathway results  
 #' @param allsev_pathways Data frame containing allsev pathway results
-#' @param p_method Character string specifying p-value method: "fisher", "gamma", or "both" (default "fisher")
+#' @param p_method Character string specifying p-value method: "fisher", "gamma", "both", or "combined" (default "fisher")
+#' @param nosev_pathways_kegg Data frame containing KEGG nosev pathway results (for combined plot only)
+#' @param modsev_pathways_kegg Data frame containing KEGG modsev pathway results (for combined plot only)  
+#' @param allsev_pathways_kegg Data frame containing KEGG allsev pathway results (for combined plot only)
 #' @param enrichment_cap Numeric maximum value to cap enrichment factors (default 5)
 #' @param size_range Numeric vector of length 2 for dot size range (default c(5, 10))
 #' @param size_breaks Numeric vector for size scale breaks (auto-generated if NULL)
@@ -50,6 +53,9 @@ plot_pathway_enrichment <- function(
   modsev_pathways, 
   allsev_pathways,
   p_method = "fisher",
+  nosev_pathways_kegg = NULL,
+  modsev_pathways_kegg = NULL,
+  allsev_pathways_kegg = NULL,
   enrichment_cap = 5,
   size_range = c(5, 10),
   size_breaks = NULL,
@@ -72,8 +78,53 @@ plot_pathway_enrichment <- function(
   library(forcats)
   
   # Validate p_method
-  if (!p_method %in% c("fisher", "gamma", "both")) {
-    stop("p_method must be 'fisher', 'gamma', or 'both'")
+  if (!p_method %in% c("fisher", "gamma", "both", "combined")) {
+    stop("p_method must be 'fisher', 'gamma', 'both', or 'combined'")
+  }
+  
+  # If method is "combined", combine KEGG and MFN data
+  if (p_method == "combined") {
+    # Check that KEGG data is provided
+    if (is.null(nosev_pathways_kegg) || is.null(modsev_pathways_kegg) || is.null(allsev_pathways_kegg)) {
+      stop("For 'combined' method, all KEGG pathway data must be provided")
+    }
+    
+    # Add database labels and combine data
+    nosev_combined <- bind_rows(
+      nosev_pathways %>% mutate(pathway_name = paste0(pathway_name, " (MFN)")),
+      nosev_pathways_kegg %>% mutate(pathway_name = paste0(pathway_name, " (KEGG)"))
+    )
+    
+    modsev_combined <- bind_rows(
+      modsev_pathways %>% mutate(pathway_name = paste0(pathway_name, " (MFN)")),
+      modsev_pathways_kegg %>% mutate(pathway_name = paste0(pathway_name, " (KEGG)"))
+    )
+    
+    allsev_combined <- bind_rows(
+      allsev_pathways %>% mutate(pathway_name = paste0(pathway_name, " (MFN)")),
+      allsev_pathways_kegg %>% mutate(pathway_name = paste0(pathway_name, " (KEGG)"))
+    )
+    
+    # Call function recursively with combined data and fisher method
+    return(plot_pathway_enrichment(
+      nosev_pathways = nosev_combined,
+      modsev_pathways = modsev_combined,
+      allsev_pathways = allsev_combined,
+      p_method = "fisher",
+      enrichment_cap = enrichment_cap,
+      size_range = size_range,
+      size_breaks = size_breaks,
+      show_legend = show_legend,
+      plot_title = plot_title,
+      save_path = save_path,
+      plot_width = plot_width,
+      plot_height = plot_height,
+      width_per_comparison = width_per_comparison,
+      width_base = width_base,
+      height_per_pathway = height_per_pathway,
+      height_base = height_base,
+      dpi = dpi
+    ))
   }
   
   # If method is "both", run function twice
@@ -207,22 +258,70 @@ plot_pathway_enrichment <- function(
       pathway_name = forcats::fct_reorder(pathway_name, enrichment_factor, .fun = max)
     ) %>%
     # Apply enrichment factor cap
-    mutate(enrichment_factor = pmin(enrichment_factor, enrichment_cap)) %>%
-    # Reorder pathways by allsev comparison enrichment
-    mutate(
-      pathway_name = factor(
-        pathway_name,
-        levels = {
-          allsev_order <- filter(., Comparisons == "No+Mild/Mod vs. Severe PGD" & !is.na(enrichment_factor)) %>%
-            arrange(desc(enrichment_factor)) %>%
-            pull(pathway_name) %>%
-            unique()
-          all_pathways <- unique(.$pathway_name)
-          remaining_pathways <- setdiff(all_pathways, allsev_order)
-          c(allsev_order, remaining_pathways)
-        }
-      )
-    )
+    mutate(enrichment_factor = pmin(enrichment_factor, enrichment_cap))
+  
+  # Dynamically determine which comparison has the most significant pathways
+  pathway_counts <- enrichment_data %>%
+    filter(!is.na(enrichment_factor)) %>%
+    group_by(Comparisons) %>%
+    summarise(n_pathways = n(), .groups = "drop") %>%
+    arrange(desc(n_pathways))
+  
+  # Get the comparison with most pathways
+  primary_comparison <- pathway_counts$Comparisons[1]
+  
+  # Check if this is a combined plot (has both MFN and KEGG labels)
+  all_pathways <- unique(enrichment_data$pathway_name)
+  has_mfn <- any(grepl("\\(MFN\\)$", all_pathways))
+  has_kegg <- any(grepl("\\(KEGG\\)$", all_pathways))
+  is_combined_plot <- has_mfn && has_kegg
+  
+  if (is_combined_plot) {
+    # For combined plots: group by database first, then sort within each group
+    
+    # Get MFN pathways and order them by enrichment in primary comparison
+    mfn_pathways <- enrichment_data %>%
+      filter(grepl("\\(MFN\\)$", pathway_name)) %>%
+      filter(Comparisons == primary_comparison & !is.na(enrichment_factor)) %>%
+      arrange(desc(enrichment_factor)) %>%
+      pull(pathway_name) %>%
+      unique()
+    
+    # Get remaining MFN pathways not in primary comparison
+    all_mfn <- all_pathways[grepl("\\(MFN\\)$", all_pathways)]
+    remaining_mfn <- setdiff(all_mfn, mfn_pathways)
+    
+    # Get KEGG pathways and order them by enrichment in primary comparison
+    kegg_pathways <- enrichment_data %>%
+      filter(grepl("\\(KEGG\\)$", pathway_name)) %>%
+      filter(Comparisons == primary_comparison & !is.na(enrichment_factor)) %>%
+      arrange(desc(enrichment_factor)) %>%
+      pull(pathway_name) %>%
+      unique()
+    
+    # Get remaining KEGG pathways not in primary comparison
+    all_kegg <- all_pathways[grepl("\\(KEGG\\)$", all_pathways)]
+    remaining_kegg <- setdiff(all_kegg, kegg_pathways)
+    
+    # Combine: MFN first (ordered by enrichment), then KEGG (ordered by enrichment)
+    pathway_levels <- c(mfn_pathways, remaining_mfn, kegg_pathways, remaining_kegg)
+    
+  } else {
+    # For non-combined plots: use original ordering logic
+    primary_order <- enrichment_data %>%
+      filter(Comparisons == primary_comparison & !is.na(enrichment_factor)) %>%
+      arrange(desc(enrichment_factor)) %>%
+      pull(pathway_name) %>%
+      unique()
+    
+    # Get all pathways and add remaining ones
+    remaining_pathways <- setdiff(all_pathways, primary_order)
+    pathway_levels <- c(primary_order, remaining_pathways)
+  }
+  
+  # Apply the ordering to the data
+  enrichment_data <- enrichment_data %>%
+    mutate(pathway_name = factor(pathway_name, levels = pathway_levels))
   
   # Auto-generate size breaks if not provided
   if (is.null(size_breaks)) {

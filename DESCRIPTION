@@ -36,9 +36,44 @@ Imports:
     grid,
     patchwork,
     mixOmics,
-    TernTablesR
+    TernTablesR,
+    igraph,
+    RColorBrewer,
+    xtable,
+    som,
+    RJSONIO,
+    gplots,
+    e1071,
+    caTools,
+    randomForest,
+    Cairo,
+    pls,
+    caret,
+    lattice,
+    scatterplot3d,
+    devtools,
+    qqconf,
+    metap,
+    BiocManager
+Additional_repositories: 
+    https://bioconductor.org/packages/release/bioc
+Bioconductor:
+    RBGL,
+    Rgraphviz,
+    fgsea,
+    globaltest,
+    GlobalAncova,
+    Rsamtools,
+    edgeR,
+    siggenes,
+    BiocParallel,
+    MSnbase,
+    xcms,
+    CAMERA,
+    multtest
 Remotes:
-    jdpreston30/TernTablesR
+    jdpreston30/TernTablesR,
+    xia-lab/MetaboAnalystR
 Config/renv/snapshot/type: explicit
 Encoding: UTF-8
 RoxygenNote: 7.2.3
