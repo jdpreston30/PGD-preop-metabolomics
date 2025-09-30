@@ -52,6 +52,61 @@ if (!require(TernTablesR, quietly = TRUE)) {
   remotes::install_github("jdpreston30/TernTablesR")
   library(TernTablesR)
 }
+
+#- 0a.2.5: Install MetaboAnalystR and dependencies (if needed)
+if (!require(MetaboAnalystR, quietly = TRUE)) {
+  cat("🧪 Installing MetaboAnalystR and dependencies...\n")
+  
+  # Install BiocManager if not available
+  if (!require(BiocManager, quietly = TRUE)) {
+    install.packages("BiocManager")
+    library(BiocManager)
+  }
+  
+  # Install Bioconductor dependencies
+  BiocManager::install(c(
+    "RBGL", 
+    "Rgraphviz", 
+    "fgsea", 
+    "globaltest", 
+    "GlobalAncova", 
+    "Rsamtools", 
+    "edgeR", 
+    "siggenes", 
+    "BiocParallel", 
+    "MSnbase", 
+    "xcms", 
+    "CAMERA", 
+    "multtest"
+  ), update = FALSE)
+  
+  # Install CRAN dependencies
+  install.packages(c(
+    "igraph", 
+    "RColorBrewer", 
+    "xtable", 
+    "som", 
+    "RJSONIO", 
+    "gplots", 
+    "e1071", 
+    "caTools", 
+    "randomForest", 
+    "Cairo", 
+    "pls", 
+    "caret", 
+    "lattice", 
+    "scatterplot3d",
+    "devtools",
+    "qqconf", 
+    "metap"
+  ))
+  
+  # Install MetaboAnalystR from GitHub
+  remotes::install_github("xia-lab/MetaboAnalystR", dependencies = FALSE)
+  library(MetaboAnalystR)
+  cat("✅ MetaboAnalystR installation complete!\n")
+}
+
 #+ 0a.3: Load all required packages 
 cat("📚 Loading required packages...\n")
 invisible(sapply(required_packages, library, character.only = TRUE, quietly = TRUE))

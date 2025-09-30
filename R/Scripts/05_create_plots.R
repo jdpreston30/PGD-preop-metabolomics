@@ -34,7 +34,25 @@ volc_allsev <- plot_volcano(
   y_limits = c(0, 6.1),
   down_color = "#4A5D23"
 )
-#+ 5.2: Assign plots for figure assembly
+#+ 5.3: Figure 3 Plots
+#- 5.3.1: Create MFN enrichment plot
+pgd_enrichment_plot_mfn <- plot_pathway_enrichment(
+  nosev_pathways = mfn_nosev_pathways,
+  modsev_pathways = mfn_modsev_pathways,
+  allsev_pathways = mfn_allsev_pathways,
+  p_method = "fisher",
+  enrichment_cap = 5,
+  size_range = c(5, 11),
+  size_breaks = c(5, 3, 1),
+  show_legend = TRUE,
+  save_path = "Figures/Raw/fig2a.png",
+  plot_width = 7.5,
+  plot_height = 7.5,
+  dpi = 600
+)
+#- 5.3.2: Bring in hard copy of enrichment plot
+fig1 <- grid::rasterGrob(as.raster(magick::image_read("Figures/Raw/fig2a.png")), interpolate = TRUE)
+#+ 5.6: Assign plots for figure assembly
 #- 5.2.1: Figure 1
 p1A <- fig1
 #- 5.2.2: Figure 2
@@ -45,7 +63,7 @@ p2D <- volc_modsev
 p2E <- plsda_allsev
 p2F <- volc_allsev
 #- 5.2.3: Figure 3
-p3A <- pathway_enrichment
+p3A <- pgd_enrichment_plot_mfn
 p3B <- network_nosev
 p3C <- network_modsev
 p3D <- network_allsev
@@ -56,3 +74,24 @@ p3D <- network_allsev
 # p4D <- pls_bar_modsev
 # p4E <- superclasses_modsev
 # p4F <- classes_modsev
+#+ Supplemental Figures
+pgd_enrichment_plot_combined <- plot_pathway_enrichment(
+  nosev_pathways = mfn_nosev_pathways,
+  modsev_pathways = mfn_modsev_pathways,
+  allsev_pathways = mfn_allsev_pathways,
+  p_method = "combined",
+  nosev_pathways_kegg = kegg_nosev_pathways,
+  modsev_pathways_kegg = kegg_modsev_pathways,
+  allsev_pathways_kegg = kegg_allsev_pathways,
+  enrichment_cap = 7,
+  size_range = c(5, 11),
+  size_breaks = c(7, 5, 3, 1),
+  show_legend = TRUE,
+  save_path = "Outputs/Grob/pgd_enrichment_plot_combined.png",
+  plot_width = 8.1,
+  plot_height = 11.575,
+  dpi = 600
+)
+#+ 5.7: Assign Supplementary Figures For Assembly
+#- 5.3.1: Supplementary Figure 1
+sup1A <- pgd_enrichment_plot_combined
