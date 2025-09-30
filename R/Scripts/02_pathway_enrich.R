@@ -21,64 +21,66 @@ pathway_enrich_allsev <- mummichog_ttests(
   group1_value = "No/Mild/Mod. PGD",
   group2_value = "Severe PGD"
 )
+#+ 2.2: Run Mummichog Analysis (using t-test results directly)
 #- 2.2.1: Run Mummichog Analysis for No vs Severe (MFN database)
 mummichog_nosev_mfn <- run_mummichog_analysis(
   ttest_results = pathway_enrich_nosev$results,
-  analysis_name = "nosev",
+  output_dir = "Outputs/mummichog/nosev/MFN",
   database = "hsa_mfn",
-  output_base_dir = "Outputs/mummichog",
-  ppm_tolerance = 5,
-  p_threshold = 0.05
+  instrumentOpt = 5.0,
+  msModeOpt = "mixed",
+  force_primary_ion = "yes",
+  pval_peak_cutoff = FALSE 
 )
 #- 2.2.2: Run Mummichog Analysis for No vs Severe (KEGG database)  
 mummichog_nosev_kegg <- run_mummichog_analysis(
   ttest_results = pathway_enrich_nosev$results,
-  analysis_name = "nosev", 
+  output_dir = "Outputs/mummichog/nosev/KEGG",
   database = "hsa_kegg",
-  output_base_dir = "Outputs/mummichog",
-  ppm_tolerance = 5,
-  rt_units = "seconds"
-  # Uses default dynamic p-value threshold (top 10% of peaks)
+  instrumentOpt = 5.0,
+  msModeOpt = "mixed",
+  force_primary_ion = "yes",
+  pval_peak_cutoff = FALSE 
 )
 #- 2.2.3: Run Mummichog Analysis for Mild/Mod vs Severe (MFN database)
 mummichog_modsev_mfn <- run_mummichog_analysis(
   ttest_results = pathway_enrich_modsev$results,
-  analysis_name = "modsev",
+  output_dir = "Outputs/mummichog/modsev/MFN",
   database = "hsa_mfn",
-  output_base_dir = "Outputs/mummichog",
-  ppm_tolerance = 5,
-  rt_units = "seconds"
-  # Uses default dynamic p-value threshold (top 10% of peaks)
+  instrumentOpt = 5.0,
+  msModeOpt = "mixed",
+  force_primary_ion = "yes",
+  pval_peak_cutoff = FALSE 
 )
 #- 2.2.4: Run Mummichog Analysis for Mild/Mod vs Severe (KEGG database)  
 mummichog_modsev_kegg <- run_mummichog_analysis(
   ttest_results = pathway_enrich_modsev$results,
-  analysis_name = "modsev", 
+  output_dir = "Outputs/mummichog/modsev/KEGG",
   database = "hsa_kegg",
-  output_base_dir = "Outputs/mummichog",
-  ppm_tolerance = 5,
-  rt_units = "seconds"
-  # Uses default dynamic p-value threshold (top 10% of peaks)
+  instrumentOpt = 5.0,
+  msModeOpt = "mixed",
+  force_primary_ion = "yes",
+  pval_peak_cutoff = FALSE 
 )
 #- 2.2.5: Run Mummichog Analysis for No+Mild/Mod vs Severe (MFN database)
 mummichog_allsev_mfn <- run_mummichog_analysis(
   ttest_results = pathway_enrich_allsev$results,
-  analysis_name = "allsev",
+  output_dir = "Outputs/mummichog/allsev/MFN",
   database = "hsa_mfn",
-  output_base_dir = "Outputs/mummichog",
-  ppm_tolerance = 5,
-  rt_units = "seconds"
-  # Uses default dynamic p-value threshold (top 10% of peaks)
+  instrumentOpt = 5.0,
+  msModeOpt = "mixed",
+  force_primary_ion = "yes",
+  pval_peak_cutoff = FALSE 
 )
 #- 2.2.6: Run Mummichog Analysis for No+Mild/Mod vs Severe (KEGG database)  
 mummichog_allsev_kegg <- run_mummichog_analysis(
   ttest_results = pathway_enrich_allsev$results,
-  analysis_name = "allsev", 
+  output_dir = "Outputs/mummichog/allsev/KEGG",
   database = "hsa_kegg",
-  output_base_dir = "Outputs/mummichog",
-  ppm_tolerance = 5,
-  rt_units = "seconds"
-  # Uses default dynamic p-value threshold (top 10% of peaks)
+  instrumentOpt = 5.0,
+  msModeOpt = "mixed",
+  force_primary_ion = "yes",
+  pval_peak_cutoff = FALSE 
 )
 #+ 2.3: Create Pathway Enrichment Plots (using MetaboAnalystR JSON outputs)
 #- 2.3.1: Define JSON file paths once
