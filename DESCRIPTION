@@ -54,7 +54,8 @@ Imports:
     devtools,
     qqconf,
     metap,
-    BiocManager
+    BiocManager,
+    jsonlite
 Additional_repositories: 
     https://bioconductor.org/packages/release/bioc
 Bioconductor:
