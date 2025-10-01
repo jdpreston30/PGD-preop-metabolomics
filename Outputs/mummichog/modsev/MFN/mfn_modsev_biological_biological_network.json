@@ -1,0 +1,211 @@
+{
+  "node_data": [
+    {
+      "id": "Fructose and mannose metabolism",
+      "label": "Fructose and mannose metabolism",
+      "pvalue": 0.0001,
+      "hits_sig": 8,
+      "hits_total": 22,
+      "pathway_total": 33,
+      "enrichment_factor": 2.8627
+    },
+    {
+      "id": "De novo fatty acid biosynthesis",
+      "label": "De novo fatty acid biosynthesis",
+      "pvalue": 0.0004,
+      "hits_sig": 10,
+      "hits_total": 17,
+      "pathway_total": 106,
+      "enrichment_factor": 2.2364
+    },
+    {
+      "id": "Butanoate metabolism",
+      "label": "Butanoate metabolism",
+      "pvalue": 0.0031,
+      "hits_sig": 8,
+      "hits_total": 20,
+      "pathway_total": 34,
+      "enrichment_factor": 1.278
+    },
+    {
+      "id": "Hexose phosphorylation",
+      "label": "Hexose phosphorylation",
+      "pvalue": 0.0031,
+      "hits_sig": 5,
+      "hits_total": 16,
+      "pathway_total": 20,
+      "enrichment_factor": 1.7203
+    },
+    {
+      "id": "Fatty acid activation",
+      "label": "Fatty acid activation",
+      "pvalue": 0.0043,
+      "hits_sig": 8,
+      "hits_total": 19,
+      "pathway_total": 74,
+      "enrichment_factor": 1.835
+    },
+    {
+      "id": "Polyunsaturated fatty acid biosynthesis",
+      "label": "Polyunsaturated fatty acid biosynthesis",
+      "pvalue": 0.009,
+      "hits_sig": 1,
+      "hits_total": 1,
+      "pathway_total": 21,
+      "enrichment_factor": 1.7892
+    },
+    {
+      "id": "Benzoate degradation via CoA ligation",
+      "label": "Benzoate degradation via CoA ligation",
+      "pvalue": 0.0166,
+      "hits_sig": 2,
+      "hits_total": 2,
+      "pathway_total": 4,
+      "enrichment_factor": 2.9819
+    },
+    {
+      "id": "Di-unsaturated fatty acid beta-oxidation",
+      "label": "Di-unsaturated fatty acid beta-oxidation",
+      "pvalue": 0.0269,
+      "hits_sig": 1,
+      "hits_total": 4,
+      "pathway_total": 26,
+      "enrichment_factor": 1.278
+    },
+    {
+      "id": "Fatty Acid Metabolism",
+      "label": "Fatty Acid Metabolism",
+      "pvalue": 0.05,
+      "hits_sig": 2,
+      "hits_total": 11,
+      "pathway_total": 63,
+      "enrichment_factor": 0.6626
+    },
+    {
+      "id": "Arachidonic acid metabolism",
+      "label": "Arachidonic acid metabolism",
+      "pvalue": 0.0513,
+      "hits_sig": 25,
+      "hits_total": 51,
+      "pathway_total": 95,
+      "enrichment_factor": 6.5777
+    },
+    {
+      "id": "Valine, leucine and isoleucine degradation",
+      "label": "Valine, leucine and isoleucine degradation",
+      "pvalue": 0.0618,
+      "hits_sig": 10,
+      "hits_total": 25,
+      "pathway_total": 65,
+      "enrichment_factor": 1.7892
+    },
+    {
+      "id": "C21-steroid hormone biosynthesis and metabolism",
+      "label": "C21-steroid hormone biosynthesis and metabolism",
+      "pvalue": 0.0687,
+      "hits_sig": 16,
+      "hits_total": 56,
+      "pathway_total": 112,
+      "enrichment_factor": 2.8065
+    }
+  ],
+  "edge_data": [
+    {
+      "source": "Fructose and mannose metabolism",
+      "target": "Hexose phosphorylation",
+      "interaction": "shared_metabolites",
+      "weight": 5,
+      "shared_compounds": "EC00032;EC000551;EC000552;EC000553;EC000554"
+    },
+    {
+      "source": "De novo fatty acid biosynthesis",
+      "target": "Fatty acid activation",
+      "interaction": "shared_metabolites",
+      "weight": 9,
+      "shared_compounds": "EC000696;EC000697;EC000698;EC0001197;EC0001415;EC000859;EC000707;EC000708;EC000709"
+    },
+    {
+      "source": "De novo fatty acid biosynthesis",
+      "target": "Polyunsaturated fatty acid biosynthesis",
+      "interaction": "shared_metabolites",
+      "weight": 3,
+      "shared_compounds": "EC000696;EC000697;EC000698"
+    },
+    {
+      "source": "De novo fatty acid biosynthesis",
+      "target": "Di-unsaturated fatty acid beta-oxidation",
+      "interaction": "shared_metabolites",
+      "weight": 3,
+      "shared_compounds": "EC000707;EC000708;EC000709"
+    },
+    {
+      "source": "De novo fatty acid biosynthesis",
+      "target": "Fatty Acid Metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 6,
+      "shared_compounds": "EC000696;EC000697;EC000698;EC000707;EC000708;EC000709"
+    },
+    {
+      "source": "De novo fatty acid biosynthesis",
+      "target": "Arachidonic acid metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 2,
+      "shared_compounds": "EC0001197;EC000214"
+    },
+    {
+      "source": "Butanoate metabolism",
+      "target": "Valine, leucine and isoleucine degradation",
+      "interaction": "shared_metabolites",
+      "weight": 4,
+      "shared_compounds": "EC00027;EC000192;EC000617;EC000618"
+    },
+    {
+      "source": "Fatty acid activation",
+      "target": "Polyunsaturated fatty acid biosynthesis",
+      "interaction": "shared_metabolites",
+      "weight": 3,
+      "shared_compounds": "EC000696;EC000697;EC000698"
+    },
+    {
+      "source": "Fatty acid activation",
+      "target": "Di-unsaturated fatty acid beta-oxidation",
+      "interaction": "shared_metabolites",
+      "weight": 3,
+      "shared_compounds": "EC000707;EC000708;EC000709"
+    },
+    {
+      "source": "Fatty acid activation",
+      "target": "Fatty Acid Metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 6,
+      "shared_compounds": "EC000707;EC000708;EC000709;EC000696;EC000697;EC000698"
+    },
+    {
+      "source": "Fatty acid activation",
+      "target": "Arachidonic acid metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC0001197"
+    },
+    {
+      "source": "Polyunsaturated fatty acid biosynthesis",
+      "target": "Fatty Acid Metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 3,
+      "shared_compounds": "EC000696;EC000697;EC000698"
+    },
+    {
+      "source": "Di-unsaturated fatty acid beta-oxidation",
+      "target": "Fatty Acid Metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 3,
+      "shared_compounds": "EC000707;EC000708;EC000709"
+    }
+  ],
+  "metadata": {
+    "min_shared_compounds": 1,
+    "p_threshold": 0.1,
+    "n_pathways": 12,
+    "n_edges": 13
+  }
+}

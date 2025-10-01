@@ -22,6 +22,7 @@
 #' @param height_per_pathway Numeric height per pathway row in inches (default 0.3)
 #' @param height_base Numeric base height in inches (default 2)
 #' @param dpi Numeric resolution for saved plot (default 600)
+#' @param color_scale Character string for color scheme: "red" (default) or "blue"
 #'
 #' @return A ggplot2 object
 #'
@@ -37,6 +38,13 @@
 #'   plot <- plot_mummichog_enrichment(
 #'     json_files = json_files,
 #'     combine_databases = FALSE
+#'   )
+#'   
+#'   # With blue color scheme
+#'   plot_blue <- plot_mummichog_enrichment(
+#'     json_files = json_files,
+#'     combine_databases = FALSE,
+#'     color_scale = "blue"
 #'   )
 #'   
 #'   # Multiple database plot
@@ -68,7 +76,8 @@ plot_mummichog_enrichment <- function(
   width_base = NULL,
   height_per_pathway = 0.3,
   height_base = 2,
-  dpi = 600
+  dpi = 600,
+  color_scale = "blue"
 ) {
   
   # Load required libraries
@@ -282,7 +291,8 @@ plot_mummichog_enrichment <- function(
       guide = if (show_legend) guide_legend(reverse = TRUE) else "none"
     ) +
     scale_color_gradient(
-      low = "#0a2256", high = "#c3dbe9",
+      low = if(color_scale == "blue") "#c3dbe9" else "#F2A93B",
+      high = if(color_scale == "blue") "#0a2256" else "#A4312A",
       limits = c(0.01, 0.05),
       oob = scales::squish,
       name = "p-value\n",

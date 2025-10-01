@@ -120,5 +120,94 @@ pgd_enrichment_plot_combined <- plot_mummichog_enrichment(
   plot_height = 9.8,
   dpi = 600
 )
-#+ 2.4: Create Enrichment Network Plot
-#- 2.4.1: Create MFN enrichment network plot
+#+ 2.4: Run Biological Network Analysis
+#- 2.4.1: Run Network for MFN (No vs Severe)
+mfn_nosev_network <- create_biological_network(
+  pathway_csv = "Outputs/mummichog/nosev/MFN/mummichog_pathway_enrichment_mummichog.csv",
+  min_shared_compounds = 1, 
+  p_threshold = 0.1,
+  max_pathways = 20,
+  network_name = "mfn_nosev_biological"
+)
+#- 2.4.2: Run Network for MFN (Mild/Mod vs Severe)
+mfn_modsev_network <- create_biological_network(
+  pathway_csv = "Outputs/mummichog/modsev/MFN/mummichog_pathway_enrichment_mummichog.csv",
+  min_shared_compounds = 1, 
+  p_threshold = 0.1,
+  max_pathways = 20,
+  network_name = "mfn_modsev_biological"
+)
+#- 2.4.3: Run Network for MFN (No+Mild/Mod vs Severe)
+mfn_allsev_network <- create_biological_network(
+  pathway_csv = "Outputs/mummichog/allsev/MFN/mummichog_pathway_enrichment_mummichog.csv",
+  min_shared_compounds = 1, 
+  p_threshold = 0.1,
+  max_pathways = 20,
+  network_name = "mfn_allsev_biological"
+)
+#+ 2.5: Plot Biological Networks
+source("R/Utilities/Helpers/clean_pathway_names_for_network.R")
+source("R/Utilities/Visualization/plot_biological_network.R")
+#- 2.5.1: Plot MFN Network (No vs Severe)
+nosev_network_plot <- plot_biological_network(
+  network_data = mfn_nosev_network,
+  output_file = "Figures/Raw/biological_network_mfn_nosev.png",
+  title = "No PGD vs. Severe PGD (0v3)",
+  node_size_range = c(4, 14),
+  text_size = 4.5,
+  show_legend = FALSE,
+  plot_width = 10.5,
+  plot_height = 12,
+  dpi = 600,
+  seed = 2025,
+  variable_edge_thickness = TRUE,
+  edge_thickness_range = c(0.3, 3),
+  max_distance_from_center = 2.2,
+  label_position = "above",
+  show_node_numbers = FALSE,  # Uncomment to see pathway reference numbers
+  labels_below = c(4, 6, 7, 9),  # Much cleaner than the old way!
+  nudge_labels_vert = list(p1 = -2, p5 = -1, p2 = 0, p3 = -2, p6 = 3.5, p9 = 3, p8 = 0),
+  nudge_labels_horiz = list(p8 = -0.13, p2 = 1.18, p4 = 0.8, p5 = -0.07)
+)
+#- 2.5.2: Plot MFN Network (Mild/Mod vs Severe
+modsev_network_plot <- plot_biological_network(
+  network_data = mfn_modsev_network,
+  output_file = "Figures/Raw/biological_network_mfn_modsev.png",
+  title = "Mild/Mod. PGD vs. Severe PGD (1-2v3)",
+  node_size_range = c(4, 14),
+  text_size = 4.5,
+  show_legend = FALSE,
+  plot_width = 10.5,
+  plot_height = 12,
+  dpi = 600,
+  seed = 2024,
+  variable_edge_thickness = TRUE,
+  edge_thickness_range = c(0.3, 3),
+  max_distance_from_center = 2.2,
+  label_position = "above",
+  show_node_numbers = FALSE,  # Uncomment to see pathway reference numbers
+  labels_below = c(3,9,6,4,8),  # Much cleaner than the old way!
+  nudge_labels_vert = list(p1 = -2, p4 = 2.55, p3 = 2.9, p7 = -1.6, p11 = -2, p12 = 0.3, p10 = 0, p9 = 1.9, p6 = 1.9, p8 = 0, p5 = -2, p2 = 3),
+  nudge_labels_horiz = list(p12 = 1.06, p10 = -0.12, p9 = -0.1, p8 = -.1, p2 = 0.97)
+)
+#- 2.5.3: Plot MFN Network (No+Mild/Mod vs Severe)
+allsev_network_plot <- plot_biological_network(
+  network_data = mfn_allsev_network,
+  output_file = "Figures/Raw/biological_network_mfn_allsev.png",
+  title = "No/Mild/Mod. PGD vs. Severe PGD (0-2v3)",
+  node_size_range = c(4, 14),
+  text_size = 4.5,
+  show_legend = FALSE,
+  plot_width = 10.5,
+  plot_height = 12,
+  dpi = 100,
+  seed = 2022,
+  variable_edge_thickness = TRUE,
+  edge_thickness_range = c(0.3, 3),
+  max_distance_from_center = 2.2,
+  label_position = "above",
+  show_node_numbers = TRUE,
+  labels_below = c(4,1,14,5,2),  # Much cleaner than the old way!
+  nudge_labels_vert = list(p12 = -2, p14= 3, p7 = 0, p2 =3.3),
+  nudge_labels_horiz = list(p5 = 0.55, p14 = 0.55, p7 = 1.09, p2 = 0.9)
+)

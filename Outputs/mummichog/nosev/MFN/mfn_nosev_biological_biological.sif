@@ -1,0 +1,28 @@
+Mono-unsaturated fatty acid beta-oxidation	shared_metabolites_1	Tyrosine metabolism
+Mono-unsaturated fatty acid beta-oxidation	shared_metabolites_2	Di-unsaturated fatty acid beta-oxidation
+Mono-unsaturated fatty acid beta-oxidation	shared_metabolites_1	Ubiquinone Biosynthesis
+Mono-unsaturated fatty acid beta-oxidation	shared_metabolites_1	Vitamin E metabolism
+Mono-unsaturated fatty acid beta-oxidation	shared_metabolites_1	Tryptophan metabolism
+Mono-unsaturated fatty acid beta-oxidation	shared_metabolites_1	Valine, leucine and isoleucine degradation
+Tyrosine metabolism	shared_metabolites_1	Di-unsaturated fatty acid beta-oxidation
+Tyrosine metabolism	shared_metabolites_4	Ubiquinone Biosynthesis
+Tyrosine metabolism	shared_metabolites_4	Vitamin E metabolism
+Tyrosine metabolism	shared_metabolites_7	Tryptophan metabolism
+Tyrosine metabolism	shared_metabolites_3	Vitamin B9 (folate) metabolism
+Tyrosine metabolism	shared_metabolites_4	Valine, leucine and isoleucine degradation
+Tyrosine metabolism	shared_metabolites_9	Urea cycle/amino group metabolism
+Di-unsaturated fatty acid beta-oxidation	shared_metabolites_1	Ubiquinone Biosynthesis
+Di-unsaturated fatty acid beta-oxidation	shared_metabolites_1	Vitamin E metabolism
+Di-unsaturated fatty acid beta-oxidation	shared_metabolites_1	Tryptophan metabolism
+Di-unsaturated fatty acid beta-oxidation	shared_metabolites_1	Valine, leucine and isoleucine degradation
+Ubiquinone Biosynthesis	shared_metabolites_1	Vitamin E metabolism
+Ubiquinone Biosynthesis	shared_metabolites_1	Tryptophan metabolism
+Ubiquinone Biosynthesis	shared_metabolites_1	Valine, leucine and isoleucine degradation
+Vitamin E metabolism	shared_metabolites_1	Tryptophan metabolism
+Vitamin E metabolism	shared_metabolites_1	Valine, leucine and isoleucine degradation
+Tryptophan metabolism	shared_metabolites_3	Vitamin B9 (folate) metabolism
+Tryptophan metabolism	shared_metabolites_4	Valine, leucine and isoleucine degradation
+Tryptophan metabolism	shared_metabolites_3	Urea cycle/amino group metabolism
+Vitamin B9 (folate) metabolism	shared_metabolites_3	Valine, leucine and isoleucine degradation
+Vitamin B9 (folate) metabolism	shared_metabolites_3	Urea cycle/amino group metabolism
+Valine, leucine and isoleucine degradation	shared_metabolites_4	Urea cycle/amino group metabolism
