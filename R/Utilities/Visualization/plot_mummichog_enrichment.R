@@ -291,8 +291,8 @@ plot_mummichog_enrichment <- function(
       guide = if (show_legend) guide_legend(reverse = TRUE) else "none"
     ) +
     scale_color_gradient(
-      low = if(color_scale == "blue") "#c3dbe9" else "#F2A93B",
-      high = if(color_scale == "blue") "#0a2256" else "#A4312A",
+      low = if(color_scale == "blue") "#0a2256" else "#A4312A",
+      high = if(color_scale == "blue") "#c3dbe9" else "#F2A93B",
       limits = c(0.01, 0.05),
       oob = scales::squish,
       name = "p-value\n",

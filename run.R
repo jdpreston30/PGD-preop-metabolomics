@@ -14,7 +14,9 @@ source("R/Scripts/00d_FTs.R")
 #+ Analysis
 #- Main Analysis
 source("R/Scripts/01_clustering.R")
-# source("R/Scripts/02_pathway_enrich.R")
+source("R/Scripts/02_pathway_enrich.R")
+source("R/Scripts/05_assign_plots.R")
+source("R/Scripts/06_render_figures.R")
 }
 
 
@@ -31,7 +33,7 @@ source("R/Scripts/01_clustering.R")
 {
   source("R/Scripts/00b_setup.R")
   source("R/Scripts/01_clustering.R")
-  source("R/Scripts/05_create_plots.R")
+  source("R/Scripts/05_assign_plots.R")
   source("R/Scripts/06_render_figures.R")
 }
 

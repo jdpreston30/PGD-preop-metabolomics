@@ -46,3 +46,36 @@ volcano_allsev_data <- run_volcano(
   fc_threshold = log2(1.5),
   p_threshold = 0.05
 )
+#+ 1.4: Create Plots
+#- 1.4.1: For No PGD vs Severe PLSDA
+plsda_nosev <- plot_PCA(
+  pca_results = plsda_nosev_data
+)
+#- 1.4.2: For Moderate vs Severe PLSDA
+plsda_modsev <- plot_PCA(
+  pca_results = plsda_modsev_data
+)
+#- 1.4.3: For No PGD vs Severe Volcano
+volc_nosev <- plot_volcano(
+  volcano_results = volcano_nosev_data,
+  x_limits = c(-6, 6.435),
+  y_limits = c(0, 6.1),
+)
+#- 1.4.4: For Moderate vs Severe Volcano
+volc_modsev <- plot_volcano(
+  volcano_results = volcano_modsev_data,
+  x_limits = c(-6, 6.435),
+  y_limits = c(0, 6.1),
+  down_color = "#be5010ff"  
+)
+#- 1.4.5: For No+Mild/Mod. PGD vs Severe PLSDA
+plsda_allsev <- plot_PCA(
+  pca_results = plsda_allsev_data
+)
+#- 1.4.6: For No+Mild/Mod. PGD vs Severe Volcano
+volc_allsev <- plot_volcano(
+  volcano_results = volcano_allsev_data,
+  x_limits = c(-6, 6.435),
+  y_limits = c(0, 6.1),
+  down_color = "#4A5D23"
+)
