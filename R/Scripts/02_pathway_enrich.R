@@ -29,8 +29,7 @@ mummichog_nosev_mfn <- run_mummichog_analysis(
   database = "hsa_mfn",
   instrumentOpt = 5.0,
   msModeOpt = "mixed",
-  force_primary_ion = "yes",
-  pval_peak_cutoff = TRUE 
+  force_primary_ion = "yes"
 )
 #- 2.2.2: Run Mummichog Analysis for No vs Severe (KEGG database)  
 mummichog_nosev_kegg <- run_mummichog_analysis(
@@ -39,8 +38,7 @@ mummichog_nosev_kegg <- run_mummichog_analysis(
   database = "hsa_kegg",
   instrumentOpt = 5.0,
   msModeOpt = "mixed",
-  force_primary_ion = "yes",
-  pval_peak_cutoff = FALSE 
+  force_primary_ion = "yes"
 )
 #- 2.2.3: Run Mummichog Analysis for Mild/Mod vs Severe (MFN database)
 mummichog_modsev_mfn <- run_mummichog_analysis(
@@ -49,8 +47,7 @@ mummichog_modsev_mfn <- run_mummichog_analysis(
   database = "hsa_mfn",
   instrumentOpt = 5.0,
   msModeOpt = "mixed",
-  force_primary_ion = "yes",
-  pval_peak_cutoff = FALSE 
+  force_primary_ion = "yes"
 )
 #- 2.2.4: Run Mummichog Analysis for Mild/Mod vs Severe (KEGG database)  
 mummichog_modsev_kegg <- run_mummichog_analysis(
@@ -59,8 +56,7 @@ mummichog_modsev_kegg <- run_mummichog_analysis(
   database = "hsa_kegg",
   instrumentOpt = 5.0,
   msModeOpt = "mixed",
-  force_primary_ion = "yes",
-  pval_peak_cutoff = FALSE 
+  force_primary_ion = "yes"
 )
 #- 2.2.5: Run Mummichog Analysis for No+Mild/Mod vs Severe (MFN database)
 mummichog_allsev_mfn <- run_mummichog_analysis(
@@ -69,8 +65,7 @@ mummichog_allsev_mfn <- run_mummichog_analysis(
   database = "hsa_mfn",
   instrumentOpt = 5.0,
   msModeOpt = "mixed",
-  force_primary_ion = "yes",
-  pval_peak_cutoff = FALSE 
+  force_primary_ion = "yes"
 )
 #- 2.2.6: Run Mummichog Analysis for No+Mild/Mod vs Severe (KEGG database)  
 mummichog_allsev_kegg <- run_mummichog_analysis(
@@ -79,8 +74,7 @@ mummichog_allsev_kegg <- run_mummichog_analysis(
   database = "hsa_kegg",
   instrumentOpt = 5.0,
   msModeOpt = "mixed",
-  force_primary_ion = "yes",
-  pval_peak_cutoff = FALSE 
+  force_primary_ion = "yes"
 )
 #+ 2.3: Create Pathway Enrichment Plots (using MetaboAnalystR JSON outputs)
 #- 2.3.1: Define JSON file paths once
@@ -127,3 +121,4 @@ pgd_enrichment_plot_combined <- plot_mummichog_enrichment(
   dpi = 600
 )
 #+ 2.4: Create Enrichment Network Plot
+#- 2.4.1: Create MFN enrichment network plot
