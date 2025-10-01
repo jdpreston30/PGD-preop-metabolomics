@@ -9,6 +9,7 @@ paths:
   UFT_full: /Users/jdp2019/Library/CloudStorage/OneDrive-Emory/Research/MS_raw_data/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/MetaboJanitoR_static_precombat/Outputs/Untargeted/UFT_full_halfmin_log2.csv
   UFT_filtered: /Users/jdp2019/Library/CloudStorage/OneDrive-Emory/Research/MS_raw_data/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/MetaboJanitoR_static_precombat/Outputs/Untargeted/UFT_20p_halfmin_log2.csv
   clinical_metadata: /Users/jdp2019/Library/CloudStorage/OneDrive-Emory/Research/Chan Lab - Transplant Multi-Omics - OHT/OHT Clinical Data Master Sheet.xlsx
+  sample_type: /Users/jdp2019/Library/CloudStorage/OneDrive-Emory/Research/MS_raw_data/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/sample_type.xlsx
   # Output paths (relative to project root)
   output: "./Outputs"
   figures: "/Users/jdp2019/Desktop/PGD_figures"
@@ -65,6 +66,7 @@ analysis:
       T3: # Perioperative and postoperative outcomes
         - operative_IT_minutes
         - operative_CPB_minutes
+        - donor_platform_generic
         - postop_LVEF_median
         - postop_CVP
         - postop_cardiac_index

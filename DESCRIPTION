@@ -71,7 +71,8 @@ Bioconductor:
     MSnbase,
     xcms,
     CAMERA,
-    multtest
+    multtest,
+    TernTablesR
 Remotes:
     jdpreston30/TernTablesR,
     xia-lab/MetaboAnalystR

@@ -37,11 +37,14 @@ conflicts_prefer(dplyr::select)
 conflicts_prefer(dplyr::mutate)
 conflicts_prefer(dplyr::arrange)
 conflicts_prefer(dplyr::summarise)
+conflicts_prefer(dplyr::count)
 conflicts_prefer(ggplot2::margin)
 conflicts_prefer(stats::chisq.test)
 conflicts_prefer(stats::fisher.test)
 conflicts_prefer(readxl::read_xlsx)
 conflicts_prefer(raster::intersect)
+conflicts_prefer(igraph::compose)
+conflicts_prefer(flextable::align)
 #+ 0b.7: Load utility functions 
 if (dir.exists(utils_path)) {
   purrr::walk(
