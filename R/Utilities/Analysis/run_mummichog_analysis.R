@@ -12,8 +12,6 @@
 #' @param force_primary_ion Character. Primary ion filtering, "yes" or "no" (default: "yes")
 #' @param rt_frac Numeric. RT fraction parameter (default: 0.02)
 #' @param rt_tol Numeric. RT tolerance parameter (default: NA)
-#' @param pval_peak_cutoff Logical. If TRUE, uses dynamic p-value threshold 
-#'   to analyze top 10% of peaks. If FALSE (default), analyzes all peaks (p < 1.0)
 #'
 #' @return A MetaboAnalyst mSet object containing analysis results
 #'
@@ -45,8 +43,7 @@ run_mummichog_analysis <- function(
   msModeOpt = "mixed",      # Character - mass-spec mode 
   force_primary_ion = "yes", # Character - primary ion filtering
   rt_frac = 0.02,           # RT fraction
-  rt_tol = NA,              # RT tolerance
-  pval_peak_cutoff = FALSE   # TRUE = dynamic top 10%, FALSE = use all peaks (1.0)
+  rt_tol = NA               # RT tolerance
 ) {
   
   library(MetaboAnalystR)
@@ -133,40 +130,44 @@ run_mummichog_analysis <- function(
     if (!is.list(mSet)) stop("mSet corrupted after SetPeakEnrichMethod")
     cat("✓ SetPeakEnrichMethod completed\n")
     
-    # P-value threshold selection
-    if (pval_peak_cutoff) {
-      # Custom implementation of SetMummichogPvalFromPercent (fixed version)
-      fraction <- 0.1  # Top 10% of peaks
-      peakFormat <- mSet$paramSet$peakFormat
-      
-      if(peakFormat %in% c("rmp", "rmt")){
-        maxp <- 0
-      } else {
-        pvals <- c(0.25, 0.2, 0.15, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001, 0.00005, 0.00001)
-        ndat <- mSet$dataSet$mummi.proc
-        n <- floor(fraction * length(ndat[,"p.value"]))
-        cutoff <- ndat[n+1,1]
-        if(!any(pvals <= cutoff)){
-          maxp <- 0.00001
-        } else {
-          maxp <- max(pvals[pvals <= cutoff])
-        }
-      }
-      
-      mSet$dataSet$cutoff <- maxp
-      mSet <- SetMummichogPval(mSet, maxp)  # Fixed: pass mSet instead of NA
-      cat("✓ Dynamic p-value threshold calculated:", maxp, "(top 10% of peaks)\n")
+    # Dynamic p-value threshold selection (top 10% of peaks)
+    # Custom implementation of SetMummichogPvalFromPercent (fixed version)
+    fraction <- 0.1  # Top 10% of peaks
+    peakFormat <- mSet$paramSet$peakFormat
+    
+    if(peakFormat %in% c("rmp", "rmt")){
+      maxp <- 0
     } else {
-      # Use all peaks
-      mSet <- SetMummichogPval(mSet, 1.0)
-      cat("✓ Using all peaks (p-value threshold: 1.0)\n")
+      pvals <- c(0.25, 0.2, 0.15, 0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001, 0.00005, 0.00001)
+      ndat <- mSet$dataSet$mummi.proc
+      n <- floor(fraction * length(ndat[,"p.value"]))
+      actual_cutoff <- ndat[n+1,1]  # This is the precise value you remember!
+      if(!any(pvals <= actual_cutoff)){
+        maxp <- 0.00001
+      } else {
+        maxp <- max(pvals[pvals <= actual_cutoff])
+      }
+      # Store both values for reporting
+      mSet$dataSet$actual_cutoff <- actual_cutoff
     }
+    
+    mSet$dataSet$cutoff <- maxp
+    mSet <- SetMummichogPval(mSet, maxp)  # Fixed: pass mSet instead of NA
+    cat("✓ Dynamic p-value threshold calculated:", maxp, "(top 10% of peaks)\n")
+    cat("✓ Actual 10th percentile p-value:", actual_cutoff, "\n")
     
     if (!is.list(mSet)) stop("mSet corrupted after SetMummichogPval")
     
     mSet <- PerformPSEA(mSet, database, "current", 3, 100)
     if (!is.list(mSet)) stop("mSet corrupted after PerformPSEA")
     cat("✓ PerformPSEA completed\n")
+    
+    # Debug: Check what pathway statistics are available
+    cat("Available pathway fields:\n")
+    if(!is.null(mSet$path.pval)) cat("  - path.pval: ", length(mSet$path.pval), " values\n")
+    if(!is.null(mSet$path.fdr)) cat("  - path.fdr: ", length(mSet$path.fdr), " values\n")
+    if(!is.null(mSet$pathway.fdr)) cat("  - pathway.fdr: ", length(mSet$pathway.fdr), " values\n")
+    if(!is.null(mSet$dataSet$pathway.fdr)) cat("  - dataSet$pathway.fdr: ", length(mSet$dataSet$pathway.fdr), " values\n")
     
     mSet <- PlotPeaks2Paths(mSet, "peaks_to_paths_0_", "png", 150, width=NA)
     if (!is.list(mSet)) stop("mSet corrupted after PlotPeaks2Paths")
@@ -201,55 +202,69 @@ run_mummichog_analysis <- function(
   enrich_method <- if(!is.null(mSet$paramSet$anal.type)) mSet$paramSet$anal.type else "mummichog"
   version <- if(!is.null(mSet$paramSet$version)) mSet$paramSet$version else "v2"
   
-  # Extract actual p-value threshold used from mSet object or from our logic
-  if (pval_peak_cutoff && exists("maxp")) {
-    actual_pval_threshold <- maxp
-  } else if (!pval_peak_cutoff) {
-    actual_pval_threshold <- 1.0
+  # Extract actual p-value thresholds from mSet object
+  peak_filter_threshold <- if(!is.null(mSet$dataSet$cutoff)) {
+    mSet$dataSet$cutoff
   } else {
-    # Fallback extraction from mSet object
-    actual_pval_threshold <- if(!is.null(mSet$analSet$mummi.cutoff)) {
-      mSet$analSet$mummi.cutoff
-    } else if(!is.null(mSet$paramSet$mumPvalCutoff)) {
-      mSet$paramSet$mumPvalCutoff
-    } else {
-      "unknown"
-    }
+    1.0  # fallback
   }
   
-  # Also try to extract the actual threshold from mSet regardless of our parameter
-  mset_threshold <- NULL
-  if(!is.null(mSet$dataSet$cutoff)) {
-    mset_threshold <- mSet$dataSet$cutoff
-  } else if(!is.null(mSet$analSet$mummi.cutoff)) {
-    mset_threshold <- mSet$analSet$mummi.cutoff
-  } else if(!is.null(mSet$paramSet$mumPvalCutoff)) {
-    mset_threshold <- mSet$paramSet$mumPvalCutoff
-  }
-  
-  # If we found a more precise threshold in mSet, use that for display
-  display_threshold <- if(!is.null(mset_threshold) && is.numeric(mset_threshold) && mset_threshold != 1.0) {
-    mset_threshold
+  # Extract the precise 10th percentile cutoff if available
+  actual_cutoff <- if(!is.null(mSet$dataSet$actual_cutoff)) {
+    mSet$dataSet$actual_cutoff
   } else {
-    actual_pval_threshold
+    peak_filter_threshold  # fallback to rounded value
   }
   
-  # P-value method description
-  pval_method_desc <- if (pval_peak_cutoff) {
-    "Top 10% of peaks (dynamic)"
+  # Extract pathway enrichment statistics
+  pathway_pvals <- if(!is.null(mSet$path.pval)) {
+    mSet$path.pval
   } else {
-    "All peaks (p < 1.0)"
+    NULL
   }
   
-  # Create the p-value setting description
-  pval_setting_desc <- if (pval_peak_cutoff) {
-    "- SetMummichogPvalFromPercent: 0.1 (top 10% of peaks)\n\n"
+  # Check for FDR-adjusted pathway p-values (if they exist)
+  pathway_fdr <- if(!is.null(mSet$path.fdr)) {
+    mSet$path.fdr
+  } else if(!is.null(mSet$pathway.fdr)) {
+    mSet$pathway.fdr
+  } else if(!is.null(mSet$dataSet$pathway.fdr)) {
+    mSet$dataSet$pathway.fdr
   } else {
-    "- SetMummichogPval: 1.0 (all peaks)\n\n"
+    NULL
   }
   
-  # Create the threshold description
-  threshold_desc <- if (pval_peak_cutoff) "calculated" else "set"
+  # Count significant pathways (those with p < 0.05)
+  sig_pathways <- if(!is.null(pathway_pvals)) {
+    sum(pathway_pvals < 0.05, na.rm = TRUE)
+  } else {
+    0
+  }
+  
+  total_pathways <- if(!is.null(pathway_pvals)) {
+    length(pathway_pvals)
+  } else {
+    0
+  }
+  
+  # Extract input data statistics
+  input_pvals <- if(!is.null(mSet$pvals)) {
+    mSet$pvals
+  } else {
+    NULL
+  }
+  
+  peaks_analyzed <- if(!is.null(input_pvals)) {
+    length(input_pvals)
+  } else {
+    nrow(ttest_results)
+  }
+  
+  # P-value method description (always dynamic now)
+  pval_method_desc <- "Top 10% of peaks (dynamic)"
+  
+  # Create the p-value setting description (always dynamic now)
+  pval_setting_desc <- "- SetMummichogPvalFromPercent: 0.1 (top 10% of peaks)\n\n"
   
   # Create parameter summary markdown
   md_content <- paste0(
@@ -267,10 +282,24 @@ run_mummichog_analysis <- function(
     "- rt_frac: ", rt_frac, "\n\n",
     "**Analysis Parameters:**\n",
     "- Peak filtering method: ", pval_method_desc, "\n",
-    "- Peak filtering p-value threshold (", threshold_desc, "): ", display_threshold, "\n",
-    "- Pathway enrichment p-value threshold: 0.05 (fixed)\n",
+    "- Peak filtering threshold (rounded): ", peak_filter_threshold, "\n",
+    "- Peak filtering threshold (precise): ", actual_cutoff, "\n",
+    "- Peaks analyzed: ", peaks_analyzed, " out of ", nrow(ttest_results), "\n",
+    "- Pathways analyzed: ", total_pathways, "\n",
+    "- Significant pathways (p < 0.05): ", sig_pathways, "\n",
+    if(!is.null(pathway_pvals)) {
+      paste0("- Pathway p-values range: ", round(min(pathway_pvals, na.rm = TRUE), 6), " to ", round(max(pathway_pvals, na.rm = TRUE), 6), "\n")
+    } else {
+      "- Pathway p-values: Not available\n"
+    },
+    if(!is.null(pathway_fdr)) {
+      paste0("- Pathway FDR range: ", round(min(pathway_fdr, na.rm = TRUE), 6), " to ", round(max(pathway_fdr, na.rm = TRUE), 6), "\n")
+    } else {
+      "- Pathway FDR: Not calculated (using raw p-values)\n"
+    },
+    "- Pathway enrichment FDR threshold: 0.05 (fixed)\n",
     "- Minimum pathway size: 3\n",
-    "- Permutations for background: 100\n\n",
+    "- Background permutations: 100\n\n",
     "**Input Data:**\n",
     "- Number of features: ", nrow(ttest_results), "\n",
     "- Output directory: ", output_dir, "\n"
@@ -293,14 +322,15 @@ run_mummichog_analysis <- function(
     cat("✗ ERROR: Markdown file was NOT created!\n")
   }
   
-  # Print p-value thresholds at the very end
-  cat("=== P-VALUE SUMMARY ===\n")
-  cat("Peak filtering p-value threshold:", display_threshold, "(", pval_method_desc, ")\n")
-  if(!is.null(mset_threshold) && mset_threshold != display_threshold) {
-    cat("MetaboAnalystR internal threshold:", mset_threshold, "\n")
-  }
-  cat("Pathway enrichment p-value threshold: 0.05 (fixed by PerformPSEA)\n")
-  cat("Permutations for background estimation: 100\n")
+  # Print comprehensive p-value and analysis summary
+  cat("=== ANALYSIS SUMMARY ===\n")
+  cat("Peak filtering threshold (rounded):", peak_filter_threshold, "(", pval_method_desc, ")\n")
+  cat("Peak filtering threshold (precise):", actual_cutoff, "\n")
+  cat("Peaks analyzed:", peaks_analyzed, "out of", nrow(ttest_results), "input features\n")
+  cat("Pathways analyzed:", total_pathways, "\n")
+  cat("Significant pathways (p < 0.05):", sig_pathways, "\n")
+  cat("Pathway enrichment FDR threshold: 0.05 (fixed by PerformPSEA)\n")
+  cat("Background permutations: 100\n")
   cat("Parameter summary saved to:", md_file, "\n")
   
   return(mSet)

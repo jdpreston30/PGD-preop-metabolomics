@@ -22,6 +22,8 @@
 - Peaks analyzed: 856 out of 25051
 - Pathways analyzed: 83
 - Significant pathways (p < 0.05): 4
+- Pathway p-values range: 0.000932 to 0.97944
+- Pathway FDR: Not calculated (using raw p-values)
 - Pathway enrichment FDR threshold: 0.05 (fixed)
 - Minimum pathway size: 3
 - Background permutations: 100

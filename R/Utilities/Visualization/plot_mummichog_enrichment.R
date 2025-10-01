@@ -170,11 +170,11 @@ plot_mummichog_enrichment <- function(
     mutate(
       Comparisons = dplyr::case_when(
         Comparisons == "nosev" ~ "0v3",
-        Comparisons == "modsev" ~ "1v2", 
-        Comparisons == "allsev" ~ "1/2v3",
+        Comparisons == "modsev" ~ "1-2v3", 
+        Comparisons == "allsev" ~ "0-2v3",
         TRUE ~ Comparisons
       ),
-      Comparisons = factor(Comparisons, levels = c("0v3", "1v2", "1/2v3"))
+      Comparisons = factor(Comparisons, levels = c("0v3", "1-2v3", "0-2v3"))
     ) %>%
     # Apply enrichment factor cap
     mutate(enrichment_factor = pmin(enrichment_factor, enrichment_cap))

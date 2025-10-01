@@ -7,7 +7,7 @@
 **MetaboAnalystR 'Set' Function Outputs:**
 - SetPeakFormat: mpr
 - SetPeakEnrichMethod: mummichog (v2)
-- SetMummichogPvalFromPercent: 0.1 (top 10% of peaks)
+- SetMummichogPval: 1.0 (all peaks)
 
 **Instrument Parameters (UpdateInstrumentParameters):**
 - instrumentOpt: 5
@@ -16,17 +16,16 @@
 - rt_frac: 0.02
 
 **Analysis Parameters:**
-- Peak filtering method: Top 10% of peaks (dynamic)
-- Peak filtering threshold (rounded): 0.1
-- Peak filtering threshold (precise): 0.131209719008776
+- Peak filtering method: All peaks (p < 1.0)
+- Peak filtering threshold: 1
 - Peaks analyzed: 856 out of 25051
-- Pathways analyzed: 83
-- Significant pathways (p < 0.05): 4
+- Pathways analyzed: 107
+- Significant pathways (p < 0.05): 0
 - Pathway enrichment FDR threshold: 0.05 (fixed)
 - Minimum pathway size: 3
 - Background permutations: 100
 
 **Input Data:**
 - Number of features: 25051
-- Output directory: Outputs/mummichog/nosev/MFN
+- Output directory: Outputs/mummichog/allsev/MFN
 
