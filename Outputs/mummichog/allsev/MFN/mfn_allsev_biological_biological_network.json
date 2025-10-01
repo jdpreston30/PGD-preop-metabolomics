@@ -1,0 +1,558 @@
+{
+  "node_data": [
+    {
+      "id": "Mono-unsaturated fatty acid beta-oxidation",
+      "label": "Mono-unsaturated fatty acid beta-oxidation",
+      "pvalue": 0.0017,
+      "hits_sig": 4,
+      "hits_total": 4,
+      "pathway_total": 19,
+      "enrichment_factor": 4.5
+    },
+    {
+      "id": "Tyrosine metabolism",
+      "label": "Tyrosine metabolism",
+      "pvalue": 0.0071,
+      "hits_sig": 54,
+      "hits_total": 86,
+      "pathway_total": 160,
+      "enrichment_factor": 1.203
+    },
+    {
+      "id": "Butanoate metabolism",
+      "label": "Butanoate metabolism",
+      "pvalue": 0.0109,
+      "hits_sig": 14,
+      "hits_total": 20,
+      "pathway_total": 34,
+      "enrichment_factor": 1.125
+    },
+    {
+      "id": "Fructose and mannose metabolism",
+      "label": "Fructose and mannose metabolism",
+      "pvalue": 0.0185,
+      "hits_sig": 8,
+      "hits_total": 22,
+      "pathway_total": 33,
+      "enrichment_factor": 1.44
+    },
+    {
+      "id": "Valine, leucine and isoleucine degradation",
+      "label": "Valine, leucine and isoleucine degradation",
+      "pvalue": 0.033,
+      "hits_sig": 15,
+      "hits_total": 25,
+      "pathway_total": 65,
+      "enrichment_factor": 1.35
+    },
+    {
+      "id": "Di-unsaturated fatty acid beta-oxidation",
+      "label": "Di-unsaturated fatty acid beta-oxidation",
+      "pvalue": 0.0349,
+      "hits_sig": 3,
+      "hits_total": 4,
+      "pathway_total": 26,
+      "enrichment_factor": 1.9285
+    },
+    {
+      "id": "De novo fatty acid biosynthesis",
+      "label": "De novo fatty acid biosynthesis",
+      "pvalue": 0.0463,
+      "hits_sig": 12,
+      "hits_total": 17,
+      "pathway_total": 106,
+      "enrichment_factor": 1.35
+    },
+    {
+      "id": "Phytanic acid peroxisomal oxidation",
+      "label": "Phytanic acid peroxisomal oxidation",
+      "pvalue": 0.053,
+      "hits_sig": 5,
+      "hits_total": 6,
+      "pathway_total": 34,
+      "enrichment_factor": 2.0455
+    },
+    {
+      "id": "Polyunsaturated fatty acid biosynthesis",
+      "label": "Polyunsaturated fatty acid biosynthesis",
+      "pvalue": 0.0601,
+      "hits_sig": 1,
+      "hits_total": 1,
+      "pathway_total": 21,
+      "enrichment_factor": 0.9
+    },
+    {
+      "id": "Hexose phosphorylation",
+      "label": "Hexose phosphorylation",
+      "pvalue": 0.063,
+      "hits_sig": 5,
+      "hits_total": 16,
+      "pathway_total": 20,
+      "enrichment_factor": 0.8654
+    },
+    {
+      "id": "Fatty acid activation",
+      "label": "Fatty acid activation",
+      "pvalue": 0.0794,
+      "hits_sig": 11,
+      "hits_total": 19,
+      "pathway_total": 74,
+      "enrichment_factor": 1.2692
+    },
+    {
+      "id": "Histidine metabolism",
+      "label": "Histidine metabolism",
+      "pvalue": 0.0806,
+      "hits_sig": 12,
+      "hits_total": 22,
+      "pathway_total": 33,
+      "enrichment_factor": 0.8438
+    },
+    {
+      "id": "Ubiquinone Biosynthesis",
+      "label": "Ubiquinone Biosynthesis",
+      "pvalue": 0.086,
+      "hits_sig": 4,
+      "hits_total": 7,
+      "pathway_total": 10,
+      "enrichment_factor": 1.125
+    },
+    {
+      "id": "Tryptophan metabolism",
+      "label": "Tryptophan metabolism",
+      "pvalue": 0.0969,
+      "hits_sig": 30,
+      "hits_total": 55,
+      "pathway_total": 94,
+      "enrichment_factor": 1.1441
+    }
+  ],
+  "edge_data": [
+    {
+      "source": "Mono-unsaturated fatty acid beta-oxidation",
+      "target": "Tyrosine metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Mono-unsaturated fatty acid beta-oxidation",
+      "target": "Butanoate metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Mono-unsaturated fatty acid beta-oxidation",
+      "target": "Valine, leucine and isoleucine degradation",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Mono-unsaturated fatty acid beta-oxidation",
+      "target": "Di-unsaturated fatty acid beta-oxidation",
+      "interaction": "shared_metabolites",
+      "weight": 2,
+      "shared_compounds": "EC0001414;EC00018"
+    },
+    {
+      "source": "Mono-unsaturated fatty acid beta-oxidation",
+      "target": "De novo fatty acid biosynthesis",
+      "interaction": "shared_metabolites",
+      "weight": 2,
+      "shared_compounds": "EC0001415;EC00018"
+    },
+    {
+      "source": "Mono-unsaturated fatty acid beta-oxidation",
+      "target": "Phytanic acid peroxisomal oxidation",
+      "interaction": "shared_metabolites",
+      "weight": 3,
+      "shared_compounds": "EC0001352;EC0001415;EC00018"
+    },
+    {
+      "source": "Mono-unsaturated fatty acid beta-oxidation",
+      "target": "Fatty acid activation",
+      "interaction": "shared_metabolites",
+      "weight": 2,
+      "shared_compounds": "EC0001415;EC00018"
+    },
+    {
+      "source": "Mono-unsaturated fatty acid beta-oxidation",
+      "target": "Histidine metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Mono-unsaturated fatty acid beta-oxidation",
+      "target": "Ubiquinone Biosynthesis",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Mono-unsaturated fatty acid beta-oxidation",
+      "target": "Tryptophan metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Tyrosine metabolism",
+      "target": "Butanoate metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 6,
+      "shared_compounds": "EC00027;EC00018;EC00023;EC00024;EC00026;EC000102"
+    },
+    {
+      "source": "Tyrosine metabolism",
+      "target": "Valine, leucine and isoleucine degradation",
+      "interaction": "shared_metabolites",
+      "weight": 6,
+      "shared_compounds": "EC00027;EC00018;EC00023;EC00024;EC00026;EC000102"
+    },
+    {
+      "source": "Tyrosine metabolism",
+      "target": "Di-unsaturated fatty acid beta-oxidation",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Tyrosine metabolism",
+      "target": "De novo fatty acid biosynthesis",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Tyrosine metabolism",
+      "target": "Phytanic acid peroxisomal oxidation",
+      "interaction": "shared_metabolites",
+      "weight": 2,
+      "shared_compounds": "EC00027;EC00018"
+    },
+    {
+      "source": "Tyrosine metabolism",
+      "target": "Hexose phosphorylation",
+      "interaction": "shared_metabolites",
+      "weight": 2,
+      "shared_compounds": "EC000170;EC000172"
+    },
+    {
+      "source": "Tyrosine metabolism",
+      "target": "Fatty acid activation",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Tyrosine metabolism",
+      "target": "Histidine metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 5,
+      "shared_compounds": "EC00027;EC00018;EC00023;EC00024;EC00026"
+    },
+    {
+      "source": "Tyrosine metabolism",
+      "target": "Ubiquinone Biosynthesis",
+      "interaction": "shared_metabolites",
+      "weight": 4,
+      "shared_compounds": "EC00018;EC000657;EC000170;EC000172"
+    },
+    {
+      "source": "Tyrosine metabolism",
+      "target": "Tryptophan metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 8,
+      "shared_compounds": "EC00027;EC00018;EC0001434;EC00023;EC00024;EC00026;EC000933;EC0001107"
+    },
+    {
+      "source": "Butanoate metabolism",
+      "target": "Valine, leucine and isoleucine degradation",
+      "interaction": "shared_metabolites",
+      "weight": 10,
+      "shared_compounds": "EC00023;EC00024;EC00026;EC00027;EC00018;EC000102;EC000191;EC000192;EC000617;EC000618"
+    },
+    {
+      "source": "Butanoate metabolism",
+      "target": "Di-unsaturated fatty acid beta-oxidation",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Butanoate metabolism",
+      "target": "De novo fatty acid biosynthesis",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Butanoate metabolism",
+      "target": "Phytanic acid peroxisomal oxidation",
+      "interaction": "shared_metabolites",
+      "weight": 2,
+      "shared_compounds": "EC00027;EC00018"
+    },
+    {
+      "source": "Butanoate metabolism",
+      "target": "Fatty acid activation",
+      "interaction": "shared_metabolites",
+      "weight": 2,
+      "shared_compounds": "EC00018;EC000227"
+    },
+    {
+      "source": "Butanoate metabolism",
+      "target": "Histidine metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 5,
+      "shared_compounds": "EC00023;EC00024;EC00026;EC00027;EC00018"
+    },
+    {
+      "source": "Butanoate metabolism",
+      "target": "Ubiquinone Biosynthesis",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Butanoate metabolism",
+      "target": "Tryptophan metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 5,
+      "shared_compounds": "EC00023;EC00024;EC00026;EC00027;EC00018"
+    },
+    {
+      "source": "Fructose and mannose metabolism",
+      "target": "Hexose phosphorylation",
+      "interaction": "shared_metabolites",
+      "weight": 5,
+      "shared_compounds": "EC00032;EC000551;EC000552;EC000553;EC000554"
+    },
+    {
+      "source": "Valine, leucine and isoleucine degradation",
+      "target": "Di-unsaturated fatty acid beta-oxidation",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Valine, leucine and isoleucine degradation",
+      "target": "De novo fatty acid biosynthesis",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Valine, leucine and isoleucine degradation",
+      "target": "Phytanic acid peroxisomal oxidation",
+      "interaction": "shared_metabolites",
+      "weight": 2,
+      "shared_compounds": "EC00027;EC00018"
+    },
+    {
+      "source": "Valine, leucine and isoleucine degradation",
+      "target": "Fatty acid activation",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Valine, leucine and isoleucine degradation",
+      "target": "Histidine metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 5,
+      "shared_compounds": "EC00023;EC00024;EC00026;EC00027;EC00018"
+    },
+    {
+      "source": "Valine, leucine and isoleucine degradation",
+      "target": "Ubiquinone Biosynthesis",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Valine, leucine and isoleucine degradation",
+      "target": "Tryptophan metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 5,
+      "shared_compounds": "EC00023;EC00024;EC00026;EC00027;EC00018"
+    },
+    {
+      "source": "Di-unsaturated fatty acid beta-oxidation",
+      "target": "De novo fatty acid biosynthesis",
+      "interaction": "shared_metabolites",
+      "weight": 3,
+      "shared_compounds": "EC00018;EC000707;EC000708"
+    },
+    {
+      "source": "Di-unsaturated fatty acid beta-oxidation",
+      "target": "Phytanic acid peroxisomal oxidation",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Di-unsaturated fatty acid beta-oxidation",
+      "target": "Fatty acid activation",
+      "interaction": "shared_metabolites",
+      "weight": 3,
+      "shared_compounds": "EC00018;EC000707;EC000708"
+    },
+    {
+      "source": "Di-unsaturated fatty acid beta-oxidation",
+      "target": "Histidine metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Di-unsaturated fatty acid beta-oxidation",
+      "target": "Ubiquinone Biosynthesis",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Di-unsaturated fatty acid beta-oxidation",
+      "target": "Tryptophan metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "De novo fatty acid biosynthesis",
+      "target": "Phytanic acid peroxisomal oxidation",
+      "interaction": "shared_metabolites",
+      "weight": 3,
+      "shared_compounds": "EC00018;EC000713;EC0001415"
+    },
+    {
+      "source": "De novo fatty acid biosynthesis",
+      "target": "Polyunsaturated fatty acid biosynthesis",
+      "interaction": "shared_metabolites",
+      "weight": 3,
+      "shared_compounds": "EC000696;EC000697;EC000698"
+    },
+    {
+      "source": "De novo fatty acid biosynthesis",
+      "target": "Fatty acid activation",
+      "interaction": "shared_metabolites",
+      "weight": 11,
+      "shared_compounds": "EC00018;EC000696;EC000697;EC000698;EC000517;EC0001197;EC000713;EC0001415;EC000859;EC000707;EC000708"
+    },
+    {
+      "source": "De novo fatty acid biosynthesis",
+      "target": "Histidine metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "De novo fatty acid biosynthesis",
+      "target": "Ubiquinone Biosynthesis",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "De novo fatty acid biosynthesis",
+      "target": "Tryptophan metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Phytanic acid peroxisomal oxidation",
+      "target": "Fatty acid activation",
+      "interaction": "shared_metabolites",
+      "weight": 3,
+      "shared_compounds": "EC00018;EC000713;EC0001415"
+    },
+    {
+      "source": "Phytanic acid peroxisomal oxidation",
+      "target": "Histidine metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 2,
+      "shared_compounds": "EC00027;EC00018"
+    },
+    {
+      "source": "Phytanic acid peroxisomal oxidation",
+      "target": "Ubiquinone Biosynthesis",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Phytanic acid peroxisomal oxidation",
+      "target": "Tryptophan metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 2,
+      "shared_compounds": "EC00027;EC00018"
+    },
+    {
+      "source": "Polyunsaturated fatty acid biosynthesis",
+      "target": "Fatty acid activation",
+      "interaction": "shared_metabolites",
+      "weight": 3,
+      "shared_compounds": "EC000696;EC000697;EC000698"
+    },
+    {
+      "source": "Hexose phosphorylation",
+      "target": "Ubiquinone Biosynthesis",
+      "interaction": "shared_metabolites",
+      "weight": 2,
+      "shared_compounds": "EC000170;EC000172"
+    },
+    {
+      "source": "Fatty acid activation",
+      "target": "Histidine metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Fatty acid activation",
+      "target": "Ubiquinone Biosynthesis",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Fatty acid activation",
+      "target": "Tryptophan metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Histidine metabolism",
+      "target": "Ubiquinone Biosynthesis",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    },
+    {
+      "source": "Histidine metabolism",
+      "target": "Tryptophan metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 5,
+      "shared_compounds": "EC00023;EC00024;EC00026;EC00027;EC00018"
+    },
+    {
+      "source": "Ubiquinone Biosynthesis",
+      "target": "Tryptophan metabolism",
+      "interaction": "shared_metabolites",
+      "weight": 1,
+      "shared_compounds": "EC00018"
+    }
+  ],
+  "metadata": {
+    "min_shared_compounds": 1,
+    "p_threshold": 0.1,
+    "n_pathways": 14,
+    "n_edges": 60
+  }
+}

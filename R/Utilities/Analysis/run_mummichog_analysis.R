@@ -173,6 +173,31 @@ run_mummichog_analysis <- function(
     if (!is.list(mSet)) stop("mSet corrupted after PlotPeaks2Paths")
     cat("✓ PlotPeaks2Paths completed\n")
     
+    # Step 10: Prepare Enrichment Network (equivalent to PrepareEnrichNet)
+    build_network_path <- file.path(original_wd, "R/Utilities/Analysis/prepare_custom_enrichnet.R")
+    if (file.exists(build_network_path)) {
+      source(build_network_path)
+      network_name <- paste0("enrichNet_", gsub("hsa_", "", database))
+      cat("Creating network files in:", getwd(), "\n")
+      mSet <- prepare_custom_enrichnet(mSet, network_name, "mixed")
+      cat("✓ Network preparation completed\n")
+      
+      # Check if network files were created
+      expected_network_files <- c(
+        paste0(network_name, "_network_data.json"),
+        paste0(network_name, ".sif")
+      )
+      for (nf in expected_network_files) {
+        if (file.exists(nf)) {
+          cat("✓ Created network file:", nf, "\n")
+        } else {
+          cat("✗ Network file not found:", nf, "\n")
+        }
+      }
+    } else {
+      cat("⚠ Network preparation skipped (prepare_custom_enrichnet.R not found at:", build_network_path, ")\n")
+    }
+    
     # DEBUG: Check what's in the current directory
     cat("=== DEBUGGING FILE CREATION ===\n")
     cat("Current working directory:", getwd(), "\n")
