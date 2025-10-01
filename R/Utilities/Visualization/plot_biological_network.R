@@ -29,6 +29,7 @@
 #' @param nudge_labels_vert Named list for vertical nudging/vjust (e.g., list(p1 = -3, p5 = 2))
 #' @param nudge_labels_horiz Named list for horizontal nudging/hjust (e.g., list(p1 = 0.2, p3 = 0.8))
 #' @param color_scale Character string for color scheme: "red" (default) or "blue"
+#' @param background_color Background color: "transparent" (default) or "white"
 #'
 #' @examples
 #' # Basic usage
@@ -56,6 +57,12 @@
 #' 
 #' # With blue color scheme
 #' plot_biological_network(network_data, color_scale = "blue")
+#' 
+#' # With transparent background (default)
+#' plot_biological_network(network_data, background_color = "transparent")
+#' 
+#' # With white background
+#' plot_biological_network(network_data, background_color = "white")
 #'
 plot_biological_network <- function(network_data, 
                                     output_file = NULL,
@@ -82,7 +89,8 @@ plot_biological_network <- function(network_data,
                                     nudge_labels = NULL,
                                     nudge_labels_vert = NULL,
                                     nudge_labels_horiz = NULL,
-                                    color_scale = "red") {
+                                    color_scale = "red",
+                                    background_color = "transparent") {
   
   # Load required libraries
   require(igraph)
@@ -291,7 +299,9 @@ plot_biological_network <- function(network_data,
           plot.title = element_text(family = "Arial", hjust = 0.5),  # Center title
           plot.subtitle = element_text(family = "Arial", hjust = 0.5),  # Center subtitle
           legend.title = element_text(family = "Arial"),
-          legend.text = element_text(family = "Arial"))
+          legend.text = element_text(family = "Arial"),
+          plot.background = element_rect(fill = background_color, color = NA),  # Set background color
+          panel.background = element_rect(fill = background_color, color = NA))  # Set panel background
           # plot.margin = margin(20, 20, 20, 20, "pt"))  # Add margins around entire plot
   
   # Save the plot if output file specified

@@ -101,7 +101,7 @@ pgd_enrichment_plot_mfn <- plot_mummichog_enrichment(
   size_range = c(5, 10),
   size_breaks = c(5, 3, 1),
   show_legend = TRUE,
-  save_path = "Figures/Raw/fig2a.png",
+  save_path = "Figures/Raw/fig3a.png",
   plot_width = 8,
   plot_height = 6,
   dpi = 600
@@ -146,12 +146,10 @@ mfn_allsev_network <- create_biological_network(
   network_name = "mfn_allsev_biological"
 )
 #+ 2.5: Plot Biological Networks
-source("R/Utilities/Helpers/clean_pathway_names_for_network.R")
-source("R/Utilities/Visualization/plot_biological_network.R")
 #- 2.5.1: Plot MFN Network (No vs Severe)
 nosev_network_plot <- plot_biological_network(
   network_data = mfn_nosev_network,
-  output_file = "Figures/Raw/biological_network_mfn_nosev.png",
+  output_file = "Figures/Raw/fig3b.png",
   title = "No PGD vs. Severe PGD (0v3)",
   node_size_range = c(4, 14),
   text_size = 4.5,
@@ -172,7 +170,7 @@ nosev_network_plot <- plot_biological_network(
 #- 2.5.2: Plot MFN Network (Mild/Mod vs Severe
 modsev_network_plot <- plot_biological_network(
   network_data = mfn_modsev_network,
-  output_file = "Figures/Raw/biological_network_mfn_modsev.png",
+  output_file = "Figures/Raw/fig3c.png",
   title = "Mild/Mod. PGD vs. Severe PGD (1-2v3)",
   node_size_range = c(4, 14),
   text_size = 4.5,
@@ -193,21 +191,21 @@ modsev_network_plot <- plot_biological_network(
 #- 2.5.3: Plot MFN Network (No+Mild/Mod vs Severe)
 allsev_network_plot <- plot_biological_network(
   network_data = mfn_allsev_network,
-  output_file = "Figures/Raw/biological_network_mfn_allsev.png",
+  output_file = "Figures/Raw/fig3d.png",
   title = "No/Mild/Mod. PGD vs. Severe PGD (0-2v3)",
   node_size_range = c(4, 14),
   text_size = 4.5,
   show_legend = FALSE,
   plot_width = 10.5,
   plot_height = 12,
-  dpi = 100,
+  dpi = 600,
   seed = 2022,
   variable_edge_thickness = TRUE,
   edge_thickness_range = c(0.3, 3),
   max_distance_from_center = 2.2,
   label_position = "above",
-  show_node_numbers = TRUE,
+  show_node_numbers = FALSE,
   labels_below = c(4,1,14,5,2),  # Much cleaner than the old way!
-  nudge_labels_vert = list(p12 = -2, p14= 3, p7 = 0, p2 =3.3),
-  nudge_labels_horiz = list(p5 = 0.55, p14 = 0.55, p7 = 1.09, p2 = 0.9)
+  nudge_labels_vert = list(p12 = -2, p14= 3, p7 = 0, p2 =3.3, p9 = -1.2, p11 = -1, p3 = 0.3, p1 = 2.2, p13 = 0.5, p10 = 0.5, p6 = 0.45, p8 = -1.6),
+  nudge_labels_horiz = list(p12 = 0.85, p5 = 0.55, p14 = 0.55, p7 = 1.09, p4 = 0.7, p11 = -0.15, p3 = -0.13, p1 = -0.013, p13 = -0.08, p10 = 1.08, p6 = -0.1)
 )
