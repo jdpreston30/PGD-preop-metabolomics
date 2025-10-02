@@ -40,7 +40,7 @@ clinical_metadata <- clinical_metadata_i %>%
   calc_ISHLT() %>%
   calc_PHM() %>%
   mutate(severe_PGD = if_else(
-    postop_PGD_grade_ISHLT == "Severe", "Severe PGD", "No/Mild/Mod. PGD",
+    postop_PGD_grade_ISHLT == "Severe", "Severe PGD", "No Severe PGD",
   )) %>%
   mutate(PGD_grade_tier = case_when(
     postop_PGD_grade_ISHLT %in% c("Moderate", "Mild") ~ "Mild/Mod. PGD",

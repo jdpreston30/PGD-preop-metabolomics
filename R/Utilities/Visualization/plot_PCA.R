@@ -1,6 +1,6 @@
 plot_PCA <- function(pca_results, plot_title = "",
-                     ellipse_colors = c("Severe PGD" = "#D8919A", "No PGD" = "#87A6C7", "Mild/Mod. PGD" = "#FF9966", "No/Mild/Mod. PGD" = "#9CAF88"),
-                     point_colors = c("Severe PGD" = "#800017", "No PGD" = "#113d6a", "Mild/Mod. PGD" = "#be5010ff", "No/Mild/Mod. PGD" = "#4A5D23"),
+                     ellipse_colors = c("Severe PGD" = "#D8919A", "No Severe PGD" = "#87A6C7"),
+                     point_colors = c("Severe PGD" = "#800017", "No Severe PGD" = "#113d6a"),
                      point_size = 1.3, show_patient_labels = FALSE, label_size = 3, show_legend = TRUE,
                      x_limits = NULL, y_limits = NULL, x_expand = NULL, y_expand = NULL) {
   # Extract data from results

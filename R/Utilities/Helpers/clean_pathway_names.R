@@ -1,5 +1,7 @@
 clean_pathway_names <- function(pathway_names) {
   pathway_names %>%
+    # Specific pathway exceptions FIRST - before any other transformations
+    stringr::str_replace_all(stringr::regex("\\bPhenylalanine, tyrosine and tryptophan biosynthesis\\b", ignore_case = TRUE), "Phenylalanine, Tyrosine & Tryptophan Biosynthesis") %>%
     # Handle Greek letters and special cases first - EXPANDED
     stringr::str_replace_all(stringr::regex("\\bBeta[- ]Alanine\\b", ignore_case = TRUE), "β-Alanine") %>%
     stringr::str_replace_all(stringr::regex("\\balpha[- ]?linolenic\\b", ignore_case = TRUE), "α-Linolenic") %>%
@@ -37,7 +39,7 @@ clean_pathway_names <- function(pathway_names) {
     stringr::str_replace_all(stringr::regex("\\bGlutamate\\b", ignore_case = TRUE), "Glu") %>%
     stringr::str_replace_all(stringr::regex("\\bGlutamine\\b", ignore_case = TRUE), "Gln") %>%
     stringr::str_replace_all(stringr::regex("\\bGlycine\\b", ignore_case = TRUE), "Gly") %>%
-    stringr::str_replace_all(stringr::regex("\\bHistidine\\b", ignore_case = TRUE), "His") %>%
+    # stringr::str_replace_all(stringr::regex("\\bHistidine\\b", ignore_case = TRUE), "His") %>%
     stringr::str_replace_all(stringr::regex("\\bIsoleucine\\b", ignore_case = TRUE), "Ile") %>%
     stringr::str_replace_all(stringr::regex("\\bLeucine\\b", ignore_case = TRUE), "Leu") %>%
     stringr::str_replace_all(stringr::regex("\\bLysine\\b", ignore_case = TRUE), "Lys") %>%
@@ -46,8 +48,9 @@ clean_pathway_names <- function(pathway_names) {
     stringr::str_replace_all(stringr::regex("\\bProline\\b", ignore_case = TRUE), "Pro") %>%
     stringr::str_replace_all(stringr::regex("\\bSerine\\b", ignore_case = TRUE), "Ser") %>%
     stringr::str_replace_all(stringr::regex("\\bThreonine\\b", ignore_case = TRUE), "Thr") %>%
-    stringr::str_replace_all(stringr::regex("\\bTryptophan\\b", ignore_case = TRUE), "Trp") %>%
-    stringr::str_replace_all(stringr::regex("\\bTyrosine\\b", ignore_case = TRUE), "Tyr") %>%
+    # stringr::str_replace_all(stringr::regex("\\bTryptophan\\b", ignore_case = TRUE), "Trp") %>%
+    # stringr::str_replace_all(stringr::regex("\\bTyrosine\\b", ignore_case = TRUE), "Tyr") %>%
+
     stringr::str_replace_all(stringr::regex("\\bValine\\b", ignore_case = TRUE), "Val") %>%
     stringr::str_replace_all(stringr::regex("\\bTaurine\\b", ignore_case = TRUE), "Tau") %>%
     stringr::str_replace_all(stringr::regex("\\bHypotaurine\\b", ignore_case = TRUE), "Hypotau") %>%

@@ -100,20 +100,23 @@ plot_mummichog_enrichment <- function(
       # Read JSON file
       json_data <- jsonlite::fromJSON(json_path)
       
-      # Convert -log10 p-values back to regular p-values
-      real_p_values <- 10^(-json_data$pval)
+      # Use -log10 p-values directly (no transformation)
+      log10_p_values <- json_data$pval
+      
+      # Convert p_threshold to -log10 for filtering
+      log10_threshold <- -log10(p_threshold)
       
       # Create tibble
       tibble(
         pathway_name = json_data$pathnames,
-        p_fisher = real_p_values,
+        log10_p = log10_p_values,
         enrichment_factor = json_data$enr,
         Comparisons = comparison_name
       ) %>%
         # Clean pathway names
         mutate(pathway_name = clean_pathway_names(pathway_name)) %>%
-        # Filter for significance
-        filter(p_fisher < p_threshold)
+        # Filter for significance (higher -log10 values = more significant)
+        filter(log10_p >= log10_threshold)
       
     }, error = function(e) {
       warning(paste("Could not read", json_path, ":", e$message))
@@ -127,13 +130,16 @@ plot_mummichog_enrichment <- function(
       # Read JSON file
       json_data <- jsonlite::fromJSON(json_path)
       
-      # Convert -log10 p-values back to regular p-values
-      real_p_values <- 10^(-json_data$pval)
+      # Use -log10 p-values directly (no transformation)
+      log10_p_values <- json_data$pval
+      
+      # Convert p_threshold to -log10 for filtering
+      log10_threshold <- -log10(p_threshold)
       
       # Create tibble
       tibble(
         pathway_name = json_data$pathnames,
-        p_fisher = real_p_values,
+        log10_p = log10_p_values,
         enrichment_factor = json_data$enr,
         Comparisons = comparison_name
       ) %>%
@@ -142,8 +148,8 @@ plot_mummichog_enrichment <- function(
           pathway_name = clean_pathway_names(pathway_name),
           pathway_name = paste0(pathway_name, " (", toupper(database_name), ")")
         ) %>%
-        # Filter for significance
-        filter(p_fisher < p_threshold)
+        # Filter for significance (higher -log10 values = more significant)
+        filter(log10_p >= log10_threshold)
       
     }, error = function(e) {
       warning(paste("Could not read", json_path, ":", e$message))
@@ -262,7 +268,7 @@ plot_mummichog_enrichment <- function(
   # Create the plot using EXACT same style as original plot_pathway_enrichment
   p <- ggplot(
     enrichment_data,
-    aes(x = 0.5, y = 0.5, size = enrichment_factor, color = p_fisher)
+    aes(x = 0.5, y = 0.5, size = enrichment_factor, color = log10_p)
   ) +
     geom_tile(
       data = data.frame(x = 0.5, y = 0.5),
@@ -274,12 +280,28 @@ plot_mummichog_enrichment <- function(
     geom_point(
       alpha = 0.95, shape = 16, stroke = 0,
       na.rm = TRUE, show.legend = show_legend
-    ) +
-    facet_grid(
+    )
+  
+  # Determine faceting based on number of comparisons
+  n_comparisons <- length(unique(enrichment_data$Comparisons))
+  
+  if (n_comparisons == 1) {
+    # Single column layout - use facet_wrap for cleaner single-column display
+    p <- p + facet_wrap(
+      vars(pathway_name),
+      ncol = 1,
+      strip.position = "left"
+    )
+  } else {
+    # Multi-column layout - use facet_grid as before
+    p <- p + facet_grid(
       rows = vars(pathway_name),
       cols = vars(Comparisons),
       switch = "y", drop = FALSE
-    ) +
+    )
+  }
+  
+  p <- p +
     coord_fixed(clip = "off") +
     scale_x_continuous(limits = c(0, 1), expand = c(0, 0)) +
     scale_y_continuous(limits = c(0, 1), expand = c(0, 0)) +
@@ -288,20 +310,39 @@ plot_mummichog_enrichment <- function(
       limits = c(0, enrichment_cap),
       breaks = size_breaks,
       name = "Enrichment factor",
-      guide = if (show_legend) guide_legend(reverse = TRUE) else "none"
+      guide = if (show_legend) guide_legend(reverse = FALSE) else "none"
     ) +
-    scale_color_gradient(
-      low = if(color_scale == "blue") "#0a2256" else "#A4312A",
-      high = if(color_scale == "blue") "#c3dbe9" else "#F2A93B",
-      limits = c(0.01, 0.05),
-      oob = scales::squish,
-      name = "p-value\n",
-      guide = if (show_legend) {
+    scale_color_gradientn(
+      colors = if(color_scale == "blue") {
+        c("#c3dbe9", "#4a90e2", "#0a2256", "#0a2256")  # Light blue, medium blue, dark blue, dark blue plateau
+      } else {
+        c("#e8d5b7ff", "#e49c30ff", "#801914ff", "#801914ff")  # Light at 1.0, orange at sig, dark red at 2.0, same dark red to 3.0
+      },
+      values = c(0, 0.2, 0.667, 1),  # 1.0 to 1.301 to 2.0 (plateau starts) to 2.5 (plateau continues)
+      limits = c(1, 2.5),  # Fixed range from 1 to 2.5
+      breaks = c(1, 1.301, 1.5, 2.0, 2.5),  # Fixed ticks: 1, asterisk, 1.5, 2.0, 2.5
+      labels = c("1", "✱", "1.5", "2.0", "2.5"),  # Custom labels with centered heavy asterisk at 0.05
+      oob = scales::squish,  # Values outside range get clamped to edge colors
+      name = "-log10(p-value)\n"
+    ) +
+    guides(
+      color = if (show_legend) {
         guide_colorbar(
-          reverse = TRUE,
+          order = 1,  # p-value colorbar first (top)
           barheight = unit(5, "cm"),
-          barwidth = unit(0.9, "cm")
+          barwidth = unit(0.9, "cm"),
+          ticks.colour = "black",
+          ticks.linewidth = 0.5,
+          frame.colour = NA,  # Remove black border
+          frame.linewidth = 0,
+          draw.ulim = TRUE,  # Show upper limit tick (at 3)
+          draw.llim = TRUE   # Show lower limit tick (at 1)
         )
+      } else {
+        "none"
+      },
+      size = if (show_legend) {
+        guide_legend(order = 2)  # enrichment factor size second (bottom)
       } else {
         "none"
       }
@@ -310,7 +351,7 @@ plot_mummichog_enrichment <- function(
       x = NULL, 
       y = NULL, 
       title = plot_title,
-      subtitle = if (is.null(plot_title)) "PGD Comparison" else NULL
+      subtitle = if (is.null(plot_title) && n_comparisons > 1) "PGD Comparison" else NULL
     ) +
     theme_minimal(base_family = "Arial") +
     theme(
@@ -331,7 +372,7 @@ plot_mummichog_enrichment <- function(
         face = "bold", family = "Arial", size = 11,
         margin = margin(r = 6)
       ),
-      legend.title = element_text(size = 11, face = "bold", family = "Arial"),
+      legend.title = element_text(size = 11, face = "bold", family = "Arial", vjust = 0.3),
       legend.text = element_text(size = 11, family = "Arial"),
       plot.subtitle = element_text(
         hjust = 0.5, face = "bold.italic", family = "Arial", size = 12,
@@ -341,6 +382,14 @@ plot_mummichog_enrichment <- function(
       strip.clip = "off"
     ) +
     coord_cartesian(clip = "off")
+  
+  # Additional theme modifications for single-column mode
+  if (n_comparisons == 1) {
+    p <- p + theme(
+      strip.text.x.top = element_blank(),  # Hide column headers
+      strip.background.x = element_blank()  # Hide column header background
+    )
+  }
   
   # Hide legends if requested
   if (!show_legend) {

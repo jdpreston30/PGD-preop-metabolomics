@@ -284,24 +284,33 @@ plot_biological_network <- function(network_data,
                      hjust = 0.5)
     }} +
     scale_size_continuous(range = node_size_range, name = "Significant Hits") +
-    scale_color_gradient(
-      low = if(color_scale == "blue") "#c3dbe9" else "#F2A93B",
-      high = if(color_scale == "blue") "#0a2256" else "#A4312A",
+    scale_color_gradientn(
+      colors = if(color_scale == "blue") {
+        c("#c3dbe9", "#4a90e2", "#0a2256", "#0a2256")  # Light blue, medium blue, dark blue, dark blue plateau
+      } else {
+        c("#e8d5b7ff", "#e49c30ff", "#801914ff", "#801914ff")  # Light at 1.0, orange at sig, dark red at 2.0, same dark red to 3.0
+      },
+      values = c(0, 0.2, 0.667, 1),  # 1.0 to 1.301 to 2.0 (plateau starts) to 2.5 (plateau continues)
+      limits = c(1, 2.5),  # Fixed range from 1 to 2.5
+      breaks = c(1, 1.301, 1.5, 2.0, 2.5),  # Fixed ticks: 1, asterisk, 1.5, 2.0, 2.5
+      labels = c("1", "✱", "1.5", "2.0", "2.5"),  # Custom labels with centered heavy asterisk at 0.05
+      oob = scales::squish,  # Values outside range get clamped to edge colors
       name = "-log10(p-value)"
     ) +
     # Expand plot limits to prevent text clipping
     scale_x_continuous(expand = expansion(mult = 0.15)) +
     scale_y_continuous(expand = expansion(mult = 0.15)) +
     theme_graph(base_family = "Arial") +
-    labs(title = title, subtitle = subtitle) +
+    labs(title = NULL, subtitle = NULL) +  # Remove title and subtitle entirely
     theme(legend.position = if(show_legend) "right" else "none",
           text = element_text(family = "Arial"),
-          plot.title = element_text(family = "Arial", hjust = 0.5),  # Center title
-          plot.subtitle = element_text(family = "Arial", hjust = 0.5),  # Center subtitle
+          plot.title = element_text(family = "Arial", hjust = 0.5, margin = margin(t = 120, b = 15)),  # Much larger top margin for title
+          plot.subtitle = element_text(family = "Arial", hjust = 0.5, margin = margin(t = 15, b = 40)),  # Larger margins for subtitle
           legend.title = element_text(family = "Arial"),
           legend.text = element_text(family = "Arial"),
           plot.background = element_rect(fill = background_color, color = NA),  # Set background color
-          panel.background = element_rect(fill = background_color, color = NA))  # Set panel background
+          panel.background = element_rect(fill = background_color, color = NA),  # Set panel background
+          plot.margin = margin(160, 20, 20, 20, "pt"))  # Much larger top margin for entire plot
           # plot.margin = margin(20, 20, 20, 20, "pt"))  # Add margins around entire plot
   
   # Save the plot if output file specified

@@ -28,7 +28,7 @@ Figure_2 <- patchwork::wrap_plots(
   labs(tag = "A") + 
   theme(
     plot.tag.position = c(0.06, 0.9),
-    plot.margin = grid::unit(c(0, 0, 0, 0.5), "in")  # right margin = 0
+    plot.margin = grid::unit(c(0, 0, 0, 0.5), "in")
   ) +
   plot_tag_theme, 
   #p2B
@@ -36,50 +36,38 @@ Figure_2 <- patchwork::wrap_plots(
   labs(tag = "B") +
   theme(
     plot.tag.position = c(0.001, 0.9),
-    plot.margin = grid::unit(c(0, 0.5, 0, 0), "in")  # left margin = 0
-  ) +
-  plot_tag_theme, 
-  #p2C
-  p2C + 
-  labs(tag = "C") + 
-  theme(
-    plot.tag.position = c(0.06, 0.9),
-    plot.margin = grid::unit(c(-10, 0, 0, 0.5), "in")  # right margin = 0
-  ) +
-  plot_tag_theme, 
-  #p2D
-  p2D + 
-  labs(tag = "D") + 
-  theme(
-    plot.tag.position = c(0.001, 0.9),
-    plot.margin = grid::unit(c(-10, 0.5, 0, 0), "in")  # left margin = 0
+    plot.margin = grid::unit(c(0, 0.5, 0, 0), "in")
   ) +
   plot_tag_theme,
-  #p2E
-  p2E + 
-  labs(tag = "E") + 
-  theme(
-    plot.tag.position = c(0.06, 0.9),
-    plot.margin = grid::unit(c(-10, 0, 0, 0.5), "in")  # right margin = 0
-  ) +
-  plot_tag_theme,
-  #p2F
-  p2F + 
-  labs(tag = "F") + 
-  theme(
-    plot.tag.position = c(0.001, 0.9),
-    plot.margin = grid::unit(c(-10, 0.5, 0, 0), "in")  # left margin = 0
-  ) +
-  plot_tag_theme,
+  #p2C (raster grob - wrap in ggplot)
+  ggplot() +
+    annotation_custom(p2C, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) +
+    theme_void() +
+    labs(tag = "C") +
+    theme(
+      plot.tag.position = c(0.06, 0.9),
+      plot.margin = grid::unit(c(0.5, 0, 0, 0), "in")
+    ) +
+    plot_tag_theme,
+  #p2D (raster grob - wrap in ggplot)
+  ggplot() +
+    annotation_custom(p2D, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) +
+    theme_void() +
+    labs(tag = "D") +
+    theme(
+      plot.tag.position = c(0.001, 0.9),
+      plot.margin = grid::unit(c(0.5, 0, 0, 0), "in")
+    ) +
+    plot_tag_theme,
   patchwork::plot_spacer(), patchwork::plot_spacer(),
   design = "
-      AB
-      CD
-      EF
-      GH
+      AAAAABBBBB
+      CCCCCDDDDD
+      EEEEEFFFFF
+      EEEEEFFFFF
   ", 
-  heights = c(1, 1, 1, 1), # Three rows of plots, bottom fourth for spacers
-  widths = c(1, 1.5)  # Overlapping columns to force compression
+  heights = c(1, 1, 1, 1), # Four equal rows: A/B, C/D row 1, C/D row 2, spacer
+  widths = c(0.5, 0.5)  # 30% for C, 70% for D
   ) +
     patchwork::plot_annotation(
       title = "Figure 2\n",
@@ -89,6 +77,7 @@ Figure_2 <- patchwork::wrap_plots(
         plot.margin = grid::unit(c(0.3, 0.5, 0.3, 0.5), "in")
       )
     )
+print_to_png(Figure_2, "fig2.png", width = 8.5, height = 11, dpi = 600)
 #+ 6.3: Figure 3 (with separate label positioning)
 Figure_3 <- cowplot::ggdraw(xlim = c(0, 8.5), ylim = c(0, 11)) +  # Set to inches like page size
   cowplot::draw_plot(
