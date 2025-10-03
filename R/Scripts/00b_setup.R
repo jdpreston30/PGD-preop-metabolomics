@@ -45,6 +45,7 @@ conflicts_prefer(readxl::read_xlsx)
 conflicts_prefer(raster::intersect)
 conflicts_prefer(igraph::compose)
 conflicts_prefer(flextable::align)
+conflicts_prefer(dplyr::rename)
 #+ 0b.7: Load utility functions 
 if (dir.exists(utils_path)) {
   purrr::walk(

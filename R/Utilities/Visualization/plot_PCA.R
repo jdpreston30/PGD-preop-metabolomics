@@ -1,7 +1,7 @@
 plot_PCA <- function(pca_results, plot_title = "",
-                     ellipse_colors = c("Severe PGD" = "#D8919A", "No Severe PGD" = "#87A6C7"),
-                     point_colors = c("Severe PGD" = "#800017", "No Severe PGD" = "#113d6a"),
-                     point_size = 1.3, show_patient_labels = FALSE, label_size = 3, show_legend = TRUE,
+                     ellipse_colors = c("Severe PGD" = "#D8919A", "No Severe PGD" = "#87A6C7", "Mild/Mod. PGD" = "#FF9966", "No/Mild/Mod. PGD" = "#9CAF88"),
+                     point_colors = c("Severe PGD" = "#800017", "No Severe PGD" = "#113d6a", "Mild/Mod. PGD" = "#be5010ff", "No/Mild/Mod. PGD" = "#4A5D23"),
+                     point_size = 1.3, show_patient_labels = FALSE, label_size = 3,
                      x_limits = NULL, y_limits = NULL, x_expand = NULL, y_expand = NULL) {
   # Extract data from results
   scores_df <- pca_results$scores_df
@@ -64,6 +64,7 @@ plot_PCA <- function(pca_results, plot_title = "",
     } +
     ggplot2::scale_fill_manual(values = ellipse_colors, na.value = "grey50") +
     ggplot2::scale_color_manual(values = point_colors, na.value = "grey50") +
+    ggplot2::guides(fill = ggplot2::guide_legend(), color = ggplot2::guide_legend()) +  # Remove reverse to get blue left, red right
     ggplot2::labs(
       title = plot_title,
       x = paste0(comp_label, comp_x, " (", explained[1], "%)"),
@@ -83,17 +84,14 @@ plot_PCA <- function(pca_results, plot_title = "",
     ggplot2::theme(
       aspect.ratio = 1,
       plot.margin = grid::unit(c(0, 0, 0, 0), "pt"),
-      legend.position = if (show_legend) "top" else "none",
+      legend.position = c(0.5, 1.07), 
+      legend.justification = c(0.5, 0.5), 
       legend.direction = "horizontal",
-      legend.box = "horizontal",
-      legend.box.margin = ggplot2::margin(0, 0, 0, 0),
-      legend.margin = ggplot2::margin(t = 0, r = 0, b = -10, l = 0),
+      legend.text = ggplot2::element_text(size = 7, face = "bold", margin = ggplot2::margin(l = 1, r = 5)),
+      legend.box.just = "center", 
       legend.key.width = grid::unit(0.35, "cm"),
       legend.key.height = grid::unit(0.35, "cm"),
       legend.key.size = grid::unit(0.35, "cm"),
-      legend.spacing.x = grid::unit(0, "cm"),
-      legend.text.align = -10,
-      legend.text = ggplot2::element_text(size = 7, face = "bold"),
       legend.title = ggplot2::element_blank(),
       axis.ticks = ggplot2::element_line(color = "black", linewidth = 0.6),
       axis.ticks.x.top = ggplot2::element_blank(),

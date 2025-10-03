@@ -315,13 +315,15 @@ plot_mummichog_enrichment <- function(
     scale_color_gradientn(
       colors = if(color_scale == "blue") {
         c("#c3dbe9", "#4a90e2", "#0a2256", "#0a2256")  # Light blue, medium blue, dark blue, dark blue plateau
+      } else if(color_scale == "rb") {
+        c("#113d6a", "#D8919A", "#800017", "#800017")  # Blue to red gradient using PGD colors
       } else {
         c("#e8d5b7ff", "#e49c30ff", "#801914ff", "#801914ff")  # Light at 1.0, orange at sig, dark red at 2.0, same dark red to 3.0
       },
-      values = c(0, 0.2, 0.667, 1),  # 1.0 to 1.301 to 2.0 (plateau starts) to 2.5 (plateau continues)
-      limits = c(1, 2.5),  # Fixed range from 1 to 2.5
-      breaks = c(1, 1.301, 1.5, 2.0, 2.5),  # Fixed ticks: 1, asterisk, 1.5, 2.0, 2.5
-      labels = c("1", "✱", "1.5", "2.0", "2.5"),  # Custom labels with centered heavy asterisk at 0.05
+      values = c(0, 0.3, 0.75, 1),  # 1.0 to 1.301 to 2.0 (plateau starts) to 2.5 (plateau continues)
+      limits = c(1, 2.0),  # Fixed range from 1 to 2.0
+      breaks = c(1, 1.301, 1.5, 1.75, 2.0),  # Fixed ticks: 1, asterisk, 1.5, 2.0
+      labels = c("1", "✱", "1.5", "1.75", "2.0"),  # Custom labels with centered heavy asterisk at 0.05
       oob = scales::squish,  # Values outside range get clamped to edge colors
       name = "-log10(p-value)\n"
     ) +

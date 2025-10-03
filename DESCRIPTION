@@ -55,6 +55,7 @@ Imports:
     qqconf,
     metap,
     BiocManager,
+    cowplot,
     jsonlite
 Additional_repositories: 
     https://bioconductor.org/packages/release/bioc
