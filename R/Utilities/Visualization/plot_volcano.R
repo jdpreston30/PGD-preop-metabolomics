@@ -21,15 +21,12 @@ plot_volcano <- function(volcano_results,
   p_threshold <- volcano_results$p_threshold
   up_label <- volcano_results$up_label
   down_label <- volcano_results$down_label
-  
-  # Create new labels that always say "Up in [group]"
-  # Extract group names from existing labels
-  up_group <- gsub("(Up in |Down in )", "", up_label)
-  down_group <- gsub("(Up in |Down in )", "", down_label)
-  
+
+
+
   # Create new consistent labels
-  new_up_label <- paste("Up in", up_group)
-  new_down_label <- paste("Up in", down_group)
+  new_up_label <- up_label
+  new_down_label <- down_label
   
   # Set legend order: Up, Down, Not Significant
   volcano_data$Legend <- factor(

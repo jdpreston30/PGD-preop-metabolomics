@@ -6,8 +6,8 @@ p2A <- plsda_allsev
 p2B <- volc_allsev
 p2C <- grid::rasterGrob(as.raster(magick::image_read("Figures/Raw/fig2c.png")))
 p2D <- grid::rasterGrob(as.raster(magick::image_read("Figures/Raw/fig2d.png")))
-#+ 5.4: Figure 4 Plots
-# p4A <- pls_bar_nosev
+#+ 5.4: Figure 3 Plots
+p3A <- diverging_plot
 # p4B <- superclasses_nosev
 # p4C <- classes_nosev
 # p4D <- pls_bar_modsev

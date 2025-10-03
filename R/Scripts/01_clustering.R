@@ -14,12 +14,15 @@ volcano_allsev_data <- run_volcano(
   fc_threshold = log2(1.5),
   p_threshold = 0.05
 )
+volcano_allsev_data$down_label
 #+ 1.4: Create Plots
 #- 1.4.5: PLSDA
+source("R/Utilities/Visualization/plot_PCA.R")
 plsda_allsev <- plot_PCA(
   pca_results = plsda_allsev_data
 )
 #- 1.4.6: Volcano
+source("R/Utilities/Visualization/plot_volcano.R")
 volc_allsev <- plot_volcano(
   volcano_results = volcano_allsev_data,
   x_limits = c(-6, 6.435),

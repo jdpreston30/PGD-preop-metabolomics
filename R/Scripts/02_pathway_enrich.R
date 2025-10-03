@@ -50,7 +50,7 @@ pgd_enrichment_plot_mfn <- plot_mummichog_enrichment(
   plot_width = 6.3,
   plot_height = 6,
   dpi = 600,
-  color_scale = "red"
+  color_scale = "rb"
 )
 #- 2.3.1: Create combined MFN and KEGG enrichment plot from JSON outputs
 pgd_enrichment_plot_combined <- plot_mummichog_enrichment(
@@ -65,7 +65,7 @@ pgd_enrichment_plot_combined <- plot_mummichog_enrichment(
   plot_width = 7.2,
   plot_height = 9.857,
   dpi = 600,
-  color_scale = "red"
+  color_scale = "rb"
 )
 #+ 2.4: Run Biological Network Analysis
 mfn_allsev_network <- create_biological_network(
@@ -94,5 +94,6 @@ allsev_network_plot <- plot_biological_network(
   show_node_numbers = FALSE,
   labels_below = c(4,1,14,5,2),  # Much cleaner than the old way!
   nudge_labels_vert = list(p12 = -2, p14= 3, p7 = 0, p2 =3.3, p9 = -1.2, p11 = -1, p3 = 0.3, p1 = 2.2, p13 = 0.5, p10 = 0.5, p6 = 0.45, p8 = -1.6),
-  nudge_labels_horiz = list(p12 = 0.85, p5 = 0.55, p14 = 0.55, p7 = 1.09, p4 = 0.7, p11 = -0.15, p3 = -0.13, p1 = -0.013, p13 = -0.08, p10 = 1.08, p6 = -0.1)
+  nudge_labels_horiz = list(p12 = 0.85, p5 = 0.55, p14 = 0.55, p7 = 1.09, p4 = 0.7, p11 = -0.15, p3 = -0.13, p1 = -0.013, p13 = -0.08, p10 = 1.08, p6 = -0.1),
+  color_scale = "rb"
 )
