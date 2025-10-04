@@ -1,114 +1,53 @@
-#' Create Individual Feature Bar Plots for T-test Results
+#' Create Individual Feature Bar Plots (Simplified)
 #'
 #' This function creates publication-style bar plots for individual metabolomic features
 #' showing group comparisons with means, individual data points, and statistical results.
-#' Specifically designed for severe_PGD analysis.
+#' Specifically designed for severe_PGD analysis with a simplified interface.
 #'
-#' @param ttest_results Tibble output from run_targeted_ttests() function
-#' @param feature_data Data frame with feature values (samples as rows, features as columns)
-#' @param plot_mode Which features to plot: "all" (all features), "sig_p" (p < 0.05), "fdr_p" (FDR < 0.05)
+#' @param feature_table Data frame with severe_PGD column and feature columns (samples as rows, features as columns)
+#' @param metadata_table Tibble with columns: identified_name, p_value, p_value_fdr, feature
 #' @param base_family Font family for plots (default: "Arial")
 #' @param include_individual_points Whether to show individual data points (default: TRUE)
 #' @param jitter_width Width of jitter for individual points (default: 0.15)
-#' @param significance_threshold P-value threshold for significance (default: 0.05)
-#' @param show_significance_bars Whether to show significance bars/stars (default: TRUE)
-#' @param print_p Whether to print p-value in top right corner (default: FALSE)
-#' @param print_p_fdr Whether to print FDR-adjusted p-value instead of raw p-value (default: FALSE)
 #' @param undo_log Whether to undo log2 transformation (2^x) for display (default: FALSE)
+#' @param text_scale Scaling factor for all text elements (default: 1.0, use 0.8 for 80% size, etc.)
 #'
 #' @return List of ggplot objects, one for each feature
 #'
 #' @examples
 #' \dontrun{
-#'   # First run the t-tests
-#'   ttest_results <- run_targeted_ttests(
-#'     feature_table = TFT,
-#'     tft_key = TFT_key
-#'   )
-#'   
-#'   # Plot only FDR significant features (default)
-#'   plots_fdr <- plot_targeted(
-#'     ttest_results = ttest_results,
-#'     feature_data = TFT,
-#'     plot_mode = "fdr_p"
-#'   )
-#'   
-#'   # Plot all features with p < 0.05
-#'   plots_sig <- plot_targeted(
-#'     ttest_results = ttest_results,
-#'     feature_data = TFT,
-#'     plot_mode = "sig_p"
-#'   )
-#'   
-#'   # Plot ALL features in dataset
-#'   plots_all <- plot_targeted(
-#'     ttest_results = ttest_results,
-#'     feature_data = TFT,
-#'     plot_mode = "all"
+#'   # Create individual plots
+#'   plots <- plot_targeted(
+#'     feature_table = TFT_indv,
+#'     metadata_table = indv_plots
 #'   )
 #'   
 #'   # View individual plot
-#'   print(plots_fdr[[1]])
+#'   print(plots[[1]])
 #' }
 #'
 #' @export
-plot_targeted <- function(ttest_results,
-                          feature_data,
-                          plot_mode = "fdr_p",
+plot_targeted <- function(feature_table,
+                          metadata_table,
                           base_family = "Arial",
                           include_individual_points = TRUE,
                           jitter_width = 0.15,
-                          significance_threshold = 0.05,
-                          show_significance_bars = TRUE,
-                          print_p = FALSE,
-                          print_p_fdr = FALSE,
-                          undo_log = FALSE) {
+                          undo_log = FALSE,
+                          text_scale = 1.0) {
   
   # Load required libraries
   library(dplyr)
   library(ggplot2)
   library(purrr)
   library(stringr)
+  library(labeling)
   
-  # Filter ttest_results based on plot_mode
-  if (plot_mode == "all") {
-    filtered_results <- ttest_results
-    cat("Plotting all", nrow(filtered_results), "features\n")
-  } else if (plot_mode == "sig_p") {
-    filtered_results <- ttest_results %>%
-      filter(!is.na(p_value) & p_value < 0.05)
-    cat("Plotting", nrow(filtered_results), "features with p < 0.05\n")
-  } else if (plot_mode == "fdr_p") {
-    filtered_results <- ttest_results %>%
-      filter(!is.na(p_value_fdr) & p_value_fdr < 0.05)
-    cat("Plotting", nrow(filtered_results), "features with FDR < 0.05\n")
-  } else {
-    stop("plot_mode must be one of: 'all', 'sig_p', 'fdr_p'")
-  }
-  
-  if (nrow(filtered_results) == 0) {
-    warning("No features meet the criteria for plot_mode = '", plot_mode, "'")
-    return(list())
-  }
-  
-  # Set dynamic y-label based on undo_log parameter with proper subscript
+  # Set dynamic y-label based on undo_log parameter
   y_label <- if (undo_log) {
     "Spectral Intensity"
   } else {
     expression(Log[2]~Intensity)
   }
-  
-  # Hardcoded for severe_PGD analysis
-  grouping_var_name <- "severe_PGD"
-  group_vector <- feature_data$severe_PGD
-  
-  # Convert to factor if not already
-  if (!is.factor(group_vector)) {
-    group_vector <- as.factor(group_vector)
-  }
-  
-  # Get group levels and map colors
-  group_levels <- levels(group_vector)
   
   # Color mapping: "Severe PGD" = red, "No Severe PGD" = blue
   group_colors <- setNames(c("#800017", "#113d6a"), c("Severe PGD", "No Severe PGD"))
@@ -118,7 +57,7 @@ plot_targeted <- function(ttest_results,
   display_labels <- c("Severe PGD" = "Y", "No Severe PGD" = "N")
   x_axis_title <- "Severe PGD"
   
-  # Publication-style theme (matching volcano plot styling exactly)
+  # Publication-style theme
   theme_pub_barplot <- function() {
     theme_minimal(base_family = base_family) +
       theme(
@@ -129,274 +68,195 @@ plot_targeted <- function(ttest_results,
         axis.line.x.bottom = element_line(color = "black", linewidth = 0.6),
         axis.line.y.left = element_line(color = "black", linewidth = 0.6),
         
-        # Axis styling - matching volcano plot exactly
+        # Axis styling (scaled text)
         axis.ticks = element_line(color = "black", linewidth = 0.6),
         axis.ticks.length = unit(0.15, "cm"),
-        axis.text = element_text(size = 11, face = "bold", color = "black"),
-        axis.text.x = element_text(size = 11, face = "bold", color = "black", angle = 0, vjust = 0.5, hjust = 0.5),  # Straight labels
-        axis.text.y = element_text(size = 11, face = "bold", color = "black"),
-        axis.title = element_text(size = 12.5, face = "bold", color = "black"),
-        axis.title.x = element_text(size = 12.5, face = "bold", color = "black", margin = margin(t = 5)),
-        axis.title.y = element_text(size = 12.5, face = "bold", color = "black", margin = margin(r = 5), hjust = 0.5),
+        axis.text = element_text(size = 11 * text_scale, face = "bold", color = "black"),
+        axis.text.x = element_text(size = 11 * text_scale, face = "bold", color = "black", angle = 0, vjust = 0.5, hjust = 0.5),
+        axis.text.y = element_text(size = 11 * text_scale, face = "bold", color = "black"),
+        axis.title = element_text(size = 12 * text_scale, face = "bold", color = "black"),
+        axis.title.x = element_text(size = 12 * text_scale, face = "bold", color = "black", margin = margin(t = 5)),
+        axis.title.y = element_text(size = 12 * text_scale, face = "bold", color = "black", margin = margin(r = 5), hjust = 0.5),
         
-        # Plot title - matching volcano styling
-        plot.title = element_text(size = 12.5, face = "bold", hjust = 0.5, color = "black"),
+        # Plot title (scaled)
+        plot.title = element_text(size = 12 * text_scale, face = "bold", hjust = 0.5, color = "black"),
         
-        # Legend (will be hidden for individual plots)
+        # Legend
         legend.position = "none"
       )
   }
   
-  # Function to format feature names nicely
-  format_feature_name <- function(feature_name) {
-    # Remove long suffixes and make more readable
-    clean_name <- str_replace(feature_name, "^(C18_|HILIC_)", "")
-    clean_name <- str_replace(clean_name, "_.*", "")  # Remove everything after first underscore for brevity
-    return(clean_name)
-  }
-  
-  # Function to create individual feature plot
-  create_single_feature_plot <- function(feature_name) {
-    # Check if feature exists in results
-    if (!feature_name %in% ttest_results$feature) {
-      warning("Feature '", feature_name, "' not found in ttest_results")
+  # Function to create a single plot
+  create_single_plot <- function(feature_name) {
+    # Get metadata for this feature
+    feature_meta <- metadata_table %>%
+      filter(feature == feature_name)
+    
+    if (nrow(feature_meta) == 0) {
+      warning("No metadata found for feature: ", feature_name)
       return(NULL)
     }
     
-    # Get feature values
-    if (!feature_name %in% colnames(feature_data)) {
-      warning("Feature '", feature_name, "' not found in feature_data")
-      return(NULL)
+    # Get feature values and group info
+    feature_values <- feature_table[[feature_name]]
+    group_vector <- feature_table$severe_PGD
+    
+    # Remove missing values
+    complete_cases <- !is.na(feature_values) & !is.na(group_vector)
+    feature_clean <- feature_values[complete_cases]
+    group_clean <- group_vector[complete_cases]
+    
+    # Convert group to factor if needed
+    if (!is.factor(group_clean)) {
+      group_clean <- as.factor(group_clean)
     }
     
-    # Prepare plotting data
+    # Transform data if requested
+    if (undo_log) {
+      feature_clean <- 2^feature_clean
+    }
+    
+    # Create plot data
     plot_data <- data.frame(
-      Group = group_vector,
-      Feature_Value = feature_data[[feature_name]],
-      stringsAsFactors = FALSE
-    ) %>%
-      filter(!is.na(Feature_Value), !is.na(Group)) %>%
-      mutate(
-        Group = factor(Group, levels = group_levels),
-        # Apply undo_log transformation if requested
-        Feature_Value = if (undo_log) 2^Feature_Value else Feature_Value
-      )
+      Group = group_clean,
+      Feature_Value = feature_clean
+    )
     
     # Calculate summary statistics
     summary_data <- plot_data %>%
       group_by(Group) %>%
       summarise(
         mean_value = mean(Feature_Value, na.rm = TRUE),
-        se_value = sd(Feature_Value, na.rm = TRUE) / sqrt(n()),
         max_value = max(Feature_Value, na.rm = TRUE),
         n_samples = n(),
         .groups = "drop"
       )
     
-    # Get p-value for this feature from filtered results
-    feature_results <- filtered_results %>%
-      filter(feature == feature_name)
+    # Get p-values
+    p_value <- feature_meta$p_value[1]
+    p_value_fdr <- feature_meta$p_value_fdr[1]
+    identified_name <- feature_meta$identified_name[1]
     
-    if (nrow(feature_results) == 0) {
-      p_value <- NA
-      p_value_fdr <- NA
-    } else {
-      p_value <- feature_results$p_value[1]
-      p_value_fdr <- if("p_value_fdr" %in% colnames(feature_results)) {
-        feature_results$p_value_fdr[1]
-      } else {
-        NA
-      }
-    }
-    
-    # Choose which p-value to display based on parameters
-    display_p_value <- if (print_p_fdr && !is.na(p_value_fdr)) {
-      p_value_fdr
-    } else {
-      p_value
-    }
-    
-    # Create p-value text for title (only if show_significance_bars is TRUE) - NOT USED ANYMORE
-    p_text <- ""  # P-values no longer go in title
-    
-    # Get feature display name (use identified_name if available, otherwise format feature_name)
-    feature_display_name <- if (nrow(feature_results) > 0 && "identified_name" %in% colnames(feature_results)) {
-      identified_name <- feature_results$identified_name[1]
-      if (!is.na(identified_name) && identified_name != "" && identified_name != "Unknown") {
-        identified_name
-      } else {
-        format_feature_name(feature_name)
-      }
-    } else {
-      format_feature_name(feature_name)
-    }
-    
-    # Determine significance
-    is_significant <- !is.na(p_value) && p_value < significance_threshold
-    
-    # Determine y limits for plot
+    # Determine y limits with consistent 4-tick structure
     y_max <- max(summary_data$max_value, na.rm = TRUE)
-    y_limit <- y_max * 1.15  # Add space for title
+    
+    # Calculate a nice round number for the top tick that's above y_max
+    # Use powers of 10 approach for clean scientific notation
+    top_tick_magnitude <- ceiling(log10(y_max))
+    top_tick_base <- ceiling(y_max / (10^(top_tick_magnitude - 1))) * (10^(top_tick_magnitude - 1))
+    
+    # If that's not enough, try the next increment
+    if (top_tick_base < y_max * 1.1) {
+      top_tick_base <- top_tick_base + (10^(top_tick_magnitude - 1))
+    }
+    
+    # Set up 4 evenly spaced ticks: 0, 1/3, 2/3, top
+    tick_spacing <- top_tick_base / 3
+    y_breaks <- c(0, tick_spacing, 2 * tick_spacing, top_tick_base)
+    
+    # Set y_limit to 1.02 times the top tick value
+    y_limit <- top_tick_base * 1.017
     
     # Create the base plot
     p <- ggplot() +
-      # Add bars with group colors (matching volcano styling)
+      # Add bars
       geom_col(
         data = summary_data,
         aes(x = Group, y = mean_value, fill = Group, color = Group),
         width = 0.7, 
-        linewidth = 0.6,  # Match volcano plot linewidth
+        linewidth = 0.6,
         alpha = 0.8, 
         na.rm = TRUE
-      ) +
-      # Add mean points for emphasis
-      geom_point(
-        data = summary_data,
-        aes(x = Group, y = mean_value, color = Group),
-        size = 1.5,
-        shape = 16
       )
     
     # Add individual data points if requested
     if (include_individual_points) {
+      # Create color vectors for points (dark colors)
+      point_colors <- ifelse(plot_data$Group == "Severe PGD", "#800017", "#113d6a")
+      
       p <- p + geom_jitter(
         data = plot_data,
-        aes(x = Group, y = Feature_Value, color = Group),
+        aes(x = Group, y = Feature_Value),
+        color = point_colors,
         width = jitter_width, 
         size = 0.6, 
-        alpha = 0.7, 
+        alpha = 1, 
+        shape = 16,  # Simple solid circles
         show.legend = FALSE
       )
     }
     
-    # Apply color scales and theme
+    # Apply colors and styling
     p <- p +
-      scale_fill_manual(values = group_colors_light, drop = FALSE) +
+      scale_fill_manual(values = group_colors_light, drop = FALSE) +  # Light colors for bars
       scale_color_manual(values = group_colors, drop = FALSE) +
-      scale_x_discrete(labels = display_labels) +  # Use custom display labels
+      scale_x_discrete(labels = display_labels) +
       scale_y_continuous(
-        expand = expansion(mult = c(0, 0.05)), 
-        limits = c(0, y_limit)
+        expand = expansion(mult = c(0, 0)), 
+        limits = c(0, y_limit),
+        breaks = y_breaks,
+        labels = function(x) {
+          # Force scientific notation with single digit before decimal
+          sprintf("%.0e", x)
+        }
       ) +
       theme_pub_barplot() +
       labs(
-        x = x_axis_title,  # Conditional x-axis title
+        x = x_axis_title,
         y = y_label,
-        title = feature_display_name  # Just the identified name, no p-values
+        title = identified_name
       )
     
-    # Add p-value annotation in top right corner if requested
-    if ((print_p || print_p_fdr) && !is.na(display_p_value)) {
-      p_annotation_text <- if (print_p_fdr && !is.na(p_value_fdr)) {
-        if (p_value_fdr < 0.001) "FDR < 0.001" else paste0("FDR = ", round(p_value_fdr, 3))
-      } else {
-        if (display_p_value < 0.001) "p < 0.001" else paste0("p = ", round(display_p_value, 3))
-      }
-      
-      p <- p + annotate("text", 
-                       x = Inf, y = Inf, 
-                       label = p_annotation_text,
-                       hjust = 1.1, vjust = 1.3,
-                       size = 3, 
-                       fontface = "italic",
-                       color = "black")
-    }
+    # Add p-value annotations in top right corner
+    p_annotation_text <- paste0(
+      "p = ", ifelse(p_value < 0.001, "< 0.001", formatC(p_value, format = "f", digits = 3)), ", ",
+      "q = ", ifelse(p_value_fdr < 0.001, "< 0.001", formatC(p_value_fdr, format = "f", digits = 3))
+    )
     
-    # Modify title color based on significance
-    if (is_significant) {
-      p <- p + theme(plot.title = element_text(color = "black"))
-    } else {
-      p <- p + theme(plot.title = element_text(color = "gray50"))
-    }
+    # Position in top right corner without expanding plot area
+    x_pos <- 2.5  # Slightly right of the second bar but within reasonable bounds
+    y_pos <- y_limit * 0.9999
+    
+    p <- p + annotate("text", 
+                     x = x_pos, y = y_pos, 
+                     label = p_annotation_text,
+                     hjust = 1, vjust = 1,  # Right-align and top-align
+                     size = 3 * text_scale,  # Scale the p-value annotation text too
+                     fontface = "italic",
+                     color = "black")
     
     return(p)
   }
   
-  # Get all features from filtered results
-  features_to_plot <- unique(filtered_results$feature)
+  # Get feature columns (all except severe_PGD)
+  feature_columns <- setdiff(colnames(feature_table), "severe_PGD")
   
-  # Create plots for all features
-  cat("Creating", length(features_to_plot), "feature plots...\n")
+  # Filter to only features that exist in metadata
+  available_features <- intersect(feature_columns, metadata_table$feature)
   
-  feature_plots <- map(features_to_plot, create_single_feature_plot)
-  names(feature_plots) <- features_to_plot
-  
-  # Remove any NULL plots (from errors)
-  feature_plots <- feature_plots[!map_lgl(feature_plots, is.null)]
-  
-  cat("Successfully created", length(feature_plots), "plots\n")
-  
-  return(feature_plots)
-}
-
-#' Create Feature Plot Grid Pages
-#'
-#' Arranges individual feature plots into grid pages for easy viewing
-#'
-#' @param feature_plots List of ggplot objects from create_feature_barplots()
-#' @param plots_per_page Number of plots per page (default: 9 for 3x3 grid)
-#' @param ncol Number of columns in grid (default: 3)
-#' @param page_title_base Base title for pages (default: "Feature Analysis")
-#' @param sort_by_pvalue Whether to sort plots by p-value (default: TRUE)
-#' @param ttest_results Optional ttest results for sorting (required if sort_by_pvalue = TRUE)
-#'
-#' @return List of grid objects, one per page
-#'
-#' @export
-create_feature_plot_pages <- function(feature_plots,
-                                     plots_per_page = 9,
-                                     ncol = 3,
-                                     page_title_base = "Feature Analysis",
-                                     sort_by_pvalue = TRUE,
-                                     ttest_results = NULL) {
-  
-  library(cowplot)
-  
-  # Sort plots by p-value if requested
-  if (sort_by_pvalue && !is.null(ttest_results)) {
-    # Get feature order by p-value
-    feature_order <- ttest_results %>%
-      arrange(p_value) %>%
-      pull(feature)
-    
-    # Reorder plots
-    feature_plots <- feature_plots[feature_order[feature_order %in% names(feature_plots)]]
+  if (length(available_features) == 0) {
+    stop("No matching features found between feature_table and metadata_table")
   }
   
-  # Split plots into chunks
-  plot_chunks <- split(feature_plots, ceiling(seq_along(feature_plots) / plots_per_page))
+  cat("Creating", length(available_features), "feature plots...\n")
   
-  # Create page grid function
-  create_page_grid <- function(chunk_plots, page_num, total_pages) {
-    nrow <- ceiling(length(chunk_plots) / ncol)
-    
-    # Create title
-    title_text <- paste0(page_title_base, " - Page ", page_num, " of ", total_pages)
-    
-    # Create title plot
-    title_plot <- ggplot() +
-      geom_text(aes(x = 0.5, y = 0.5), label = title_text, 
-                size = 5, fontface = "bold", hjust = 0.5, vjust = 0.5) +
-      xlim(0, 1) + ylim(0, 1) +
-      theme_void() +
-      theme(plot.background = element_rect(fill = "white", color = NA))
-    
-    # Create plot grid
-    plot_grid_obj <- plot_grid(plotlist = chunk_plots, nrow = nrow, ncol = ncol)
-    
-    # Combine title and plots
-    final_page <- plot_grid(title_plot, plot_grid_obj, 
-                           nrow = 2, ncol = 1, 
-                           rel_heights = c(0.1, 0.9))
-    
-    return(final_page)
-  }
+  # Create plots for all available features
+  plots <- map(available_features, create_single_plot)
   
-  # Create all pages
-  pages <- map2(plot_chunks, seq_along(plot_chunks), 
-                ~create_page_grid(.x, .y, length(plot_chunks)))
+  # Name the plots with identified names
+  plot_names <- map_chr(available_features, function(feat) {
+    meta_row <- metadata_table %>% filter(feature == feat)
+    if (nrow(meta_row) > 0) {
+      return(meta_row$identified_name[1])
+    } else {
+      return(feat)
+    }
+  })
   
-  cat("Created", length(pages), "pages with", plots_per_page, "plots each\n")
+  names(plots) <- plot_names
   
-  return(pages)
+  # Remove any NULL plots
+  plots <- plots[!map_lgl(plots, is.null)]
+  
+  return(plots)
 }
