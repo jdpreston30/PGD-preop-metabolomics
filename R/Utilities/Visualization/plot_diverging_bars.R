@@ -8,6 +8,7 @@
 #' @param max_features Maximum number of features to display (default: 20)
 #' @param order_by Column to order features by for selection (default: "p_value")
 #' @param title Plot title (default: "Log2 Fold Change (Severe vs No Severe PGD)")
+#' @param text_scale Scaling factor for all text elements (default: 1.0, use 0.8 for 80% size, etc.)
 #'
 #' @return ggplot object
 #'
@@ -25,7 +26,8 @@
 plot_diverging_bars <- function(results_tibble,
                                 base_family = "Arial",
                                 max_features = 20,
-                                order_by = "p_value") {
+                                order_by = "p_value",
+                                text_scale = 1.0) {
   
   # Load required libraries
   library(dplyr)
@@ -71,24 +73,24 @@ plot_diverging_bars <- function(results_tibble,
         # Axis styling - matching volcano plot exactly
         axis.ticks = element_line(color = "black", linewidth = 0.6),
         axis.ticks.length = unit(0.15, "cm"),
-        axis.text.x = element_text(size = 10, face = "bold", color = "black"),
-        axis.text.y = element_text(size = 6, face = "bold", color = "black", margin = margin(r = 2)),
-        axis.title = element_text(size = 11, face = "bold", color = "black"),
-        axis.title.x = element_text(size = 11, face = "bold", color = "black", margin = margin(t = 10)),
+        axis.text.x = element_text(size = 11 * text_scale, face = "bold", color = "black"),
+        axis.text.y = element_text(size = 6 * text_scale, face = "bold", color = "black", margin = margin(r = 2)),
+        axis.title = element_text(size = 12 * text_scale, face = "bold", color = "black"),
+        axis.title.x = element_text(size = 12 * text_scale, face = "bold", color = "black", margin = margin(t = 5)),
         axis.title.y = element_blank(),
         
         # Plot title
         plot.title = element_blank(),
         
         # Legend styling - small boxes centered at top
-        legend.position = c(0.506, 1.025),
+        legend.position = c(0.515, 1.025),
         legend.direction = "horizontal",
         legend.justification = "center",
         legend.title = element_blank(),
-        legend.text = element_text(size = 6, face = "bold", color = "black", margin = margin(l = 3, r = 3)),
-        legend.key.size = unit(0.4, "cm"),       # Much smaller boxes
-        legend.key.width = unit(0.4, "cm"),     # Smaller width
-        legend.key.height = unit(0.2, "cm"),    # Smaller height
+        legend.text = element_text(size = 5 * text_scale, face = "bold", color = "black", margin = margin(l = 2, r = 0)),
+        legend.key.size = unit(0.35, "cm"),       # Much smaller boxes
+        legend.key.width = unit(0.35, "cm"),     # Smaller width
+        legend.key.height = unit(0.15, "cm"),    # Smaller height
         legend.margin = margin(b = -2),          # Less space below legend
         legend.box.margin = margin(b = -2),
         
@@ -110,14 +112,14 @@ plot_diverging_bars <- function(results_tibble,
     ) +
     # Custom x-axis scale
     scale_x_continuous(
-      limits = c(-2.6, 2.6),
+      limits = c(-2.75, 2.75),
       breaks = c(-2, -1, 0, 1, 2),
       expand = c(0, 0)
     ) +
     # Axis labels
     labs(
       title = title,
-      x = "Log Fold Change"
+      x = expression(bold("log")[2]*bold("(Fold Change)")),
       # y = "Metabolite"
     ) +
     # Apply theme

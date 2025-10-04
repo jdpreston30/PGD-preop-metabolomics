@@ -31,34 +31,20 @@ div_plot_data <- inspect %>%
 indv_plots <- div_plot_data %>%
   select(identified_name, p_value, p_value_fdr, feature) %>%
   filter(p_value < 0.01)
+#- 2.1.6: Subset TFT to the chosen ones
 TFT_indv <- TFT %>%
   select(severe_PGD, all_of(indv_plots$feature))
 #+ 2.2: Visualize diverging bars
 diverging_plot <- plot_diverging_bars(
   results_tibble = div_plot_data,
-  max_features = 100
-) 
-#+ 2.3: Visualize individual feature plots
-source("R/Utilities/Visualization/plot_targeted.R")
-significant_feature_plots <- plot_targeted(
-  ttest_results = ttests_low_det_removed,
-  feature_data = TFT,
-  plot_mode = "fdr_p",
-  include_individual_points = TRUE,
-  show_significance_bars = FALSE,
-  print_p = FALSE,
-  print_p_fdr = TRUE,
-  undo_log = TRUE
+  max_features = 100,
+  text_scale = 0.9
 )
-#+ 2.3
-for (i in seq_along(significant_feature_plots)) {
-  feature_name <- names(significant_feature_plots)[i]
-  ggsave(
-    filename = paste0("Figures/Raw/targ_", feature_name, ".png"),
-    plot = significant_feature_plots[[i]],
-    width = 3,
-    height = 3,
-    dpi = 600,
-    bg = "white"
-  )
-}
+#+ 2.3: Visualize individual feature plots
+significant_feature_plots <- plot_targeted(
+  feature_table = TFT_indv,
+  metadata_table = indv_plots,
+  include_individual_points = TRUE,
+  undo_log = TRUE,
+  text_scale = 0.6
+)
