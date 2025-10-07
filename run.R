@@ -1,7 +1,5 @@
 #* Run Analysis Pipeline
 #+ Setup environment and configuration
-#- Set computer type (auto-detect or specify)
-computer <- "auto"  # Options: "auto", "laptop", "desktop"
 #- Run Scripts 
 {
 source("R/Scripts/00a_environment_setup.R")

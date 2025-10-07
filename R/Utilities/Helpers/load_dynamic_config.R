@@ -51,7 +51,7 @@ load_dynamic_config <- function(computer = "auto", config_path = "config_dynamic
   substitution_vars <- comp_vars
   substitution_vars$base_data_path <- glue::glue(
     raw_config$paths$base_data_path, 
-    .envir = comp_vars
+    .envir = list2env(comp_vars)
   )
   
   # Recursively substitute variables in all path strings
@@ -61,7 +61,7 @@ load_dynamic_config <- function(computer = "auto", config_path = "config_dynamic
     } else if (is.character(obj) && length(obj) == 1) {
       # Only substitute if string contains template variables
       if (grepl("\\{.*\\}", obj)) {
-        return(as.character(glue::glue(obj, .envir = vars)))
+        return(as.character(glue::glue(obj, .envir = list2env(vars))))
       } else {
         return(obj)
       }

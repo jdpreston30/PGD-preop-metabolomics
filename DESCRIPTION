@@ -56,7 +56,8 @@ Imports:
     metap,
     BiocManager,
     cowplot,
-    jsonlite
+    jsonlite,
+    glue
 Additional_repositories: 
     https://bioconductor.org/packages/release/bioc
 Bioconductor:
