@@ -50,4 +50,12 @@ conflicts_prefer(raster::intersect)
 conflicts_prefer(igraph::compose)
 conflicts_prefer(flextable::align)
 conflicts_prefer(dplyr::rename)
-#+ 0b.7: Load utility funct
+#+ 0b.7: Load utility functions 
+if (dir.exists(utils_path)) {
+  purrr::walk(
+    list.files(utils_path, pattern = "\\.[rR]$", full.names = TRUE, recursive = TRUE),
+    source
+  )
+  cat("🔧 Loaded utility functions\n")
+}
+cat("✅ Configuration and environment setup complete!\n")
