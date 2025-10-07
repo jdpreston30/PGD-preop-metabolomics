@@ -2,30 +2,40 @@
 #+ 0b.1: Set up R options and repositories 
 options(repos = c(CRAN = "https://cran.rstudio.com/"))
 options(expressions = 10000)
-#+ 0b.2: Load dynamic project configuration 
-#- 0b.2.1: Set computer (auto-detect or specify manually)
+#+ 0b.2: Load utility functions first (needed for dynamic config)
+utils_path <- "R/Utilities/"
+if (dir.exists(utils_path)) {
+  purrr::walk(
+    list.files(utils_path, pattern = "\\.[rR]$", full.names = TRUE, recursive = TRUE),
+    source
+  )
+  cat("🔧 Loaded utility functions\n")
+}
+#+ 0b.3: Load dynamic project configuration 
+#- 0b.3.1: Set computer (auto-detect or specify manually)
 computer <- "auto"  # Options: "auto", "laptop", "desktop"
-#- 0b.2.2: Load and resolve configuration
+#- 0b.3.2: Load and resolve configuration
 config <- load_dynamic_config(computer = computer, config_path = "config_dynamic.yaml")
 .GlobalEnv$CONFIG <- config
-#+ 0b.3: Set up global paths from config 
-raw_path <- config$paths$raw_data
+#+ 0b.4: Set up global paths from config 
 output_path <- config$paths$output  
 scripts_path <- config$paths$scripts
-utils_path <- config$paths$utils
-#+ 0b.4: Create output directory if it doesn't exist 
+#+ 0b.4: Set up global paths from config 
+output_path <- config$paths$output  
+scripts_path <- config$paths$scripts
+#+ 0b.5: Create output directory if it doesn't exist 
 if (!dir.exists(output_path)) {
   dir.create(output_path, recursive = TRUE)
   cat("📁 Created output directory:", output_path, "\n")
 }
-#+ 0b.5: Set up R environment preferences 
-#- 0b.5.1: Tibble preferences 
+#+ 0b.6: Set up R environment preferences 
+#- 0b.6.1: Tibble preferences 
 options(
   tibble.print_max = config$analysis$tibble_options$print_max,
   tibble.print_min = config$analysis$tibble_options$print_min,
   pillar.sigfig = config$analysis$tibble_options$sigfig
 )
-#- 0b.5.2: Data.table preferences 
+#- 0b.6.2: Data.table preferences 
 if (!is.null(config$analysis$datatable_options)) {
   options(
     datatable.print.class = config$analysis$datatable_options$print_class,
@@ -33,7 +43,7 @@ if (!is.null(config$analysis$datatable_options)) {
   )
   .datatable.aware = config$analysis$datatable_options$aware
 }
-#+ 0b.6: Set up package conflict preferences 
+#+ 0b.7: Set up package conflict preferences
 # conflicted is already loaded by 0a_environment_setup.R
 conflicts_prefer(purrr::map)
 conflicts_prefer(dplyr::filter) 
@@ -50,12 +60,4 @@ conflicts_prefer(raster::intersect)
 conflicts_prefer(igraph::compose)
 conflicts_prefer(flextable::align)
 conflicts_prefer(dplyr::rename)
-#+ 0b.7: Load utility functions 
-if (dir.exists(utils_path)) {
-  purrr::walk(
-    list.files(utils_path, pattern = "\\.[rR]$", full.names = TRUE, recursive = TRUE),
-    source
-  )
-  cat("🔧 Loaded utility functions\n")
-}
 cat("✅ Configuration and environment setup complete!\n")
