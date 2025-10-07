@@ -1,4 +1,8 @@
-# Postoperative Primary Graft Dysfunction Metabolomics Analysis
+# Postoperative Primary Graft Dysfunct## 🔬 Analysis Workflow
+
+1. **Run complete analysis**: `source("run.R")`
+2. **View results**: Check `Outputs/` directory
+3. **Individual components**: Source specific scripts from `R/Scripts/`etabolomics Analysis
 
 **Reproducible analysis code for academic publication**
 
@@ -12,21 +16,20 @@ If you use this code, please cite:
 **One command to reproduce all results:**
 
 ```r
-source("setup.R")
+source("run.R")
 ```
 
 This will:
-1. Install all required packages (exact versions)
-2. Set up the analysis environment  
-3. Load all configurations
+1. Set up the analysis environment
+2. Load all configurations and dependencies
+3. Execute the complete analysis pipeline
 
 ## 📁 Project Structure
 
 ```
 ├── DESCRIPTION              # Package dependencies (R standard)
-├── renv.lock               # Exact package versions (auto-generated)
 ├── config.yaml             # Analysis settings and paths
-├── setup.R                 # One-command reproducible setup
+├── run.R                   # Main analysis execution script
 ├── R/
 │   ├── Scripts/
 │   │   ├── setup.R         # Environment configuration  
@@ -54,23 +57,24 @@ This will:
 All package dependencies are managed automatically:
 
 - **Core packages**: Listed in `DESCRIPTION`
-- **Version control**: Managed by `renv`
+- **Environment setup**: Managed via environment setup scripts
 - **Bioconductor**: Automatic installation
 - **Custom packages**: From GitHub repositories
 
 ## 🔄 Reproducibility
 
-This project uses `renv` for reproducible package management:
+This project ensures reproducible analysis through:
 
-- **Exact versions**: `renv.lock` captures all package versions
-- **Isolated environment**: Won't affect other R projects
+- **Dependency management**: `DESCRIPTION` file lists all required packages
+- **Configuration-driven**: All paths and parameters in `config.yaml`
 - **Cross-platform**: Works on Windows, macOS, Linux
+- **Containerization**: Dockerfile provided for complete environment isolation
 
 ## 🤝 For Collaborators
 
 1. Clone this repository
-2. Run `source("setup.R")`
-3. All dependencies will be installed automatically
+2. Install R packages: `install.packages(readLines("DESCRIPTION")[grep("Imports:", readLines("DESCRIPTION")):length(readLines("DESCRIPTION"))])`
+3. Run analysis: `source("run.R")`
 
 ## 📧 Contact
 

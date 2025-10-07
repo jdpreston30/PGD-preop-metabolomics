@@ -2,7 +2,11 @@
 #+ 0b.1: Set up R options and repositories 
 options(repos = c(CRAN = "https://cran.rstudio.com/"))
 options(expressions = 10000)
-#+ 0b.2: Load project configuration 
+#+ 0b.2: Load dynamic project configuration 
+#- 0b.2.1: Set computer (auto-detect or specify manually)
+computer <- "auto"  # Options: "auto", "laptop", "desktop"
+#- 0b.2.2: Load and resolve configuration
+config <- load_dynamic_config(computer = computer, config_path = "config_dynamic.yaml")
 .GlobalEnv$CONFIG <- config
 #+ 0b.3: Set up global paths from config 
 raw_path <- config$paths$raw_data
@@ -46,12 +50,4 @@ conflicts_prefer(raster::intersect)
 conflicts_prefer(igraph::compose)
 conflicts_prefer(flextable::align)
 conflicts_prefer(dplyr::rename)
-#+ 0b.7: Load utility functions 
-if (dir.exists(utils_path)) {
-  purrr::walk(
-    list.files(utils_path, pattern = "\\.[rR]$", full.names = TRUE, recursive = TRUE),
-    source
-  )
-  cat("🔧 Loaded utility functions\n")
-}
-cat("✅ Configuration and environment setup complete!\n")
+#+ 0b.7: Load utility funct
