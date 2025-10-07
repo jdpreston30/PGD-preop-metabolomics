@@ -58,7 +58,10 @@ draw_label("Energy/Sugars/Redox",
 draw_label("Lipids and Drug Metabolites", 
            x = 6.4, y = 4.035, 
            hjust = 0.5, vjust = 0,
-           size = 10, fontface = "bold")
+           size = 10, fontface = "bold") + 
+draw_plot(AMINOPHENOL, x = 6.2, y = 6.5, width = 1.75, height = 1.75)
+
+print_to_png(fig3, "fig3.png", width = 8.5, height = 11, dpi = 600)
 #+ 6.4: Supplemental Figures
 #- 6.4.1: Supplemental Figure 1
 sup_fig1 <- ggdraw(xlim = c(0, 8.5), ylim = c(0, 11)) +
