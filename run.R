@@ -2,7 +2,6 @@
 #+ Setup environment and configuration
 #- Select YAML
 config <- yaml::read_yaml(here::here("config.yaml"))
-config <- yaml::read_yaml(here::here("config_AT.yaml"))
 config <- yaml::read_yaml(here::here("config_laptop.yaml"))
 #- Run Scripts 
 {

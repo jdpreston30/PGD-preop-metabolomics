@@ -56,17 +56,3 @@ exclude_metabolites <- c(
   "Jasmolin II"                             # Plant metabolite/insecticide
 )
 #! L-Rhamnose was detected in both modes so this list is 53 long but will exclude 54 total metabolites
-#- Remove those from duplicates
-#! inspect taken from 02 pipeline steps
-inspect_pared <- inspect %>%
-  filter(!identified_name %in% exclude_metabolites)
-#- Confirming no duplicates among remaining
-duplicates <- inspect_pared %>%
-  group_by(identified_name, isomer) %>%
-  filter(n() > 1) %>%
-  ungroup() %>%
-  select(sig_ord, identified_name, feature, p_value)
-#- Confirming no isomers among remaining
-isomers <- inspect_pared %>%
-  filter(isomer == "Y") %>%
-  select(sig_ord, identified_name, feature, isomer, p_value)
