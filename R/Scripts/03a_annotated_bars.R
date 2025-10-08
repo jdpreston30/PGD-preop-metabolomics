@@ -16,6 +16,10 @@ inspect <- ttests_low_det_removed %>%
   mutate(sig_ord = row_number()) %>%
   select(sig_ord, feature,
          identified_name, fold_change, mean_no_severe_pgd, mean_severe_pgd, p_value, p_value_fdr, isomer)
+
+inspect_fdr <- inspect %>%
+  filter(p_value_fdr < 0.05)
+  inspect_fdr
 #+ 2.2: Inspect and Clean Features
 #- 2.2.1: Exclude metabolites to remove per CJR research
 inspect_pared <- inspect %>%

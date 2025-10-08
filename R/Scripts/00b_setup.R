@@ -12,10 +12,6 @@ if (dir.exists(utils_path)) {
   cat("🔧 Loaded utility functions\n")
 }
 #+ 0b.3: Load dynamic project configuration 
-#- 0b.3.1: Set computer (auto-detect or specify manually)
-computer <- "auto"  # Options: "auto", "laptop", "desktop"
-#- 0b.3.2: Load and resolve configuration
-config <- load_dynamic_config(computer = computer, config_path = "config_dynamic.yaml")
 .GlobalEnv$CONFIG <- config
 #+ 0b.4: Set up global paths from config 
 output_path <- config$paths$output  
