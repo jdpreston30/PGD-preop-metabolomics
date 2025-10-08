@@ -57,7 +57,9 @@ Imports:
     BiocManager,
     cowplot,
     jsonlite,
-    glue
+    glue,
+    officer,
+    flextable
 Additional_repositories: 
     https://bioconductor.org/packages/release/bioc
 Bioconductor:
