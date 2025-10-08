@@ -47,7 +47,31 @@ cat(
   strrep("=", 60), "\n",
   "\n"
 )
-#+ 6.4: Mummichog Parameters
+#+ 6.4: Write manuscript sentences to Word document
+#- 6.4.1: Create output directory if it doesn't exist
+output_dir <- "Outputs/data_not_shown"
+if (!dir.exists(output_dir)) {
+  dir.create(output_dir, recursive = TRUE)
+}
+#- 6.4.2: Create Word document with manuscript sentences
+doc <- officer::read_docx()
+doc <- doc %>%
+  officer::body_add_par("Data Not Shown - Manuscript Sentences", style = "heading 1") %>%
+  officer::body_add_par("") %>%
+  officer::body_add_par("Sample Composition", style = "heading 2") %>%
+  officer::body_add_par(sample_composition_text) %>%
+  officer::body_add_par("") %>%
+  officer::body_add_par("PGD Grade Distribution", style = "heading 2") %>%
+  officer::body_add_par(pgd_grades_sentence) %>%
+  officer::body_add_par("") %>%
+  officer::body_add_par("Mummichog Parameters", style = "heading 2") %>%
+  officer::body_add_par("nosev = p cutoff 0.1") %>%
+  officer::body_add_par("modsev = p cutoff 0.05") %>%
+  officer::body_add_par("allsev = p cutoff 0.1")
+#- 6.4.3: Save the document
+print(doc, target = file.path(output_dir, "data_not_shown.docx"))
+cat("\nWord document saved to:", file.path(output_dir, "data_not_shown.docx"), "\n")
+#+ 6.5: Mummichog Parameters (preserved for reference)
 #! nosev = p cutoff 0.1
 #! modsev = p cutoff 0.05
 #! allsev = p cutoff 0.1
