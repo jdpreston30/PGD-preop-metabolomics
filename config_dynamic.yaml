@@ -59,8 +59,8 @@ analysis:
     table_variables:
       T1: # Demographics and preoperative characteristics
         - demographics_age_tpx
-        - demographics_race
         - demographics_sex
+        - demographics_race
         - demographics_BMI
         - comorbidities_smoking_hx
         - comorbidities_DM
@@ -76,7 +76,6 @@ analysis:
         - rx_preop_inotrope
         - rx_preop_amiodarone
         - preop_RADIAL_calc
-        - rx_preop_ASA
         - preop_labs_albumin
         - preop_labs_alkphos
         - preop_labs_ALT 
@@ -103,26 +102,16 @@ analysis:
       T3: # Perioperative and postoperative outcomes
         - operative_IT_minutes
         - operative_CPB_minutes
-        - postop_LVEF_median
-        - postop_CVP
-        - postop_cardiac_index
-        - postop_inotrope_score
-        - postop_MCS_IABP
+        - donor_platform_generic
         - postop_VA_ECMO
-        - postop_MCS_Impella5.5
-        - postop_MCS_RVAD
         - postop_ICU_LOS
-        - postop_RRT_needed
         - postop_CRRT
         - postop_stroke
         - postop_30_day_LVEF
         - postop_hospital_LOS
         - ACR_2R_or_greater
-        - survival_30
         - survival_90
-        - survival
-        - survival_days
-  
+
   # Environment preferences
   tibble_options:
     print_max: 100
