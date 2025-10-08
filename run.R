@@ -6,7 +6,7 @@ source("R/Scripts/00a_environment_setup.R")
 source("R/Scripts/00b_setup.R")
 #+ Imports and Preprocess
 source("R/Scripts/00c_clinical_metadata.R")
-source("R/Scripts/00d_FTs.R")}
+source("R/Scripts/00d_FTs.R")
 #+ Analysis
 #- Main Analysis
 source("R/Scripts/01_clustering.R")
