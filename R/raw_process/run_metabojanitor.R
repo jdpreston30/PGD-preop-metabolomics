@@ -1,10 +1,12 @@
 #! Updated function on 9/30 to use Combat FT and reran here
 # ! New version also got rid of mzm entirely and the Simple/ folder
 #+ Setup
-#- Set path to raw data (xMSAnalyzer) and desired output directory
+#- MAC MINI Paths
 raw_path <- "/Users/JoshsMacbook2015/Library/CloudStorage/OneDrive-EmoryUniversity/Research/MS_raw_data/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025"
 output_dir <- "/Users/JoshsMacbook2015/Library/CloudStorage/OneDrive-EmoryUniversity/Research/MS_raw_data/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/MetaboJanitoR"
-setwd(output_dir)
+#- LAPTOP Paths
+raw_path <- "/Users/jdp2019/Library/CloudStorage/OneDrive-Emory/Research/MS_raw_data/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025"
+output_dir <- "/Users/jdp2019/Library/CloudStorage/OneDrive-Emory/Research/MS_raw_data/Chan_studies_MS_raw/PGD_studies/Chan_PGD_9_2025/MetaboJanitoR"
 #- Install if needed
 remove.packages("MetaboJanitoR")
 remotes::install_github("jdpreston30/MetaboJanitoR", force = TRUE)
