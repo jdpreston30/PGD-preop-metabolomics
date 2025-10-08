@@ -1,6 +1,11 @@
 #* Run Analysis Pipeline
 #+ Setup environment and configuration
-#- Run Scripts 
+source("R/Utilities/Helpers/load_dynamic_config.R")
+#- For ComBat Corrected Run
+config <- load_dynamic_config(computer = "auto", config_path = "config_dynamic.yaml")
+#- For 3b Run
+config <- load_dynamic_config(computer = "auto", config_path = "config_dynamic_3b.yaml")
+#- Run Pipeline
 {
 source("R/Scripts/00a_environment_setup.R")
 source("R/Scripts/00b_setup.R")

@@ -1,34 +1,60 @@
-Tryptophan metabolism	shared_metabolites_4	Tyrosine metabolism
-Tryptophan metabolism	shared_metabolites_2	Butanoate metabolism
-Tryptophan metabolism	shared_metabolites_2	Urea cycle/amino group metabolism
-Tryptophan metabolism	shared_metabolites_1	Fructose and mannose metabolism
-Tryptophan metabolism	shared_metabolites_2	Arginine and Proline Metabolism
-Tryptophan metabolism	shared_metabolites_2	Valine, leucine and isoleucine degradation
-Tryptophan metabolism	shared_metabolites_2	Aspartate and asparagine metabolism
-Tyrosine metabolism	shared_metabolites_4	Butanoate metabolism
-Tyrosine metabolism	shared_metabolites_7	Urea cycle/amino group metabolism
-Tyrosine metabolism	shared_metabolites_2	Porphyrin metabolism
-Tyrosine metabolism	shared_metabolites_3	Arginine and Proline Metabolism
-Tyrosine metabolism	shared_metabolites_4	Valine, leucine and isoleucine degradation
-Tyrosine metabolism	shared_metabolites_1	Vitamin A (retinol) metabolism
-Tyrosine metabolism	shared_metabolites_2	Propanoate metabolism
-Tyrosine metabolism	shared_metabolites_5	Aspartate and asparagine metabolism
-Butanoate metabolism	shared_metabolites_3	Urea cycle/amino group metabolism
-Butanoate metabolism	shared_metabolites_2	Arginine and Proline Metabolism
-Butanoate metabolism	shared_metabolites_8	Valine, leucine and isoleucine degradation
-Butanoate metabolism	shared_metabolites_4	Propanoate metabolism
-Butanoate metabolism	shared_metabolites_7	Aspartate and asparagine metabolism
-Urea cycle/amino group metabolism	shared_metabolites_3	Porphyrin metabolism
-Urea cycle/amino group metabolism	shared_metabolites_13	Arginine and Proline Metabolism
-Urea cycle/amino group metabolism	shared_metabolites_3	Valine, leucine and isoleucine degradation
-Urea cycle/amino group metabolism	shared_metabolites_16	Aspartate and asparagine metabolism
-Fructose and mannose metabolism	shared_metabolites_1	Propanoate metabolism
-Porphyrin metabolism	shared_metabolites_3	Arginine and Proline Metabolism
-Porphyrin metabolism	shared_metabolites_1	Vitamin A (retinol) metabolism
-Porphyrin metabolism	shared_metabolites_3	Aspartate and asparagine metabolism
-Arginine and Proline Metabolism	shared_metabolites_2	Valine, leucine and isoleucine degradation
-Arginine and Proline Metabolism	shared_metabolites_1	Propanoate metabolism
-Arginine and Proline Metabolism	shared_metabolites_16	Aspartate and asparagine metabolism
-Valine, leucine and isoleucine degradation	shared_metabolites_4	Propanoate metabolism
-Valine, leucine and isoleucine degradation	shared_metabolites_7	Aspartate and asparagine metabolism
-Propanoate metabolism	shared_metabolites_5	Aspartate and asparagine metabolism
+Mono-unsaturated fatty acid beta-oxidation	shared_metabolites_1	Tyrosine metabolism
+Mono-unsaturated fatty acid beta-oxidation	shared_metabolites_1	Butanoate metabolism
+Mono-unsaturated fatty acid beta-oxidation	shared_metabolites_1	Valine, leucine and isoleucine degradation
+Mono-unsaturated fatty acid beta-oxidation	shared_metabolites_2	Di-unsaturated fatty acid beta-oxidation
+Mono-unsaturated fatty acid beta-oxidation	shared_metabolites_2	De novo fatty acid biosynthesis
+Mono-unsaturated fatty acid beta-oxidation	shared_metabolites_3	Phytanic acid peroxisomal oxidation
+Mono-unsaturated fatty acid beta-oxidation	shared_metabolites_2	Fatty acid activation
+Mono-unsaturated fatty acid beta-oxidation	shared_metabolites_1	Histidine metabolism
+Mono-unsaturated fatty acid beta-oxidation	shared_metabolites_1	Ubiquinone Biosynthesis
+Mono-unsaturated fatty acid beta-oxidation	shared_metabolites_1	Tryptophan metabolism
+Tyrosine metabolism	shared_metabolites_6	Butanoate metabolism
+Tyrosine metabolism	shared_metabolites_6	Valine, leucine and isoleucine degradation
+Tyrosine metabolism	shared_metabolites_1	Di-unsaturated fatty acid beta-oxidation
+Tyrosine metabolism	shared_metabolites_1	De novo fatty acid biosynthesis
+Tyrosine metabolism	shared_metabolites_2	Phytanic acid peroxisomal oxidation
+Tyrosine metabolism	shared_metabolites_2	Hexose phosphorylation
+Tyrosine metabolism	shared_metabolites_1	Fatty acid activation
+Tyrosine metabolism	shared_metabolites_5	Histidine metabolism
+Tyrosine metabolism	shared_metabolites_4	Ubiquinone Biosynthesis
+Tyrosine metabolism	shared_metabolites_8	Tryptophan metabolism
+Butanoate metabolism	shared_metabolites_10	Valine, leucine and isoleucine degradation
+Butanoate metabolism	shared_metabolites_1	Di-unsaturated fatty acid beta-oxidation
+Butanoate metabolism	shared_metabolites_1	De novo fatty acid biosynthesis
+Butanoate metabolism	shared_metabolites_2	Phytanic acid peroxisomal oxidation
+Butanoate metabolism	shared_metabolites_2	Fatty acid activation
+Butanoate metabolism	shared_metabolites_5	Histidine metabolism
+Butanoate metabolism	shared_metabolites_1	Ubiquinone Biosynthesis
+Butanoate metabolism	shared_metabolites_5	Tryptophan metabolism
+Fructose and mannose metabolism	shared_metabolites_5	Hexose phosphorylation
+Valine, leucine and isoleucine degradation	shared_metabolites_1	Di-unsaturated fatty acid beta-oxidation
+Valine, leucine and isoleucine degradation	shared_metabolites_1	De novo fatty acid biosynthesis
+Valine, leucine and isoleucine degradation	shared_metabolites_2	Phytanic acid peroxisomal oxidation
+Valine, leucine and isoleucine degradation	shared_metabolites_1	Fatty acid activation
+Valine, leucine and isoleucine degradation	shared_metabolites_5	Histidine metabolism
+Valine, leucine and isoleucine degradation	shared_metabolites_1	Ubiquinone Biosynthesis
+Valine, leucine and isoleucine degradation	shared_metabolites_5	Tryptophan metabolism
+Di-unsaturated fatty acid beta-oxidation	shared_metabolites_3	De novo fatty acid biosynthesis
+Di-unsaturated fatty acid beta-oxidation	shared_metabolites_1	Phytanic acid peroxisomal oxidation
+Di-unsaturated fatty acid beta-oxidation	shared_metabolites_3	Fatty acid activation
+Di-unsaturated fatty acid beta-oxidation	shared_metabolites_1	Histidine metabolism
+Di-unsaturated fatty acid beta-oxidation	shared_metabolites_1	Ubiquinone Biosynthesis
+Di-unsaturated fatty acid beta-oxidation	shared_metabolites_1	Tryptophan metabolism
+De novo fatty acid biosynthesis	shared_metabolites_3	Phytanic acid peroxisomal oxidation
+De novo fatty acid biosynthesis	shared_metabolites_3	Polyunsaturated fatty acid biosynthesis
+De novo fatty acid biosynthesis	shared_metabolites_11	Fatty acid activation
+De novo fatty acid biosynthesis	shared_metabolites_1	Histidine metabolism
+De novo fatty acid biosynthesis	shared_metabolites_1	Ubiquinone Biosynthesis
+De novo fatty acid biosynthesis	shared_metabolites_1	Tryptophan metabolism
+Phytanic acid peroxisomal oxidation	shared_metabolites_3	Fatty acid activation
+Phytanic acid peroxisomal oxidation	shared_metabolites_2	Histidine metabolism
+Phytanic acid peroxisomal oxidation	shared_metabolites_1	Ubiquinone Biosynthesis
+Phytanic acid peroxisomal oxidation	shared_metabolites_2	Tryptophan metabolism
+Polyunsaturated fatty acid biosynthesis	shared_metabolites_3	Fatty acid activation
+Hexose phosphorylation	shared_metabolites_2	Ubiquinone Biosynthesis
+Fatty acid activation	shared_metabolites_1	Histidine metabolism
+Fatty acid activation	shared_metabolites_1	Ubiquinone Biosynthesis
+Fatty acid activation	shared_metabolites_1	Tryptophan metabolism
+Histidine metabolism	shared_metabolites_1	Ubiquinone Biosynthesis
+Histidine metabolism	shared_metabolites_5	Tryptophan metabolism
+Ubiquinone Biosynthesis	shared_metabolites_1	Tryptophan metabolism
