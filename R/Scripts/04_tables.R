@@ -12,7 +12,10 @@ T1 <- ternG(
   group_var = "severe_PGD",
   descriptive = TRUE,
   output_docx = "Outputs/Tables/T1.docx",
-  consider_normality = TRUE
+  consider_normality = TRUE,
+  show_test = FALSE,
+  round_intg = TRUE,
+  insert_subheads = TRUE
 )
 #+ 4.2: Table 2 (Donor Characteristics) 
 T2 <- ternG(
@@ -22,7 +25,10 @@ T2 <- ternG(
   group_var = "severe_PGD",
   descriptive = TRUE,
   output_docx = "Outputs/Tables/T2.docx",
-  consider_normality = TRUE
+  consider_normality = TRUE,
+  show_test = FALSE,
+  round_intg = TRUE,
+  insert_subheads = TRUE
 )
 #+ 4.3: Table 3 (Table 3. Procurement/Surgical Factors and Perioperative/Post-Transplant Outcomes) 
 T3 <- ternG(
@@ -32,5 +38,8 @@ T3 <- ternG(
   group_var = "severe_PGD",
   descriptive = TRUE,
   output_docx = "Outputs/Tables/T3.docx",
-  consider_normality = TRUE
+  consider_normality = TRUE,
+  show_test = FALSE,
+  round_intg = TRUE,
+  insert_subheads = TRUE
 )
