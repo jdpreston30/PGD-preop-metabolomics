@@ -323,7 +323,7 @@ plot_mummichog_enrichment <- function(
       values = c(0, 0.3, 0.75, 1),  # 1.0 to 1.301 to 2.0 (plateau starts) to 2.5 (plateau continues)
       limits = c(1, 2.0),  # Fixed range from 1 to 2.0
       breaks = c(1, 1.301, 1.5, 1.75, 2.0),  # Fixed ticks: 1, asterisk, 1.5, 2.0
-      labels = c("1", "✱", "1.5", "1.75", "2.0"),  # Custom labels with centered heavy asterisk at 0.05
+      labels = c("1", "✱", "1.5", "1.75", "2+"),  # Custom labels with centered heavy asterisk at 0.05
       oob = scales::squish,  # Values outside range get clamped to edge colors
       name = "-log10(p-value)\n"
     ) +

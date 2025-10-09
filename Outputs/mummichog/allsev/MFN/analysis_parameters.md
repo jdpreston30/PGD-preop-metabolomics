@@ -1,6 +1,6 @@
 # Mummichog Analysis Parameters
 
-**Analysis Date:** 2025-10-08
+**Analysis Date:** 2025-10-09
 
 **Database:** hsa_mfn
 
@@ -17,18 +17,18 @@
 
 **Analysis Parameters:**
 - Peak filtering method: Top 10% of peaks (dynamic)
-- Peak filtering threshold (rounded): 0.1
-- Peak filtering threshold (precise): 0.110383730422262
-- Peaks analyzed: 856 out of 25051
-- Pathways analyzed: 86
-- Significant pathways (p < 0.05): 7
-- Pathway p-values range: 0.00168 to 0.98968
+- Peak filtering threshold (rounded): 0.05
+- Peak filtering threshold (precise): 0.0856595308702631
+- Peaks analyzed: 856 out of 23692
+- Pathways analyzed: 84
+- Significant pathways (p < 0.05): 8
+- Pathway p-values range: 0.000655 to 0.97318
 - Pathway FDR: Not calculated (using raw p-values)
 - Pathway enrichment FDR threshold: 0.05 (fixed)
 - Minimum pathway size: 3
 - Background permutations: 100
 
 **Input Data:**
-- Number of features: 25051
+- Number of features: 23692
 - Output directory: Outputs/mummichog/allsev/MFN
 

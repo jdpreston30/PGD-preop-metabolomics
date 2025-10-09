@@ -26,6 +26,8 @@ paths:
   UFT_filtered: "{base_data_path}/{metabojanitor_subpath}/ComBat/Untargeted/UFT_ComBat_20p_halfmin_log2_tidy.csv"
   clinical_metadata: "{user_home}/{onedrive_path}/Research/Chan Lab - Transplant Multi-Omics - OHT/OHT Clinical Data Master Sheet.xlsx"
   sample_type: "{base_data_path}/sample_type.xlsx"
+  annot_inspection: "/Users/jdp2019/Library/CloudStorage/OneDrive-Emory/Research/Chan Lab - Transplant Multi-Omics - OHT/Manuscripts/Pre Op PGD - AJT - Preston/Other_AJT/annot_inspection.xlsx"
+  
   
   # Local database paths (relative - same across computers)
   qstd_c18: "Databases/IDX_IROA/Qstd4_IROA_C18neg_quantification_HFQE_Fusion_09252025.txt"

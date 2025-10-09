@@ -27,7 +27,8 @@ plot_diverging_bars <- function(results_tibble,
                                 base_family = "Arial",
                                 max_features = 20,
                                 order_by = "p_value",
-                                text_scale = 1.0) {
+                                text_scale = 1.0,
+                                title = NULL) {
   
   # Load required libraries
   library(dplyr)
@@ -36,22 +37,35 @@ plot_diverging_bars <- function(results_tibble,
   
   # Prepare data
   plot_data <- results_tibble %>%
-    # Calculate log2 fold change
+    # Use existing log2_FC/log2FC column if available, otherwise calculate from fold_change
+    {
+      if ("log2_fc" %in% names(.)) {
+        # log2_fc already exists, use as-is
+        .
+      } else if ("log2FC" %in% names(.)) {
+        # log2FC exists, rename to log2_fc
+        rename(., log2_fc = log2FC)
+      } else {
+        # Neither exists, calculate from fold_change
+        mutate(., log2_fc = log2(fold_change))
+      }
+    } %>%
+    # Create color category based on fold change direction
     mutate(
-      log2_fc = log2(fold_change),
-      # Create color category based on fold change direction
       fc_direction = ifelse(log2_fc >= 0, "positive", "negative"),
-      # Clean feature names for display
+      # Clean feature names for display and add +/- prefix
       display_name = str_replace_all(identified_name, "_", " "),
-      display_name = str_wrap(display_name, width = 40)  # Increased width to reduce line breaks
+      display_name = str_wrap(display_name, width = 40),  # Increased width to reduce line breaks
+      # Convert to absolute values for plotting (positive x-axis only)
+      log2_fc_abs = abs(log2_fc)
     ) %>%
     # Take top features first (by order_by if specified, otherwise all)
     {if(order_by != "log2_fc") arrange(., !!sym(order_by)) else .} %>%
     slice_head(n = max_features) %>%
-    # Order by log2 fold change - LOWEST to HIGHEST (so highest FC is at bottom)
+    # Simple ordering: highest log2FC to lowest log2FC (original values, not absolute)
     arrange(log2_fc) %>%
     mutate(
-      display_name = factor(display_name, levels = display_name)  # Keep the log2_fc order
+      display_name = factor(display_name, levels = display_name)  # Keep this exact order
     )
   
   # Color scheme: dark red for positive FC, dark blue for negative FC
@@ -74,7 +88,7 @@ plot_diverging_bars <- function(results_tibble,
         axis.ticks = element_line(color = "black", linewidth = 0.6),
         axis.ticks.length = unit(0.15, "cm"),
         axis.text.x = element_text(size = 11 * text_scale, face = "bold", color = "black"),
-        axis.text.y = element_text(size = 6 * text_scale, face = "bold", color = "black", margin = margin(r = 2)),
+        axis.text.y = element_text(size = 5 * text_scale, face = "bold", color = "black", margin = margin(r = 2)),
         axis.title = element_text(size = 12 * text_scale, face = "bold", color = "black"),
         axis.title.x = element_text(size = 12 * text_scale, face = "bold", color = "black", margin = margin(t = 5)),
         axis.title.y = element_blank(),
@@ -100,26 +114,24 @@ plot_diverging_bars <- function(results_tibble,
   }
   
   # Create the plot
-  p <- ggplot(plot_data, aes(x = log2_fc, y = display_name, fill = fc_direction)) +
+  p <- ggplot(plot_data, aes(x = log2_fc_abs, y = display_name, fill = fc_direction)) +
     # Add bars
     geom_col(width = 0.7, color = "black", linewidth = 0.3) +
-    # Add vertical line at x = 0
-    geom_vline(xintercept = 0, color = "black", linewidth = 0.8, linetype = "solid") +
     # Color and fill scales with descriptive labels
     scale_fill_manual(
       values = colors,
       labels = c("negative" = "Lower in Severe PGD", "positive" = "Higher in Severe PGD")
     ) +
-    # Custom x-axis scale
+    # Custom x-axis scale - force 0 to 5.2 with ticks at 0,1,2,3,4,5
     scale_x_continuous(
-      limits = c(-2.75, 2.75),
-      breaks = c(-2, -1, 0, 1, 2),
+      limits = c(0, 5.3),
+      breaks = c(0, 1, 2, 3, 4, 5),
       expand = c(0, 0)
     ) +
     # Axis labels
     labs(
       title = title,
-      x = expression(bold("log")[2]*bold("(Fold Change)")),
+      x = expression(bold("|log")[2]*bold("(Fold Change)|")),
       # y = "Metabolite"
     ) +
     # Apply theme
