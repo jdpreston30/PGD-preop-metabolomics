@@ -43,14 +43,15 @@ clean_pathway_names_for_network <- function(pathway_names) {
       stringr::str_replace_all(stringr::regex("\\bPutative anti-Inflammatory metabolites formation from EPA\\b", ignore_case = TRUE), "Anti-Inflam. From EPA") %>%
       stringr::str_replace_all(stringr::regex("\\bDrug metabolism - cytochrome P450\\b", ignore_case = TRUE), "Drug Metabolism (Cyp450)") %>%
       stringr::str_replace_all(stringr::regex("\\bFructose and mannose\\b", ignore_case = TRUE), "Fructose/Mannose") %>%
-      stringr::str_replace_all(stringr::regex("\\bValine, leucine and isoleucine\\b", ignore_case = TRUE), "Val/Leu/Ile") %>%
-      stringr::str_replace_all(stringr::regex("\\bvaline, leucine & isoleucine\\b", ignore_case = TRUE), "Val/Leu/Ile") %>%
-      stringr::str_replace_all(stringr::regex("\\bVal, Leu and Ile\\b", ignore_case = TRUE), "Val/Leu/Ile") %>%
-      stringr::str_replace_all(stringr::regex("\\bVal, Leu & Ile\\b", ignore_case = TRUE), "Val/Leu/Ile") %>%
+      stringr::str_replace_all(stringr::regex("\\bValine, leucine and isoleucine\\b", ignore_case = TRUE), "BCAA") %>%
+      stringr::str_replace_all(stringr::regex("\\bvaline, leucine & isoleucine\\b", ignore_case = TRUE), "BCAA") %>%
+      stringr::str_replace_all(stringr::regex("\\bVal, Leu and Ile\\b", ignore_case = TRUE), "BCAA") %>%
+      stringr::str_replace_all(stringr::regex("\\bVal, Leu & Ile\\b", ignore_case = TRUE), "BCAA") %>%
       # Urea Cycle specific replacement (must come BEFORE Met. replacement)
       stringr::str_replace_all(stringr::regex("\\bUrea cycle/amino group metabolism\\b", ignore_case = TRUE), "Urea Cycle") %>%
       # Vitamin formatting - specific replacements
       stringr::str_replace_all(stringr::regex("\\bVitamin B6 \\(pyridoxine\\) metabolism\\b", ignore_case = TRUE), "Vit. B6(Pyridoxine) Metabolism") %>%
+      stringr::str_replace_all(stringr::regex("\\bVitamin A \\(retinol\\) metabolism\\b", ignore_case = TRUE), "Vitamin A Metabolism") %>%
       stringr::str_replace_all(stringr::regex("\\bVitamin B9 \\(folate\\) metabolism\\b", ignore_case = TRUE), "Vit. B9 (Folate) Metabolism") %>%
       stringr::str_replace_all(stringr::regex("\\bVitamin E metabolism\\b", ignore_case = TRUE), "Vit. E Metabolism") %>%
       # Fatty Acid abbreviation

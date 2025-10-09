@@ -13,7 +13,7 @@ inspect_TFT_conf <- TFT_conf_ttests %>%
     sig_ord = row_number(),
     in_MSMICA = ifelse(feature %in% feature_ttest_results$feature, "Y", "N")
   ) %>%
-  filter(p_value < 0.05) %>%
+  arrange(p_value) %>%
   select(in_MSMICA, sig_ord, p_value, p_value_fdr,
          identified_name, fold_change, mean_no_severe_pgd, mean_severe_pgd, feature, isomer)
 #+ 2.2: Subset

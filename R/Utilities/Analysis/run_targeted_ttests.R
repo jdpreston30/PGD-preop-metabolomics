@@ -145,7 +145,10 @@ run_targeted_ttests <- function(feature_table,
         unique_percentage = 0.0,
         low_detect_likely = "N",
         n_group1 = 0,
-        n_group2 = 0
+        n_group2 = 0,
+        sw_p_value = NA_real_,
+        cv = NA_real_,
+        gap_ratio = NA_real_
       )
     }
     
@@ -206,6 +209,29 @@ run_targeted_ttests <- function(feature_table,
     # Determine if low detection is likely (>80% unique values)
     low_detect_likely <- if (unique_percentage > 80) "N" else "Y"
     
+    # Calculate distribution tests
+    # Shapiro-Wilk test for normality
+    sw_p_value <- NA_real_
+    if (length(feature_clean) >= 3 && length(feature_clean) <= 5000) {
+      sw_p_value <- tryCatch(shapiro.test(feature_clean)$p.value, error = function(e) NA_real_)
+    }
+    
+    # Coefficient of variation (SD/mean) - high values indicate problematic distributions
+    cv <- NA_real_
+    if (length(feature_clean) > 0 && mean_overall != 0) {
+      cv <- sd(feature_clean, na.rm = TRUE) / abs(mean_overall)
+    }
+    
+    # Gap detection - ratio of max gap to median gap
+    gap_ratio <- NA_real_
+    if (length(feature_clean) >= 5) {
+      sorted_values <- sort(feature_clean)
+      gaps <- diff(sorted_values)
+      if (length(gaps) > 0 && median(gaps) > 0) {
+        gap_ratio <- max(gaps) / median(gaps)
+      }
+    }
+    
     # Perform t-test
     tryCatch({
       t_result <- t.test(feature_clean ~ group_clean)
@@ -223,7 +249,10 @@ run_targeted_ttests <- function(feature_table,
         unique_percentage = round(unique_percentage, 1),
         low_detect_likely = low_detect_likely,
         n_group1 = length(group1_values),
-        n_group2 = length(group2_values)
+        n_group2 = length(group2_values),
+        sw_p_value = sw_p_value,
+        cv = cv,
+        gap_ratio = gap_ratio
       )
     }, error = function(e) {
       tibble(
@@ -239,7 +268,10 @@ run_targeted_ttests <- function(feature_table,
         unique_percentage = round(unique_percentage, 1),
         low_detect_likely = low_detect_likely,
         n_group1 = length(group1_values),
-        n_group2 = length(group2_values)
+        n_group2 = length(group2_values),
+        sw_p_value = sw_p_value,
+        cv = cv,
+        gap_ratio = gap_ratio
       )
     })
   }
@@ -283,7 +315,10 @@ run_targeted_ttests <- function(feature_table,
       isomer,
       multi_mode_detection,
       n_group1,
-      n_group2
+      n_group2,
+      sw_p_value,
+      cv,
+      gap_ratio
     ) %>%
     arrange(p_value)
   

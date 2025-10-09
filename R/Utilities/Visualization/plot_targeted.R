@@ -11,6 +11,7 @@
 #' @param jitter_width Width of jitter for individual points (default: 0.15)
 #' @param undo_log Whether to undo log2 transformation (2^x) for display (default: FALSE)
 #' @param text_scale Scaling factor for all text elements (default: 1.0, use 0.8 for 80% size, etc.)
+#' @param sig_ord_title Whether to use sig_ord number as title instead of identified_name (default: FALSE)
 #'
 #' @return List of ggplot objects, one for each feature
 #'
@@ -33,7 +34,8 @@ plot_targeted <- function(feature_table,
                           include_individual_points = TRUE,
                           jitter_width = 0.15,
                           undo_log = FALSE,
-                          text_scale = 1.0) {
+                          text_scale = 1.0,
+                          sig_ord_title = FALSE) {
   
   # Load required libraries
   library(dplyr)
@@ -137,6 +139,13 @@ plot_targeted <- function(feature_table,
     p_value_fdr <- feature_meta$p_value_fdr[1]
     identified_name <- feature_meta$identified_name[1]
     
+    # Determine plot title based on sig_ord_title parameter
+    plot_title <- if (sig_ord_title && "sig_ord" %in% colnames(feature_meta)) {
+      paste0("sig_ord: ", feature_meta$sig_ord[1])
+    } else {
+      identified_name
+    }
+    
     # Determine y limits with consistent 4-tick structure
     y_max <- max(summary_data$max_value, na.rm = TRUE)
     
@@ -157,6 +166,7 @@ plot_targeted <- function(feature_table,
     # Set y_limit to 1.02 times the top tick value
     y_limit <- top_tick_base * 1.017
     
+
     # Create the base plot
     p <- ggplot() +
       # Add bars
@@ -196,15 +206,22 @@ plot_targeted <- function(feature_table,
         limits = c(0, y_limit),
         breaks = y_breaks,
         labels = function(x) {
-          # Force scientific notation with single digit before decimal
-          sprintf("%.0e", x)
+          # Custom scientific notation: "5e6" instead of "5e+06"
+          sapply(x, function(val) {
+            if (val == 0) return("0")
+            sci_notation <- sprintf("%.0e", val)
+            # Remove the "+" and leading zeros from exponent
+            cleaned <- gsub("e\\+0*", "E", sci_notation)
+            cleaned <- gsub("E0+$", "", cleaned)  # Remove "e0" for exponent 0
+            return(cleaned)
+          })
         }
       ) +
       theme_pub_barplot() +
       labs(
         x = x_axis_title,
         y = y_label,
-        title = identified_name
+        title = plot_title
       )
     
     # Add p-value annotations in top right corner
@@ -243,11 +260,16 @@ plot_targeted <- function(feature_table,
   # Create plots for all available features
   plots <- map(available_features, create_single_plot)
   
-  # Name the plots with identified names
+  # Name the plots - use sig_ord if available, otherwise identified_name
   plot_names <- map_chr(available_features, function(feat) {
     meta_row <- metadata_table %>% filter(feature == feat)
     if (nrow(meta_row) > 0) {
-      return(meta_row$identified_name[1])
+      # Use sig_ord if available, otherwise fall back to identified_name
+      if ("sig_ord" %in% colnames(metadata_table)) {
+        return(as.character(meta_row$sig_ord[1]))
+      } else {
+        return(meta_row$identified_name[1])
+      }
     } else {
       return(feat)
     }
