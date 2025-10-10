@@ -1,11 +1,11 @@
-#* 4: Create Tables
-#+ 4.0a: Examine Normality
+#* 7: Create Tables
+#+ 7.0a: Examine Normality
 #! Did manual examination of this via below TernTables runs
 #! T1 has 12/16 normality fail, T2 has 2/3, and T3 has 7/10
 #! But, just going to use consider normality = TRUE to do test dynamically
-#+ 4.0b: Set Conflicts
+#+ 7.0b: Set Conflicts
 conflicts_prefer(purrr::compose)
-#+ 4.1: Table 1 (Recipient Preoperative Characteristics) 
+#+ 7.1: Table 1 (Recipient Preoperative Characteristics) 
 T1 <- ternG(
   data = T1_data,
   exclude_vars = "Patient",
@@ -17,7 +17,7 @@ T1 <- ternG(
   round_intg = TRUE,
   insert_subheads = TRUE
 )
-#+ 4.2: Table 2 (Donor Characteristics) 
+#+ 7.2: Table 2 (Donor Characteristics) 
 T2 <- ternG(
   data = T2_data,
   vars = NULL,
@@ -30,7 +30,7 @@ T2 <- ternG(
   round_intg = TRUE,
   insert_subheads = TRUE
 )
-#+ 4.3: Table 3 (Table 3. Procurement/Surgical Factors and Perioperative/Post-Transplant Outcomes) 
+#+ 7.3: Table 3 (Table 3. Procurement/Surgical Factors and Perioperative/Post-Transplant Outcomes) 
 T3 <- ternG(
   data = T3_data,
   vars = NULL,

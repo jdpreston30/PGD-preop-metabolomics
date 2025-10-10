@@ -1,3 +1,57 @@
+#' Calculate RADIAL Risk Score for Heart Transplant Outcomes
+#'
+#' Calculates the RADIAL (RAP, Age, Diabetes, Inotrope, Donor Age, and Ischemic Time) 
+#' risk score for predicting primary graft dysfunction and early mortality after 
+#' heart transplantation. Provides detailed missing data reporting and validation.
+#'
+#' @param clinical_metadata Data frame containing clinical metadata with required variables
+#' @param rap_col Column name for right atrial pressure in mmHg
+#' @param age_col Column name for recipient age in years
+#' @param dm_col Column name for diabetes status (Y/Yes/YES for positive)
+#' @param inotrope_col Column name for inotrope support status (Y/Yes/YES for positive)
+#' @param donor_age_col Column name for donor age in years
+#' @param ischemic_time_col Column name for ischemic time in minutes
+#'
+#' @return Data frame with additional column:
+#'   - preop_RADIAL_calc: RADIAL risk score (0-6 scale, NA if any required data missing)
+#'
+#' @details
+#' The RADIAL score assigns 1 point for each of the following risk factors:
+#' - **R**AP ≥ 10 mmHg (Right Atrial Pressure)
+#' - **A**ge ≥ 60 years (Recipient)
+#' - **D**iabetes present
+#' - **I**notrope support required
+#' - Donor **A**ge ≥ 30 years
+#' - Ischemic Time (**L**ength) ≥ 240 minutes
+#' 
+#' Total score ranges from 0-6, with higher scores indicating greater risk.
+#' 
+#' **Missing Data Handling:**
+#' - Provides comprehensive missing data reporting at column and patient levels
+#' - Returns NA for patients with any missing required variables
+#' - Issues warnings for missing data with affected patient identification
+#'
+#' @examples
+#' \dontrun{
+#'   # Calculate RADIAL scores
+#'   clinical_data_with_radial <- calc_radial(
+#'     clinical_metadata = clinical_data,
+#'     rap_col = "preop_RAP",
+#'     age_col = "recipient_age", 
+#'     dm_col = "diabetes_status",
+#'     inotrope_col = "preop_inotrope_support",
+#'     donor_age_col = "donor_age",
+#'     ischemic_time_col = "ischemic_time_minutes"
+#'   )
+#'   
+#'   # View score distribution
+#'   table(clinical_data_with_radial$preop_RADIAL_calc, useNA = "ifany")
+#' }
+#'
+#' @references
+#' RADIAL score for risk stratification in heart transplantation outcomes
+#'
+#' @export
 calc_radial <- function(clinical_metadata, 
                         rap_col, 
                         age_col, 

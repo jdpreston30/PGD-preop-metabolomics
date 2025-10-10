@@ -7,7 +7,7 @@ computers:
     user_home: "/Users/jdp2019"
     onedrive_path: "Library/CloudStorage/OneDrive-Emory"
     metabojanitor_subpath: "MetaboJanitoR"
-    figures_path: "/Users/jdp2019/Desktop/PGD_figures"
+    figures_path: "Outputs/Figures/Final"
   
   desktop:
     user_home: "/Users/JoshsMacbook2015" 

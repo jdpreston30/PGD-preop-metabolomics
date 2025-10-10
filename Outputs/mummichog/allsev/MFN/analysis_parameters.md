@@ -18,7 +18,7 @@
 **Analysis Parameters:**
 - Peak filtering method: Top 10% of peaks (dynamic)
 - Peak filtering threshold (rounded): 0.05
-- Peak filtering threshold (precise): 0.0856595308702631
+- Peak filtering threshold (precise): 0.085659530870263
 - Peaks analyzed: 856 out of 23692
 - Pathways analyzed: 84
 - Significant pathways (p < 0.05): 8

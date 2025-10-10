@@ -1,3 +1,52 @@
+#' Plot PCA Results with Group Ellipses and Custom Styling
+#'
+#' Creates a customizable PCA scatter plot with confidence ellipses, group-specific
+#' colors, and options for patient labeling. Handles missing data gracefully and
+#' provides publication-ready formatting.
+#'
+#' @param pca_results List containing PCA analysis results from run_PCA()
+#' @param plot_title Title for the plot (default: "")
+#' @param ellipse_colors Named vector of colors for confidence ellipses by group
+#' @param point_colors Named vector of colors for data points by group  
+#' @param point_size Size of data points (default: 1.3)
+#' @param show_patient_labels Whether to show patient ID labels (default: FALSE)
+#' @param label_size Size of patient labels if shown (default: 3)
+#' @param x_limits Optional x-axis limits (default: NULL for auto-scaling)
+#' @param y_limits Optional y-axis limits (default: NULL for auto-scaling)
+#' @param x_expand Optional x-axis expansion (default: NULL)
+#' @param y_expand Optional y-axis expansion (default: NULL)
+#'
+#' @return ggplot2 object with PCA visualization
+#'
+#' @details
+#' The function expects pca_results to contain:
+#' - scores_df: Data frame with Comp1, Comp2, Class, and Patient columns
+#' - explained_variance: Vector of explained variance percentages
+#' - comp_x, comp_y: Component numbers being plotted
+#' - comp_label: Label for components (e.g., "PC" or "LV")
+#' 
+#' Features:
+#' - Confidence ellipses for each group (95% confidence level)
+#' - Separate handling of complete and missing data
+#' - Customizable colors for different PGD severity groups
+#' - Explained variance in axis labels
+#' - Optional patient ID labeling
+#'
+#' @examples
+#' \dontrun{
+#'   # Basic PCA plot
+#'   pca_plot <- plot_PCA(pca_results)
+#'   
+#'   # Customized plot with patient labels
+#'   pca_plot <- plot_PCA(
+#'     pca_results = pca_results,
+#'     plot_title = "PCA of Metabolomic Data",
+#'     show_patient_labels = TRUE,
+#'     point_size = 2
+#'   )
+#' }
+#'
+#' @export
 plot_PCA <- function(pca_results, plot_title = "",
                      ellipse_colors = c("Severe PGD" = "#D8919A", "No Severe PGD" = "#87A6C7", "Mild/Mod. PGD" = "#FF9966", "No/Mild/Mod. PGD" = "#9CAF88"),
                      point_colors = c("Severe PGD" = "#800017", "No Severe PGD" = "#113d6a", "Mild/Mod. PGD" = "#be5010ff", "No/Mild/Mod. PGD" = "#4A5D23"),
@@ -99,7 +148,7 @@ plot_PCA <- function(pca_results, plot_title = "",
       axis.text = ggplot2::element_text(size = 11, face = "bold", color = "black"),
       axis.title.y = ggplot2::element_text(
         size = 12.5, face = "bold", color = "black",
-        margin = ggplot2::margin(r = -5)  # nudges the label to the right
+        margin = ggplot2::margin(r = 0)  # nudges the label to the right
       ),
       axis.title.x = ggplot2::element_text(
         size = 12.5, face = "bold", color = "black",

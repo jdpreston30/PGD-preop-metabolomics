@@ -20,6 +20,7 @@ Imports:
     readr,
     tidyr,
     stringr,
+    ggraph,
     ggplot2,
     lubridate,
     magrittr,
@@ -34,6 +35,7 @@ Imports:
     raster,
     magick,
     grid,
+    gridExtra,
     patchwork,
     mixOmics,
     TernTablesR,
@@ -52,6 +54,7 @@ Imports:
     lattice,
     scatterplot3d,
     devtools,
+    gtable,
     qqconf,
     metap,
     BiocManager,
@@ -82,4 +85,4 @@ Remotes:
     xia-lab/MetaboAnalystR
 Config/renv/snapshot/type: explicit
 Encoding: UTF-8
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.3

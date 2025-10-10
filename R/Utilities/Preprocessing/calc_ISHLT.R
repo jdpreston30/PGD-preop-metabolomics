@@ -1,3 +1,49 @@
+#' Calculate ISHLT Primary Graft Dysfunction (PGD) Classification
+#'
+#' Calculates Primary Graft Dysfunction grade according to International Society for 
+#' Heart and Lung Transplantation (ISHLT) criteria based on mechanical support 
+#' requirements and hemodynamic parameters within 24 hours post-transplant.
+#'
+#' @param clinical_metadata_i Data frame containing clinical metadata with postoperative variables
+#' @param impella_dep_col Column name for Impella 5.5 dependence (default: "postop_MCS_Impella5.5_DEPENDENT")
+#' @param rvad_col Column name for right ventricular assist device use (default: "postop_MCS_RVAD")
+#' @param iabp_col Column name for intra-aortic balloon pump use (default: "postop_MCS_IABP")
+#' @param ecmo_col Column name for VA-ECMO use (default: "postop_VA_ECMO")
+#' @param cvp_col Column name for central venous pressure (default: "postop_CVP")
+#' @param cardiac_index_col Column name for cardiac index (default: "postop_cardiac_index")
+#' @param lvef_col Column name for left ventricular ejection fraction (default: "postop_LVEF_median")
+#' @param inotrope_col Column name for inotrope score (default: "postop_inotrope_score")
+#'
+#' @return Data frame with additional columns:
+#'   - postop_PGD_grade_ISHLT: ISHLT PGD grade ("N", "Mild", "Moderate", "Severe", or "")
+#'   - postop_PGD_binary_ISHLT: Binary PGD classification ("N", "Y", or "")
+#'
+#' @details
+#' ISHLT PGD Classification Criteria:
+#' - **Severe PGD**: Any mechanical circulatory support (VA-ECMO, RVAD, or Impella dependence)
+#' - **Moderate PGD**: Hemodynamic compromise AND (high inotrope score >10 OR IABP use)
+#' - **Mild PGD**: Hemodynamic compromise AND moderate inotrope support (1-10)
+#' - **No PGD**: No criteria met
+#' 
+#' Hemodynamic compromise defined as any of:
+#' - LVEF ≤ 40%
+#' - CVP > 15 mmHg  
+#' - Cardiac Index < 2.0 L/min/m²
+#'
+#' @examples
+#' \dontrun{
+#'   # Calculate ISHLT PGD classification
+#'   clinical_data_with_pgd <- calc_ISHLT(clinical_metadata)
+#'   
+#'   # View PGD distribution
+#'   table(clinical_data_with_pgd$postop_PGD_grade_ISHLT)
+#' }
+#'
+#' @references
+#' International Society for Heart and Lung Transplantation Primary Graft Dysfunction 
+#' consensus guidelines
+#'
+#' @export
 calc_ISHLT <- function(clinical_metadata_i,
                        impella_dep_col = "postop_MCS_Impella5.5_DEPENDENT",
                        rvad_col = "postop_MCS_RVAD",

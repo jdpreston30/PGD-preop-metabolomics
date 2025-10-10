@@ -7,13 +7,13 @@ computers:
     user_home: "/Users/jdp2019"
     onedrive_path: "Library/CloudStorage/OneDrive-Emory"
     metabojanitor_subpath: "MetaboJanitoR"
-    figures_path: "/Users/jdp2019/Desktop/PGD_figures"
+    figures_path: "Outputs/Figures/Final"
   
   desktop:
     user_home: "/Users/JoshsMacbook2015" 
     onedrive_path: "Library/CloudStorage/OneDrive-EmoryUniversity"
     metabojanitor_subpath: "MetaboJanitoR"
-    figures_path: "/Users/JoshsMacbook2015/Desktop/PGD_figures"
+    figures_path: "Outputs/Figures/Final"
 
 # Dynamic path templates (will be populated based on computer selection)
 paths:
@@ -26,7 +26,7 @@ paths:
   UFT_filtered: "{base_data_path}/{metabojanitor_subpath}/ComBat/Untargeted/UFT_ComBat_20p_halfmin_log2_tidy.csv"
   clinical_metadata: "{user_home}/{onedrive_path}/Research/Chan Lab - Transplant Multi-Omics - OHT/OHT Clinical Data Master Sheet.xlsx"
   sample_type: "{base_data_path}/sample_type.xlsx"
-  annot_inspection: "/Users/jdp2019/Library/CloudStorage/OneDrive-Emory/Research/Chan Lab - Transplant Multi-Omics - OHT/Manuscripts/Pre Op PGD - AJT - Preston/Other_AJT/annot_inspection.xlsx"
+  annot_inspection: "{user_home}/{onedrive_path}/Research/Chan Lab - Transplant Multi-Omics - OHT/Manuscripts/Pre Op PGD - AJT - Preston/Other_AJT/annot_inspection.xlsx"
   
   
   # Local database paths (relative - same across computers)
