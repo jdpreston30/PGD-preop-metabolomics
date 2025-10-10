@@ -35,11 +35,13 @@ p1A <- grid::rasterGrob(as.raster(magick::image_read("Outputs/Figures/Raw/fig1.p
 #- 5.5.1: Supplemental Figure 1
 S1 <- grid::rasterGrob(as.raster(magick::image_read("Outputs/Figures/Raw/S1.png")), interpolate = TRUE)
 #- 5.5.1: Supplemental Figure 2
+{
 S2.1 <- S2$pages[[1]]
 S2.2 <- S2$pages[[2]]
 S2.3 <- S2$pages[[3]]
 S2.4 <- S2$pages[[4]]
 S2.5i <- grid::rasterGrob(as.raster(magick::image_read("Outputs/Figures/Raw/S2.5i.png")), interpolate = TRUE)
 S2.5t <- grid::rasterGrob(as.raster(magick::image_read("Outputs/Figures/Raw/S2.5t.png")), interpolate = TRUE)
+}
 #- 5.5.1: Supplemental Figure 3
 ###
