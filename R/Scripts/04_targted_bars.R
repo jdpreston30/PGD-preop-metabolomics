@@ -7,15 +7,19 @@ TFT_conf_ttests <- run_targeted_ttests(
   grouping_var = "severe_PGD",
   fc_ref_group = "No Severe PGD"
 )
+#- 3.1.2: Remove low detects (things that were over 20% missingness and thus half min interp) Results
+TFT_conf_ttests_low_det_removed <- TFT_conf_ttests %>%
+  filter(low_detect_likely == "N")
 #- 4.1.3: Filter to significant values; inspect
-inspect_TFT_conf <- TFT_conf_ttests %>%
+inspect_TFT_conf <- TFT_conf_ttests_low_det_removed %>%
   mutate(
     sig_ord = row_number(),
-    in_MSMICA = ifelse(feature %in% feature_ttest_results$feature, "Y", "N")
+    in_annot = ifelse(feature %in% feature_ttest_results$feature, "Y", "N"),
+    annot_sig = ifelse(feature %in% annot_inspection$feature, "Y", "N")
   ) %>%
-  arrange(p_value) %>%
-  select(in_MSMICA, sig_ord, p_value, p_value_fdr,
-         identified_name, fold_change, mean_no_severe_pgd, mean_severe_pgd, feature, isomer)
+  left_join(annot_inspection %>% select(feature, annot_name = short_name, sig_ord_annot = sig_ord), by = "feature") %>%
+  arrange(p_value)
+write.csv(inspect_TFT_conf, "Outputs/data_not_shown/targeted_conf_inspection.csv", row.names = FALSE)
 #+ 4.2: Subset
 #- 4.3.1: Rename map to cleanup names
 rename_map <- c(

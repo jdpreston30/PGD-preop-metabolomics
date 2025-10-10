@@ -22,7 +22,7 @@ write.csv(inspect, "Outputs/data_not_shown/annot_inspection.csv", row.names = FA
 annot_inspection <- readxl::read_excel(config$paths$annot_inspection) %>%
 rename(name = identified_name) %>%
 filter(include == "Y") %>%
-select(sig_ord, name, short_name, p_value, p_value_fdr, log2FC, isomer_names, abbreviated)
+select(sig_ord, name, short_name, p_value, p_value_fdr, log2FC, isomer_names, abbreviated, feature)
 #- 3.2.1: Pull Names
 include_metabolites <- annot_inspection  %>%
   pull(sig_ord)
