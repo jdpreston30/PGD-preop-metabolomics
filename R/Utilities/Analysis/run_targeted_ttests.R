@@ -12,7 +12,7 @@
 #'
 #' @return A tibble with columns:
 #'   - feature: Feature identifier
-#'   - identified_name: Feature name from TFT key
+#'   - identified_name: Feature name from TFT_annot key
 #'   - mean_[group1]: Mean in first factor level
 #'   - mean_[group2]: Mean in second factor level
 #'   - mean_overall: Overall population mean (combining both groups)
@@ -24,8 +24,8 @@
 #'   - unique_vals: Overall unique values (n_unique/n_total)
 #'   - unique_percentage: Percentage of unique values in the dataset
 #'   - low_detect_likely: "Y" if unique_percentage > 20%, "N" otherwise
-#'   - isomer: Isomer status from TFT key
-#'   - multi_mode_detection: Multi-mode detection status from TFT key
+#'   - isomer: Isomer status from TFT_annot key
+#'   - multi_mode_detection: Multi-mode detection status from TFT_annot key
 #'   - n_[group1]: Sample size in first group
 #'   - n_[group2]: Sample size in second group
 #'
@@ -33,7 +33,7 @@
 #' \dontrun{
 #'   # Using column name
 #'   results <- run_targeted_ttests(
-#'     feature_table = TFT,
+#'     feature_table = TFT_annot,
 #'     tft_key = TFT_key,
 #'     grouping_var = "severe_PGD",
 #'     fc_ref_group = "No Severe PGD"
@@ -41,7 +41,7 @@
 #'   
 #'   # Using vector
 #'   results <- run_targeted_ttests(
-#'     feature_table = TFT,
+#'     feature_table = TFT_annot,
 #'     tft_key = TFT_key,
 #'     grouping_var = clinical_metadata$Severe_PGD_factor
 #'   )
@@ -271,7 +271,7 @@ run_targeted_ttests <- function(feature_table,
       p_value_fdr = p.adjust(p_value, method = p_adjust_method)
     )
   
-  # Clean column names in TFT key for joining (convert to snake_case)
+  # Clean column names in TFT_annot key for joining (convert to snake_case)
   tft_key_clean <- tft_key %>%
     rename(
       feature = Feature,
@@ -280,7 +280,7 @@ run_targeted_ttests <- function(feature_table,
       multi_mode_detection = `Multi-Mode Detection`
     )
   
-  # Join with TFT key to get feature annotations
+  # Join with TFT_annot key to get feature annotations
   final_results <- ttest_results %>%
     left_join(tft_key_clean, by = "feature") %>%
     select(
