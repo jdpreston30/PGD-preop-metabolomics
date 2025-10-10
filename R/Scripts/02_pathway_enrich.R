@@ -77,7 +77,7 @@ pgd_enrichment_plot_mfn <- plot_mummichog_enrichment(
   size_range = c(3, 10),
   size_breaks = c(4, 3, 2, 1),
   show_legend = TRUE,
-  save_path = "Figures/Raw/fig2c.png",
+  save_path = "Outputs/Figures/Raw/fig2c.png",
   plot_width = 6.3, 
   plot_height = 5.4, #! 6.3 for 3b version
   dpi = 600,
@@ -92,7 +92,7 @@ pgd_enrichment_plot_combined <- plot_mummichog_enrichment(
   size_range = c(3, 10),
   size_breaks = c(4, 3, 2, 1),
   show_legend = TRUE,
-  save_path = "Figures/Raw/S1.png",
+  save_path = "Outputs/Figures/Raw/S1.png",
   plot_width = 7.2,
   plot_height = 11.14, #! 9.857 for 3b version
   dpi = 600,
@@ -109,7 +109,7 @@ mfn_allsev_network <- create_biological_network(
 #+ 2.5: Plot Biological Networks
 allsev_network_plot <- plot_biological_network(
   network_data = mfn_allsev_network,
-  output_file = "Figures/Raw/fig2d.png",
+  output_file = "Outputs/Figures/Raw/fig2d.png",
   node_size_range = c(4, 14),
   text_size = 4.5,
   show_legend = FALSE,

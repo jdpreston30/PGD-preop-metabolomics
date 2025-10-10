@@ -1,3 +1,37 @@
+#' Clean and Standardize Pathway Names for Publication
+#'
+#' This function standardizes pathway names by applying a comprehensive set of text transformations
+#' including Greek letter replacements, acronym standardization, proper capitalization, and 
+#' consistent formatting for metabolomic pathway analysis reports and figures.
+#'
+#' @param pathway_names Character vector of pathway names to clean and standardize
+#'
+#' @return Character vector of cleaned pathway names with standardized formatting
+#'
+#' @details
+#' The function applies transformations in a specific order:
+#' 1. Specific pathway exceptions (e.g., "Phenylalanine, tyrosine and tryptophan biosynthesis")
+#' 2. Greek letter replacements (alpha -> α, beta -> β, gamma -> γ, etc.)
+#' 3. Fatty acid abbreviations (PUFA, MUFA, Di-UFA)
+#' 4. Vitamin name standardization
+#' 5. Amino acid and metabolite abbreviations
+#' 6. Universal capitalizations and formatting
+#' 7. Final explicit fixes for common issues
+#'
+#' @examples
+#' \dontrun{
+#'   pathway_names <- c(
+#'     "phenylalanine, tyrosine and tryptophan biosynthesis",
+#'     "beta-alanine metabolism",
+#'     "polyunsaturated fatty acid biosynthesis"
+#'   )
+#'   clean_pathway_names(pathway_names)
+#'   # Returns: c("Phenylalanine, Tyrosine & Tryptophan Biosynthesis",
+#'   #            "β-Alanine Metabolism", 
+#'   #            "PUFA Biosynthesis")
+#' }
+#'
+#' @export
 clean_pathway_names <- function(pathway_names) {
   pathway_names %>%
     # Specific pathway exceptions FIRST - before any other transformations

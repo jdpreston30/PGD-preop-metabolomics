@@ -98,9 +98,9 @@ project-name/
 ├── Databases/              # Reference data, libraries
 ├── Outputs/               # Generated results
 │   ├── Tables/
-│   ├── Figures/
+│   ├── Outputs/Figures/
 │   └── Analysis/
-└── Figures/               # Final publication figures
+└── Outputs/Figures/               # Final publication figures
 ```
 
 ### YAML Configuration Pattern
@@ -237,7 +237,7 @@ analysis:
 - File I/O utilities
 
 ### Output Management
-- **Structured output directories:** `Outputs/tables/`, `Outputs/figures/`, `Outputs/analysis/`
+- **Structured output directories:** `Outputs/tables/`, `Outputs/Outputs/Figures/`, `Outputs/analysis/`
 - **Intermediate results preservation:** Save computational objects for downstream use
 - **Version control friendly:** Avoid absolute paths, use relative paths with `here::here()`
 

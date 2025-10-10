@@ -1,3 +1,35 @@
+#' Metabolites to Exclude from Targeted Analysis
+#'
+#' A curated list of metabolite names to exclude from targeted metabolomics analysis.
+#' These metabolites are primarily xenobiotics, food components, bacterial metabolites,
+#' pharmaceuticals, and plant metabolites that may not be relevant for human endogenous
+#' metabolism studies or may represent annotation artifacts.
+#'
+#' @format A character vector with 53 metabolite names
+#'
+#' @details
+#' The excluded metabolites fall into several categories:
+#' - Xenobiotics: External chemical compounds
+#' - Food components: Dietary-derived metabolites
+#' - Bacterial metabolites: Compounds of microbial origin
+#' - Plant metabolites: Phytochemicals and plant-derived compounds
+#' - Pharmaceuticals: Drug compounds and their metabolites
+#' - Antibiotics: Antibiotic compounds and components
+#' - Fungicides/Herbicides: Agricultural chemicals
+#'
+#' Note: L-Rhamnose appears in both analytical modes, so this list of 53 names
+#' will exclude 54 total metabolite features.
+#'
+#' @source Curated by CJR research team for PGD metabolomics analysis
+#'
+#' @examples
+#' \dontrun{
+#'   # Filter out excluded metabolites from analysis
+#'   filtered_data <- metabolite_data %>%
+#'     filter(!metabolite_name %in% exclude_metabolites)
+#' }
+#'
+#' @export
 #- Create custom list of feature names to exclude per CJR research
 #! Most all these are xenobiotics, food components, bacterial metabolites, and may be not relevant at best or bad annotations at worst
 exclude_metabolites <- c(

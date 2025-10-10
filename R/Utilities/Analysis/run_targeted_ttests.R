@@ -1,21 +1,4 @@
-#' Run T-te#' @return A tibble with columns:
-#'   - feature: Feature identifier
-#'   - identified_name: Feature name from TFT key
-#'   - mean_[group1]: Mean in first factor level
-#'   - mean_[group2]: Mean in second factor level
-#'   - mean_overall: Overall population mean (combining both groups)
-#'   - fold_change: Fold change calculated as other_group/ref_group using raw intensities (if fc_ref_group specified)
-#'   - p_value: Raw p-value from t-test
-#'   - p_value_fdr: FDR-corrected p-value
-#'   - unique_vals_no_severe: Unique values in FALSE group (n_unique/n_total)
-#'   - unique_vals_severe: Unique values in TRUE group (n_unique/n_total)
-#'   - unique_vals: Overall unique values (n_unique/n_total)
-#'   - unique_percentage: Percentage of unique values in the dataset
-#'   - low_detect_likely: "Y" if unique_percentage > 20%, "N" otherwise
-#'   - isomer: Isomer status from TFT key
-#'   - multi_mode_detection: Multi-mode detection status from TFT key
-#'   - n_[group1]: Sample size in first group
-#'   - n_[group2]: Sample size in second groupbolomic Features
+#' Run T-tests on Targeted Metabolomic Features
 #'
 #' This function performs t-tests for all C18 and HILIC features in a feature table
 #' against a grouping variable, and returns comprehensive results including means,
@@ -32,13 +15,15 @@
 #'   - identified_name: Feature name from TFT key
 #'   - mean_[group1]: Mean in first factor level
 #'   - mean_[group2]: Mean in second factor level
+#'   - mean_overall: Overall population mean (combining both groups)
+#'   - fold_change: Fold change calculated as other_group/ref_group using raw intensities (if fc_ref_group specified)
 #'   - p_value: Raw p-value from t-test
 #'   - p_value_fdr: FDR-corrected p-value
 #'   - unique_vals_no_severe: Unique values in FALSE group (n_unique/n_total)
 #'   - unique_vals_severe: Unique values in TRUE group (n_unique/n_total)
 #'   - unique_vals: Overall unique values (n_unique/n_total)
 #'   - unique_percentage: Percentage of unique values in the dataset
-#'   - low_detect_likely: "N" if unique_percentage > 80%, "Y" otherwise
+#'   - low_detect_likely: "Y" if unique_percentage > 20%, "N" otherwise
 #'   - isomer: Isomer status from TFT key
 #'   - multi_mode_detection: Multi-mode detection status from TFT key
 #'   - n_[group1]: Sample size in first group

@@ -1,3 +1,37 @@
+#' Clean Pathway Names for Network Visualization
+#'
+#' This function applies specialized text transformations to pathway names specifically
+#' for network visualization contexts where shorter, more compact names are preferred.
+#' Includes extensive abbreviations and formatting optimized for node labels.
+#'
+#' @param pathway_names Character vector of pathway names to clean and abbreviate
+#'
+#' @return Character vector of cleaned pathway names with network-appropriate abbreviations
+#'
+#' @details
+#' This function differs from the standard clean_pathway_names() by applying more
+#' aggressive abbreviations suitable for network visualizations:
+#' - Full amino acid names -> 3-letter codes (Alanine -> Ala)
+#' - Long pathway names -> abbreviated forms (Polyunsaturated fatty acid -> PUFA)
+#' - Complex names -> compact versions with line break considerations
+#' - Ampersands and "and" -> forward slashes for compactness
+#' - Specialized abbreviations for vitamins, fatty acids, and metabolic processes
+#'
+#' @examples
+#' \dontrun{
+#'   pathway_names <- c(
+#'     "Valine, leucine and isoleucine degradation",
+#'     "Polyunsaturated fatty acid biosynthesis",
+#'     "Drug metabolism - cytochrome P450"
+#'   )
+#'   clean_pathway_names_for_network(pathway_names)
+#'   # Returns: c("BCAA Degradation", 
+#'   #            "PUFA Biosynthesis",
+#'   #            "Drug Metabolism (Cyp450)")
+#' }
+#'
+#' @seealso \code{\link{clean_pathway_names}} for standard pathway name cleaning
+#' @export
 clean_pathway_names_for_network <- function(pathway_names) {
     pathway_names %>%
       # Handle Greek letters and special cases first

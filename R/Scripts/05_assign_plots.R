@@ -1,12 +1,12 @@
-#* 5: Plot Creation
+#* 5: Assign Plots
 #+ 5.1: Figure 1 Plots
-p1A <- grid::rasterGrob(as.raster(magick::image_read("Figures/Raw/fig1.png")), interpolate = TRUE)
+p1A <- grid::rasterGrob(as.raster(magick::image_read("Outputs/Figures/Raw/fig1.png")), interpolate = TRUE)
 #+ 5.2: Figure 2 Plots
 {
   p2A <- plsda_allsev
   p2B <- volc_allsev
-  p2C <- grid::rasterGrob(as.raster(magick::image_read("Figures/Raw/fig2c.png")))
-  p2D <- grid::rasterGrob(as.raster(magick::image_read("Figures/Raw/fig2d.png")))
+  p2C <- grid::rasterGrob(as.raster(magick::image_read("Outputs/Figures/Raw/fig2c.png")))
+  p2D <- grid::rasterGrob(as.raster(magick::image_read("Outputs/Figures/Raw/fig2d.png")))
 }
 #+ 5.4: Figure 3 Plots
 {
@@ -33,4 +33,13 @@ p1A <- grid::rasterGrob(as.raster(magick::image_read("Figures/Raw/fig1.png")), i
 }
 #+ 5.5: Supplemental Figures
 #- 5.5.1: Supplemental Figure 1
-S1 <- grid::rasterGrob(as.raster(magick::image_read("Figures/Raw/S1.png")), interpolate = TRUE)
+S1 <- grid::rasterGrob(as.raster(magick::image_read("Outputs/Figures/Raw/S1.png")), interpolate = TRUE)
+#- 5.5.1: Supplemental Figure 2
+S2.1 <- S2$pages[[1]]
+S2.2 <- S2$pages[[2]]
+S2.3 <- S2$pages[[3]]
+S2.4 <- S2$pages[[4]]
+S2.5i <- grid::rasterGrob(as.raster(magick::image_read("Outputs/Figures/Raw/S2.5i.png")), interpolate = TRUE)
+S2.5t <- grid::rasterGrob(as.raster(magick::image_read("Outputs/Figures/Raw/S2.5t.png")), interpolate = TRUE)
+#- 5.5.1: Supplemental Figure 3
+###

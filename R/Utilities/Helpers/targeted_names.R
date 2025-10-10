@@ -1,3 +1,30 @@
+#' Metabolite Name Mapping for Targeted Analysis
+#'
+#' A named character vector providing standardized, publication-ready names for
+#' targeted metabolomics features. Maps from original feature names (names) to
+#' preferred display names (values).
+#'
+#' @format A named character vector with original names as names and preferred names as values
+#'
+#' @details
+#' This mapping provides several types of name standardization:
+#' - Chemical nomenclature standardization (e.g., D-Ribose -> Ribose)
+#' - Greek letter formatting (e.g., 4-Trimethylammoniobutanoate -> γ-Butyrobetaine)
+#' - Consistent abbreviation usage (e.g., AMP -> Adenosine Monophosphate)
+#' - Simplified display names for complex chemical names
+#' - Asterisks (*) indicate metabolites with potential annotation ambiguity
+#'
+#' @examples
+#' \dontrun{
+#'   # Apply name mapping to metabolite data
+#'   metabolite_data$display_name <- name_map[metabolite_data$original_name]
+#'   
+#'   # Get preferred name for a specific metabolite
+#'   preferred_name <- name_map["4-Methyl-2-oxopentanoate"]
+#'   # Returns: "α-Ketoisocaproate*"
+#' }
+#'
+#' @export
 name_map <- c(
   "Lovastatin acid"                  = "Lovastatin acid",
   "D-Ribose"                         = "Ribose",
