@@ -28,7 +28,7 @@ results <- ternG(
 # #+ 1.5: PCA Loadings Analysis - Top Contributors with Named Metabolites
 
 
-#   tft_pca <- make_PCA(TFT, method = "PCA", show_patient_labels = TRUE, label_size = 2)
+#   tft_pca <- make_PCA(TFT_annot, method = "PCA", show_patient_labels = TRUE, label_size = 2)
 #   print(tft_pca$plot)
 
 

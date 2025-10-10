@@ -3,7 +3,7 @@
 pgd_status <- clinical_metadata_i %>%
   select(Patient, PGD = postop_PGD_ISHLT)
 #+ 0d.1:Import FTs, add Patient and Sample IDs, filter to S0 (preop) 
-TFT <- read_csv(config$paths$TFT) %>%
+TFT_annot <- read_csv(config$paths$TFT_annot) %>%
   preprocess_FT()
 UFT <- read_csv(config$paths$UFT_full) %>%
   preprocess_FT()
@@ -20,7 +20,7 @@ qstd_hilic <- read_tsv(config$paths$qstd_hilic) %>%
   mutate(lib = "HILIC")
 qstd_quant <- bind_rows(qstd_c18, qstd_hilic)
 idx_lib <- read_csv(config$paths$idx_library)  
-#+ 0d.4: Create Identified TFT based on library
+#+ 0d.4: Create Identified TFT_confirmed based on library
 identified <- create_identified_FT(
   feature_table = UFT_filtered,
   reference_library = idx_lib,

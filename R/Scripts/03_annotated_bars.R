@@ -2,7 +2,7 @@
 #+ 3.1: T-tests for all metabolomic features against PGD status 
 #- 3.1.1: Run T-test function for all targeted
 feature_ttest_results <- run_targeted_ttests(
-  feature_table = TFT,
+  feature_table = TFT_annot,
   tft_key = TFT_key,
   grouping_var = "severe_PGD",
   fc_ref_group = "No Severe PGD"
@@ -45,8 +45,8 @@ isomers <- inspect_pared %>%
 indv_plots <- inspect_pared %>%
   filter(sig_ord %in% annot_inspection$sig_ord) %>%
   select(sig_ord, identified_name, p_value, p_value_fdr, feature)
-#- 3.2.6: Subset TFT to the chosen ones
-TFT_indv <- TFT %>%
+#- 3.2.6: Subset TFT_annot to the chosen ones
+TFT_indv <- TFT_annot %>%
   select(severe_PGD, all_of(indv_plots$feature))
 #+ 3.3: Visualize diverging bars
 #- 3.3.1: Filter Data to 2 FC
