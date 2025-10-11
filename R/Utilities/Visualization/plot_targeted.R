@@ -5,13 +5,13 @@
 #' Specifically designed for severe_PGD analysis with a simplified interface.
 #'
 #' @param feature_table Data frame with severe_PGD column and feature columns (samples as rows, features as columns)
-#' @param metadata_table Tibble with columns: identified_name, p_value, p_value_fdr, feature
+#' @param metadata_table Tibble with columns: short_name, p_value, p_value_fdr, feature
 #' @param base_family Font family for plots (default: "Arial")
 #' @param include_individual_points Whether to show individual data points (default: TRUE)
 #' @param jitter_width Width of jitter for individual points (default: 0.15)
 #' @param undo_log Whether to undo log2 transformation (2^x) for display (default: FALSE)
 #' @param text_scale Scaling factor for all text elements (default: 1.0, use 0.8 for 80% size, etc.)
-#' @param sig_ord_title Whether to use sig_ord number as title instead of identified_name (default: FALSE)
+#' @param sig_ord_title Whether to use sig_ord number as title instead of short_name (default: FALSE)
 #'
 #' @return List of ggplot objects, one for each feature
 #'
@@ -137,13 +137,13 @@ plot_targeted <- function(feature_table,
     # Get p-values
     p_value <- feature_meta$p_value[1]
     p_value_fdr <- feature_meta$p_value_fdr[1]
-    identified_name <- feature_meta$identified_name[1]
+    short_name <- feature_meta$short_name[1]
     
     # Determine plot title based on sig_ord_title parameter
     plot_title <- if (sig_ord_title && "sig_ord" %in% colnames(feature_meta)) {
       paste0("sig_ord: ", feature_meta$sig_ord[1])
     } else {
-      identified_name
+      short_name
     }
     
     # Determine y limits with consistent 4-tick structure
@@ -260,15 +260,15 @@ plot_targeted <- function(feature_table,
   # Create plots for all available features
   plots <- map(available_features, create_single_plot)
   
-  # Name the plots - use sig_ord if available, otherwise identified_name
+  # Name the plots - use sig_ord if available, otherwise short_name
   plot_names <- map_chr(available_features, function(feat) {
     meta_row <- metadata_table %>% filter(feature == feat)
     if (nrow(meta_row) > 0) {
-      # Use sig_ord if available, otherwise fall back to identified_name
+      # Use sig_ord if available, otherwise fall back to short_name
       if ("sig_ord" %in% colnames(metadata_table)) {
         return(as.character(meta_row$sig_ord[1]))
       } else {
-        return(meta_row$identified_name[1])
+        return(meta_row$short_name[1])
       }
     } else {
       return(feat)

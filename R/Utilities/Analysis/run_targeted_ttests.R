@@ -5,7 +5,6 @@
 #' p-values, FDR correction, and feature annotations.
 #'
 #' @param feature_table Data frame containing feature data with samples as rows and features as columns
-#' @param tft_key Tibble containing feature annotations with columns: Feature, "Identified Name", Isomer, "Multi-Mode Detection"
 #' @param grouping_var Either a vector indicating group membership OR a column name in feature_table
 #' @param p_adjust_method Method for p-value adjustment (default "fdr")
 #' @param fc_ref_group Reference group for fold change calculation (optional). If specified, fold change will be calculated as other_group/ref_group using raw intensities (2^log2_mean)
@@ -25,7 +24,7 @@
 #'   - unique_percentage: Percentage of unique values in the dataset
 #'   - low_detect_likely: "Y" if unique_percentage > 20%, "N" otherwise
 #'   - isomer: Isomer status from TFT_annot key
-#'   - multi_mode_detection: Multi-mode detection status from TFT_annot key
+#'   - MMD: Multi-mode detection status from TFT_annot key
 #'   - n_[group1]: Sample size in first group
 #'   - n_[group2]: Sample size in second group
 #'
@@ -34,7 +33,6 @@
 #'   # Using column name
 #'   results <- run_targeted_ttests(
 #'     feature_table = TFT_annot,
-#'     tft_key = TFT_key,
 #'     grouping_var = "severe_PGD",
 #'     fc_ref_group = "No Severe PGD"
 #'   )
@@ -42,14 +40,12 @@
 #'   # Using vector
 #'   results <- run_targeted_ttests(
 #'     feature_table = TFT_annot,
-#'     tft_key = TFT_key,
 #'     grouping_var = clinical_metadata$Severe_PGD_factor
 #'   )
 #' }
 #'
 #' @export
 run_targeted_ttests <- function(feature_table, 
-                               tft_key, 
                                grouping_var,
                                p_adjust_method = "fdr",
                                fc_ref_group = NULL) {
@@ -130,10 +126,7 @@ run_targeted_ttests <- function(feature_table,
         unique_percentage = 0.0,
         low_detect_likely = "N",
         n_group1 = 0,
-        n_group2 = 0,
-        sw_p_value = NA_real_,
-        cv = NA_real_,
-        gap_ratio = NA_real_
+        n_group2 = 0
       )
     }
     
@@ -194,29 +187,6 @@ run_targeted_ttests <- function(feature_table,
     # Determine if low detection is likely (>80% unique values)
     low_detect_likely <- if (unique_percentage > 80) "N" else "Y"
     
-    # Calculate distribution tests
-    # Shapiro-Wilk test for normality
-    sw_p_value <- NA_real_
-    if (length(feature_clean) >= 3 && length(feature_clean) <= 5000) {
-      sw_p_value <- tryCatch(shapiro.test(feature_clean)$p.value, error = function(e) NA_real_)
-    }
-    
-    # Coefficient of variation (SD/mean) - high values indicate problematic distributions
-    cv <- NA_real_
-    if (length(feature_clean) > 0 && mean_overall != 0) {
-      cv <- sd(feature_clean, na.rm = TRUE) / abs(mean_overall)
-    }
-    
-    # Gap detection - ratio of max gap to median gap
-    gap_ratio <- NA_real_
-    if (length(feature_clean) >= 5) {
-      sorted_values <- sort(feature_clean)
-      gaps <- diff(sorted_values)
-      if (length(gaps) > 0 && median(gaps) > 0) {
-        gap_ratio <- max(gaps) / median(gaps)
-      }
-    }
-    
     # Perform t-test
     tryCatch({
       t_result <- t.test(feature_clean ~ group_clean)
@@ -227,6 +197,7 @@ run_targeted_ttests <- function(feature_table,
         mean_group2 = mean_group2,
         mean_overall = mean_overall,
         fold_change = fold_change,
+        log2FC = log2(fold_change),
         p_value = t_result$p.value,
         unique_vals_no_severe = unique_vals_no_severe,
         unique_vals_severe = unique_vals_severe,
@@ -234,10 +205,7 @@ run_targeted_ttests <- function(feature_table,
         unique_percentage = round(unique_percentage, 1),
         low_detect_likely = low_detect_likely,
         n_group1 = length(group1_values),
-        n_group2 = length(group2_values),
-        sw_p_value = sw_p_value,
-        cv = cv,
-        gap_ratio = gap_ratio
+        n_group2 = length(group2_values)
       )
     }, error = function(e) {
       tibble(
@@ -246,6 +214,7 @@ run_targeted_ttests <- function(feature_table,
         mean_group2 = mean_group2,
         mean_overall = mean_overall,
         fold_change = fold_change,
+        log2FC = log2(fold_change),
         p_value = NA_real_,
         unique_vals_no_severe = unique_vals_no_severe,
         unique_vals_severe = unique_vals_severe,
@@ -253,10 +222,7 @@ run_targeted_ttests <- function(feature_table,
         unique_percentage = round(unique_percentage, 1),
         low_detect_likely = low_detect_likely,
         n_group1 = length(group1_values),
-        n_group2 = length(group2_values),
-        sw_p_value = sw_p_value,
-        cv = cv,
-        gap_ratio = gap_ratio
+        n_group2 = length(group2_values)
       )
     })
   }
@@ -269,42 +235,12 @@ run_targeted_ttests <- function(feature_table,
   ttest_results <- ttest_results %>%
     mutate(
       p_value_fdr = p.adjust(p_value, method = p_adjust_method)
-    )
-  
-  # Clean column names in TFT_annot key for joining (convert to snake_case)
-  tft_key_clean <- tft_key %>%
-    rename(
-      feature = Feature,
-      identified_name = `Identified Name`,
-      isomer = Isomer,
-      multi_mode_detection = `Multi-Mode Detection`
-    )
-  
-  # Join with TFT_annot key to get feature annotations
-  final_results <- ttest_results %>%
-    left_join(tft_key_clean, by = "feature") %>%
-    select(
-      feature,
-      identified_name,
-      mean_group1,
-      mean_group2,
-      mean_overall,
-      fold_change,
-      p_value,
-      p_value_fdr,
-      unique_vals_no_severe,
-      unique_vals_severe,
-      unique_vals,
-      unique_percentage,
-      low_detect_likely,
-      isomer,
-      multi_mode_detection,
-      n_group1,
-      n_group2,
-      sw_p_value,
-      cv,
-      gap_ratio
     ) %>%
+    # Reorder columns to put p_value_fdr right after p_value
+    select(feature:p_value, p_value_fdr, everything())
+  
+  # Join with TFT_annot key to get feature annotations (columns already in snake_case)
+  final_results <- ttest_results %>%
     arrange(p_value)
   
   # Convert group names to snake_case for column names

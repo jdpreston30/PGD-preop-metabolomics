@@ -14,7 +14,7 @@ plot_S2_abbrev <- function(
     col_widths = c(1.2, 1.65, 3.575),
     header_bg_color = "#ababab",
     border_lwd = 0.75,
-    font_adjustments = list("2.1.4" = 0.4),
+    font_adjustments = NULL,
     header_row_ht = 0.4,
     row_ht = 0.35,
     output_file = NULL,
