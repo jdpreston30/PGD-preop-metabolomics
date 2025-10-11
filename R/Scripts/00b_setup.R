@@ -44,6 +44,7 @@ if (!is.null(config$analysis$datatable_options)) {
 conflicts_prefer(purrr::map)
 conflicts_prefer(dplyr::filter) 
 conflicts_prefer(dplyr::select)
+conflicts_prefer(dplyr::first)
 conflicts_prefer(dplyr::mutate)
 conflicts_prefer(dplyr::arrange)
 conflicts_prefer(dplyr::summarise)

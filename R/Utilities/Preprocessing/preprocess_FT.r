@@ -5,6 +5,10 @@
 #' integration for primary graft dysfunction (PGD) analysis.
 #'
 #' @param df Data frame containing raw feature table with Sample_ID column
+#' @param apply_unique_filter Logical (default FALSE). If TRUE, applies unique value 
+#'   filtering to remove features with low variability.
+#' @param unique_threshold Numeric (default 0.7). Only used if apply_unique_filter = TRUE.
+#'   Features with unique percentage >= this threshold are retained.
 #'
 #' @return Processed data frame with:
 #'   - Corrected sample IDs
@@ -13,6 +17,7 @@
 #'   - Excluded problematic patients (H49)
 #'   - Integrated PGD clinical metadata
 #'   - Proper factor conversions for statistical analysis
+#'   - Optional unique value filtering (if apply_unique_filter = TRUE)
 #'
 #' @details
 #' Processing steps include:
@@ -23,6 +28,7 @@
 #' 5. **Metadata integration**: Joins with PGD_specifics clinical data
 #' 6. **Factor conversion**: Converts categorical variables to factors
 #' 7. **Column organization**: Reorders columns for analysis workflow
+#' 8. **Unique filtering** (optional): Removes features with low variability
 #'
 #' **Required external data**: PGD_specifics table must be available in environment
 #' 
@@ -30,16 +36,20 @@
 #'
 #' @examples
 #' \dontrun{
-#'   # Preprocess untargeted feature table
+#'   # Standard preprocessing without unique filtering
 #'   processed_FT <- preprocess_FT(raw_feature_table)
 #'   
-#'   # Check processing results
-#'   table(processed_FT$severe_PGD)
-#'   summary(processed_FT$Patient)
+#'   # Preprocessing with unique filtering (70% threshold)
+#'   processed_FT <- preprocess_FT(raw_feature_table, apply_unique_filter = TRUE)
+#'   
+#'   # Preprocessing with custom unique filtering threshold
+#'   processed_FT <- preprocess_FT(raw_feature_table, 
+#'                                apply_unique_filter = TRUE, 
+#'                                unique_threshold = 0.8)
 #' }
 #'
 #' @export
-preprocess_FT <- function(df) {
+preprocess_FT <- function(df, apply_unique_filter = FALSE, unique_threshold = 0.7) {
   df %>%
     mutate(Sample_ID = if_else(Sample_ID == "H46SS0", "H46S0", Sample_ID)) %>%
     mutate(
@@ -58,5 +68,6 @@ preprocess_FT <- function(df) {
     select(Patient, severe_PGD, PGD_grade_tier, any_PGD, everything(), -c(Sample_ID, Sample, postop_PGD_grade_ISHLT, postop_PGD_binary_ISHLT)) %>%
     mutate(PGD_grade_tier = as.factor(PGD_grade_tier)) %>%
     mutate(severe_PGD = as.factor(severe_PGD)) %>%
-    mutate(Patient = factor(Patient))
+    mutate(Patient = factor(Patient)) %>%
+    {if (apply_unique_filter) filter_unique_features(., unique_threshold = unique_threshold) else .}
 }

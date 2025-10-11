@@ -45,7 +45,7 @@ draw_plot(p3E.2, x = 6.0975, y = 2.18, width = 1.75, height = 1.75) +
 draw_plot(p3E.3, x = 4.3975, y = 0.465, width = 1.75, height = 1.75) +
 draw_plot(p3E.4, x = 6.0975, y = 0.465, width = 1.75, height = 1.75) +
 #- Panel Sublabels
-draw_label("Redox, PPP, Vitamin Cofactor Axis",
+draw_label("Redox, Vitamin, & Cofactor Axis",
   x = 6.3025, y = 10.03,
   hjust = 0.5, vjust = 0,
   size = 10, fontface = "bold"
@@ -60,7 +60,7 @@ draw_label("Lipid Remodeling & Injury Signaling",
   hjust = 0.5, vjust = 0,
   size = 10, fontface = "bold"
 ) +
-draw_label("BCAA & Nitrogen Stress",
+draw_label("Amino Acid & Nitrogen Stress",
   x = 6.3025, y = 4.015,
   hjust = 0.5, vjust = 0,
   size = 10, fontface = "bold"
@@ -79,21 +79,20 @@ sup_fig1 <- ggdraw(xlim = c(0, 8.5), ylim = c(0, 11)) +
 draw_plot(ggdraw() + draw_grob(S1), x = 1.6675, y = 3.39, width = 3.46*1.5, height = 4.73*1.5) +
 figure_labels(list("Supplemental Figure 1" = c(0.49, 10.43)))
 #+ 6.5: Supplemental Figure 2
-#- 6.5.1: Pages 1-4
-# First four pages already imported and complete
+#- 6.5.1: Pages 1-3
+# First three pages already imported and complete
 #- 6.5.2: Page 5
-S2.5 <- ggdraw(xlim = c(0, 8.5), ylim = c(0, 11)) +
-draw_plot(ggdraw() + draw_grob(S2.5i), x = 0, y = 0, width = 8.5, height = 11) +
-draw_plot(ggdraw() + draw_grob(S2.5t), x = 1.038, y = 1.5, width = 6.425, height = 4.3) +
-draw_label("Abbreviation Key", x = 4.25, y = 5.9, hjust = 0.5, size = 14, fontface = "italic", fontfamily = "Arial")
+S2.4 <- ggdraw(xlim = c(0, 8.5), ylim = c(0, 11)) +
+draw_plot(ggdraw() + draw_grob(S2.4i), x = 0, y = 0, width = 8.5, height = 11) +
+draw_plot(ggdraw() + draw_grob(S2.4t), x = 1.5, y = 0.41, width = 5.5, height = 3.8) +
+draw_label("Abbreviation Key", x = 4.25, y = 4.3, hjust = 0.5, size = 14, fontface = "italic", fontfamily = "Arial")
 #+ 6.6: Supplemental Figure 3
 #+ 6.7: Print All
-print_to_png(fig1, "fig1.png", width = 8.5, height = 11, dpi = 1200)
-print_to_png(fig2, "fig2.png", width = 8.5, height = 11, dpi = 1200)
-print_to_png(fig3, "fig3.png", width = 8.5, height = 11, dpi = 1200)
-print_to_png(sup_fig1, "S1.png", width = 8.5, height = 11, dpi = 1200)
-print_to_png(S2.1, "S2.1.png", width = 8.5, height = 11, dpi = 1200)
-print_to_png(S2.2, "S2.2.png", width = 8.5, height = 11, dpi = 1200)
-print_to_png(S2.3, "S2.3.png", width = 8.5, height = 11, dpi = 1200)
-print_to_png(S2.4, "S2.4.png", width = 8.5, height = 11, dpi = 1200)
-print_to_png(S2.5, "S2.5.png", width = 8.5, height = 11, dpi = 1200)
+print_to_png(fig1, "fig1.png", width = 8.5, height = 11, dpi = 600)
+print_to_png(fig2, "fig2.png", width = 8.5, height = 11, dpi = 600)
+print_to_png(fig3, "fig3.png", width = 8.5, height = 11, dpi = 600)
+print_to_png(sup_fig1, "S1.png", width = 8.5, height = 11, dpi = 600)
+print_to_png(S2.1, "S2.1.png", width = 8.5, height = 11, dpi = 600)
+print_to_png(S2.2, "S2.2.png", width = 8.5, height = 11, dpi = 600)
+print_to_png(S2.3, "S2.3.png", width = 8.5, height = 11, dpi = 600)
+print_to_png(S2.4, "S2.4.png", width = 8.5, height = 11, dpi = 600)

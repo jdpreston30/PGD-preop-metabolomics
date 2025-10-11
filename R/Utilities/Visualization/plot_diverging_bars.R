@@ -54,7 +54,7 @@ plot_diverging_bars <- function(results_tibble,
     mutate(
       fc_direction = ifelse(log2_fc >= 0, "positive", "negative"),
       # Clean feature names for display and add +/- prefix
-      display_name = str_replace_all(identified_name, "_", " "),
+      display_name = str_replace_all(short_name, "_", " "),
       display_name = str_wrap(display_name, width = 40),  # Increased width to reduce line breaks
       # Convert to absolute values for plotting (positive x-axis only)
       log2_fc_abs = abs(log2_fc)
@@ -124,8 +124,8 @@ plot_diverging_bars <- function(results_tibble,
     ) +
     # Custom x-axis scale - force 0 to 5.2 with ticks at 0,1,2,3,4,5
     scale_x_continuous(
-      limits = c(0, 5.3),
-      breaks = c(0, 1, 2, 3, 4, 5),
+      limits = c(0, 4.2),
+      breaks = c(0, 1, 2, 3, 4),
       expand = c(0, 0)
     ) +
     # Axis labels

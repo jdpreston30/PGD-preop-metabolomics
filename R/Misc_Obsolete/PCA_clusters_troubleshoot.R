@@ -46,7 +46,7 @@ results <- ternG(
 #     PC1_Loading = head(sort(pc1_loadings, decreasing = TRUE), 10),
 #     Direction = "Positive"
 #   ) %>%
-#     left_join(TFT_key, by = "Feature") %>%
+#     left_join(TFT_annot_key, by = "Feature") %>%
 #     select(Feature, PC1_Loading, Direction, `Identified Name`, Name, everything())
 
 #   pc1_top_negative_df <- data.frame(
@@ -54,7 +54,7 @@ results <- ternG(
 #     PC1_Loading = head(sort(pc1_loadings, decreasing = FALSE), 10),
 #     Direction = "Negative"
 #   ) %>%
-#     left_join(TFT_key, by = "Feature") %>%
+#     left_join(TFT_annot_key, by = "Feature") %>%
 #     select(Feature, PC1_Loading, Direction, `Identified Name`, Name, everything())
 
 #   # Combine PC1 contributors
@@ -67,7 +67,7 @@ results <- ternG(
 #     PC2_Loading = head(sort(pc2_loadings, decreasing = TRUE), 10),
 #     Direction = "Positive"
 #   ) %>%
-#     left_join(TFT_key, by = "Feature") %>%
+#     left_join(TFT_annot_key, by = "Feature") %>%
 #     select(Feature, PC2_Loading, Direction, `Identified Name`, Name, everything())
 
 #   pc2_top_negative_df <- data.frame(
@@ -75,7 +75,7 @@ results <- ternG(
 #     PC2_Loading = head(sort(pc2_loadings, decreasing = FALSE), 10),
 #     Direction = "Negative"
 #   ) %>%
-#     left_join(TFT_key, by = "Feature") %>%
+#     left_join(TFT_annot_key, by = "Feature") %>%
 #     select(Feature, PC2_Loading, Direction, `Identified Name`, Name, everything())
 
 #   # Combine PC2 contributors
