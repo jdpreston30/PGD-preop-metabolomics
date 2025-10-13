@@ -11,7 +11,7 @@
 #'
 #' @return A tibble with columns:
 #'   - feature: Feature identifier
-#'   - identified_name: Feature name from TFT_annot key
+#'   - display_name: Feature name from TFT_annot key
 #'   - mean_[group1]: Mean in first factor level
 #'   - mean_[group2]: Mean in second factor level
 #'   - mean_overall: Overall population mean (combining both groups)

@@ -1,17 +1,17 @@
 #' Create Individual Feature Bar Plots (Simplified)
 #'
-#' This function creates publication-style bar plots for individual metabolomic features
+#' This function creates publication-style bar plots for individual metabolomic features,
 #' showing group comparisons with means, individual data points, and statistical results.
 #' Specifically designed for severe_PGD analysis with a simplified interface.
 #'
 #' @param feature_table Data frame with severe_PGD column and feature columns (samples as rows, features as columns)
-#' @param metadata_table Tibble with columns: short_name, p_value, p_value_fdr, feature
+#' @param metadata_table Tibble with columns: display_name (or short_name), p_value, p_value_fdr, feature
 #' @param base_family Font family for plots (default: "Arial")
 #' @param include_individual_points Whether to show individual data points (default: TRUE)
 #' @param jitter_width Width of jitter for individual points (default: 0.15)
 #' @param undo_log Whether to undo log2 transformation (2^x) for display (default: FALSE)
 #' @param text_scale Scaling factor for all text elements (default: 1.0, use 0.8 for 80% size, etc.)
-#' @param sig_ord_title Whether to use sig_ord number as title instead of short_name (default: FALSE)
+#' @param sig_ord_title Whether to use sig_ord number as title instead of display_name (default: FALSE)
 #'
 #' @return List of ggplot objects, one for each feature
 #'
@@ -134,16 +134,27 @@ plot_targeted <- function(feature_table,
         .groups = "drop"
       )
     
-    # Get p-values
+    # Get p-values and display name
     p_value <- feature_meta$p_value[1]
     p_value_fdr <- feature_meta$p_value_fdr[1]
-    short_name <- feature_meta$short_name[1]
     
     # Determine plot title based on sig_ord_title parameter
-    plot_title <- if (sig_ord_title && "sig_ord" %in% colnames(feature_meta)) {
-      paste0("sig_ord: ", feature_meta$sig_ord[1])
+    if (sig_ord_title && "sig_ord" %in% colnames(feature_meta)) {
+      plot_title <- paste0("sig_ord: ", feature_meta$sig_ord[1])
     } else {
-      short_name
+      # Use display_name if available, otherwise fall back to short_name or feature
+      if ("display_name" %in% colnames(feature_meta) && !is.na(feature_meta$display_name[1])) {
+        plot_title <- feature_meta$display_name[1]
+      } else if ("short_name" %in% colnames(feature_meta) && !is.na(feature_meta$short_name[1])) {
+        plot_title <- feature_meta$short_name[1]
+      } else {
+        plot_title <- feature_name  # fallback to feature name
+      }
+    }
+    
+    # Convert daggers to superscript format internally
+    if (!is.null(plot_title) && is.character(plot_title)) {
+      plot_title <- gsub("†", '*"†"', plot_title)
     }
     
     # Determine y limits with consistent 4-tick structure
@@ -221,7 +232,19 @@ plot_targeted <- function(feature_table,
       labs(
         x = x_axis_title,
         y = y_label,
-        title = plot_title
+        title = {
+          # Check if title contains superscript markup
+          if (!is.null(plot_title) && is.character(plot_title) && grepl("\\*", plot_title, fixed = TRUE)) {
+            tryCatch({
+              parse(text = plot_title)
+            }, error = function(e) {
+              warning("Failed to parse title: ", plot_title, ". Using regular title.")
+              plot_title
+            })
+          } else {
+            plot_title
+          }
+        }
       )
     
     # Add p-value annotations in top right corner
@@ -260,13 +283,15 @@ plot_targeted <- function(feature_table,
   # Create plots for all available features
   plots <- map(available_features, create_single_plot)
   
-  # Name the plots - use sig_ord if available, otherwise short_name
+  # Name the plots - use sig_ord if available, otherwise display_name or short_name
   plot_names <- map_chr(available_features, function(feat) {
     meta_row <- metadata_table %>% filter(feature == feat)
     if (nrow(meta_row) > 0) {
-      # Use sig_ord if available, otherwise fall back to short_name
+      # Use sig_ord if available, otherwise fall back to display_name or short_name
       if ("sig_ord" %in% colnames(metadata_table)) {
         return(as.character(meta_row$sig_ord[1]))
+      } else if ("display_name" %in% colnames(metadata_table)) {
+        return(meta_row$display_name[1])
       } else {
         return(meta_row$short_name[1])
       }

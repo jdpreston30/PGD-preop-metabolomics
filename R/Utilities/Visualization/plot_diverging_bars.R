@@ -3,12 +3,13 @@
 #' This function creates a horizontal diverging bar plot showing log2 fold changes
 #' for significant metabolomic features, with styling consistent with volcano plots.
 #'
-#' @param results_tibble Tibble with columns: identified_name, fold_change
+#' @param results_tibble Tibble with columns: display_name, fold_change
 #' @param base_family Font family for plots (default: "Arial")
 #' @param max_features Maximum number of features to display (default: 20)
 #' @param order_by Column to order features by for selection (default: "p_value")
 #' @param title Plot title (default: "Log2 Fold Change (Severe vs No Severe PGD)")
 #' @param text_scale Scaling factor for all text elements (default: 1.0, use 0.8 for 80% size, etc.)
+#' @param fc_threshold Minimum absolute fold change threshold to include features (default: 1.5)
 #'
 #' @return ggplot object
 #'
@@ -17,7 +18,8 @@
 #'   # Create diverging bar plot
 #'   p <- plot_diverging_bars(
 #'     results_tibble = inspect,
-#'     max_features = 15
+#'     max_features = 15,
+#'     fc_threshold = 2.0
 #'   )
 #'   print(p)
 #' }
@@ -28,6 +30,7 @@ plot_diverging_bars <- function(results_tibble,
                                 max_features = 20,
                                 order_by = "p_value",
                                 text_scale = 1.0,
+                                fc_threshold = 1.5,
                                 title = NULL) {
   
   # Load required libraries
@@ -50,11 +53,13 @@ plot_diverging_bars <- function(results_tibble,
         mutate(., log2_fc = log2(fold_change))
       }
     } %>%
+    # Apply fold change threshold filter
+    filter(abs(log2_fc) >= log2(fc_threshold)) %>%
     # Create color category based on fold change direction
     mutate(
       fc_direction = ifelse(log2_fc >= 0, "positive", "negative"),
       # Clean feature names for display and add +/- prefix
-      display_name = str_replace_all(short_name, "_", " "),
+      display_name = str_replace_all(display_name, "_", " "),
       display_name = str_wrap(display_name, width = 40),  # Increased width to reduce line breaks
       # Convert to absolute values for plotting (positive x-axis only)
       log2_fc_abs = abs(log2_fc)
@@ -124,8 +129,8 @@ plot_diverging_bars <- function(results_tibble,
     ) +
     # Custom x-axis scale - force 0 to 5.2 with ticks at 0,1,2,3,4,5
     scale_x_continuous(
-      limits = c(0, 4.2),
-      breaks = c(0, 1, 2, 3, 4),
+      limits = c(0, 3),
+      breaks = c(0, 1, 2, 3),
       expand = c(0, 0)
     ) +
     # Axis labels
