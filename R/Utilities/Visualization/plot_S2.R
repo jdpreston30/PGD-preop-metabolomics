@@ -29,7 +29,11 @@ plot_S2 <- function(
   # ---- layout constants ----
   plots_per_page <- n_cols * n_rows
   x_positions <- seq(from = x_from, to = x_to, length.out = n_cols)
-  y_positions <- seq(from = y_from, to = y_to, length.out = n_rows)
+  # Keep top row in original position, compress spacing equally for all rows below
+  original_spacing <- (y_from - y_to) / (n_rows - 1)  # Original spacing between rows
+  compressed_spacing <- original_spacing - 0.15  # Compress spacing by 0.35 inches
+  new_y_to <- y_from - compressed_spacing * (n_rows - 1)  # New bottom position
+  y_positions <- seq(from = y_from, to = new_y_to, length.out = n_rows)
   n_pages <- ceiling(length(plots) / plots_per_page)
 
   # ---- create position mapping for all plots ----

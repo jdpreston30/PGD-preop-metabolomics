@@ -33,11 +33,11 @@ plot_S2_abbrev <- function(
   # Create custom table theme with no borders
   table_theme_direct <- ttheme_minimal(
     core = list(
-      fg_params = list(fontfamily = "Arial", cex = 0.6, hjust = 0, x = 0.02),
+      fg_params = list(fontfamily = "Arial", cex = 0.5, hjust = 0, x = 0.02),
       bg_params = list(fill = "white", col = NA)
     ),
     colhead = list(
-      fg_params = list(fontfamily = "Arial", fontface = "bold", cex = 0.6, hjust = 0, x = 0.02),
+      fg_params = list(fontfamily = "Arial", fontface = "bold", cex = 0.5, hjust = 0, x = 0.02),
       bg_params = list(fill = header_bg_color, col = NA)
     )
   )
@@ -63,7 +63,7 @@ plot_S2_abbrev <- function(
     padded_text_grob <- grid::textGrob(
       label = page_row_col_text,
       x = 0.06, hjust = 0,  # Increased from 0.02 to 0.06 for more padding
-      gp = grid::gpar(fontfamily = "Arial", cex = 0.6),
+      gp = grid::gpar(fontfamily = "Arial", cex = 0.5),
       just = "left"
     )
     
@@ -83,7 +83,7 @@ plot_S2_abbrev <- function(
   header_text_grob <- grid::textGrob(
     label = names(table_data)[1],  # First column name
     x = 0.06, hjust = 0,  # Same padding as data cells
-    gp = grid::gpar(fontfamily = "Arial", fontface = "bold", cex = 0.6),
+    gp = grid::gpar(fontfamily = "Arial", fontface = "bold", cex = 0.5),
     just = "left"
   )
   
@@ -155,7 +155,9 @@ plot_S2_abbrev <- function(
     }
   }
 
-  # Add custom horizontal borders manually
+  # Add custom horizontal borders manually - dynamically based on number of columns
+  n_cols <- ncol(table_data)
+  
   # Add bottom border for header
   header_border <- grid::linesGrob(
     x = unit(c(0, 1), "npc"),
@@ -172,22 +174,22 @@ plot_S2_abbrev <- function(
       gp = grid::gpar(col = "black", lwd = border_lwd)
     )
     
-    # Insert border after each row
+    # Insert border after each row - use dynamic column count
     table_grob_direct <- gtable::gtable_add_grob(
       table_grob_direct, 
       row_border,
       t = i + 1, b = i + 1,  # +1 to account for header
-      l = 1, r = 3,
+      l = 1, r = n_cols,
       name = paste0("row_border_", i)
     )
   }
   
-  # Add header bottom border
+  # Add header bottom border - use dynamic column count
   table_grob_direct <- gtable::gtable_add_grob(
     table_grob_direct, 
     header_border,
     t = 1, b = 1,  # header row
-    l = 1, r = 3,
+    l = 1, r = n_cols,
     name = "header_border"
   )
 

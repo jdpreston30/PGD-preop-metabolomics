@@ -1,4 +1,4 @@
-#' Metabolite Name Mapping for Targeted Analysis
+#' Metabolite  * - Asterisks (*) indicate metabolites with potential annotation ambiguityame Mapping for Targeted Analysis
 #'
 #' A named character vector providing standardized, publication-ready names for
 #' targeted metabolomics features. Maps from original feature names (names) to
@@ -12,7 +12,7 @@
 #' - Greek letter formatting (e.g., 4-Trimethylammoniobutanoate -> γ-Butyrobetaine)
 #' - Consistent abbreviation usage (e.g., AMP -> Adenosine Monophosphate)
 #' - Simplified display names for complex chemical names
-#' - Asterisks (*) indicate metabolites with potential annotation ambiguity
+#' - Superscript daggers (^'†') indicate metabolites with potential annotation ambiguity
 #'
 #' @examples
 #' \dontrun{
