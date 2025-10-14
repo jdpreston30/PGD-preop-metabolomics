@@ -1,4 +1,23 @@
 #* 8: Data Not Shown
+#+ 8.0: Sample Processing Time
+#- 8.0.1: Compute Elapsed Minutes
+processing_time <- sample_type %>%
+  mutate(
+    sample_dt = as.POSIXct(paste(as.Date(sample_date), format(sample_time, "%H:%M:%S")), tz = "UTC"),
+    processing_dt = as.POSIXct(paste(as.Date(processing_date), format(processing_time, "%H:%M:%S")), tz = "UTC"),
+    processing_dt = if_else(processing_dt < sample_dt,
+      processing_dt + days(1),
+      processing_dt
+    ),
+    elapsed_min = as.numeric(difftime(processing_dt, sample_dt, units = "mins")),
+    elapsed_hr = elapsed_min / 60
+  ) %>%
+  select(Patient, Sample, sample_dt, processing_dt, elapsed_min, elapsed_hr) %>%
+  summarise(
+    min_hr = min(elapsed_hr, na.rm = TRUE),
+    max_hr = max(elapsed_hr, na.rm = TRUE),
+    mean_hr = mean(elapsed_hr, na.rm = TRUE)
+  )
 #+ 8.1: Percent of samples arterial versus venous
 #- 8.1.1: Generate sample composition summary 
 sample_summary <- sample_type %>%
@@ -31,6 +50,11 @@ pgd_grades_sentence <- paste("Of the", sum(postop_PGD_grade_ISHLT_counts$n), "pa
     paste0("(", round_half_up(postop_PGD_grade_ISHLT_counts$percentage[postop_PGD_grade_ISHLT_counts$postop_PGD_grade_ISHLT == "Moderate"]), "%)"), "had moderate PGD, and",
     postop_PGD_grade_ISHLT_counts$n[postop_PGD_grade_ISHLT_counts$postop_PGD_grade_ISHLT == "Severe"], 
     paste0("(", round_half_up(postop_PGD_grade_ISHLT_counts$percentage[postop_PGD_grade_ISHLT_counts$postop_PGD_grade_ISHLT == "Severe"]), "%)"), "had severe PGD.")
+#- 8.2.3: Create processing time sentence
+processing_time_sentence <- paste0(
+  "Sample processing times ranged from ", round(processing_time$min_hr, 2), " to ", round(processing_time$max_hr, 2), 
+  " hours (mean = ", round(processing_time$mean_hr, 2), " hours)."
+)
 #+ 8.3: Manuscript sentences summary 
 cat(
   "\n",
@@ -43,6 +67,9 @@ cat(
   "\n",
   "\033[1;32mSentence for results on PGD grades:\033[0m\n",  # Bold green header
   "\033[3;32m", pgd_grades_sentence, "\033[0m\n",  # Italicized green sentence
+  "\n",
+  "\033[1;34mSentence for methods on sample processing times:\033[0m\n",  # Bold blue header
+  "\033[3;34m", processing_time_sentence, "\033[0m\n",  # Italicized blue sentence
   "\n",
   strrep("=", 60), "\n",
   "\n"
@@ -64,14 +91,12 @@ doc <- doc %>%
   officer::body_add_par("PGD Grade Distribution", style = "heading 2") %>%
   officer::body_add_par(pgd_grades_sentence) %>%
   officer::body_add_par("") %>%
-  officer::body_add_par("Mummichog Parameters", style = "heading 2") %>%
-  officer::body_add_par("nosev = p cutoff 0.1") %>%
-  officer::body_add_par("modsev = p cutoff 0.05") %>%
-  officer::body_add_par("allsev = p cutoff 0.1")
+  officer::body_add_par("Sample Processing Times", style = "heading 2") %>%
+  officer::body_add_par(processing_time_sentence) %>%
+  officer::body_add_par("") %>%
+  officer::body_add_par("Mummichog Parameters", style = "heading 2")
 #- 8.4.3: Save the document
 print(doc, target = file.path(output_dir, "data_not_shown.docx"))
 cat("\nWord document saved to:", file.path(output_dir, "data_not_shown.docx"), "\n")
 #+ 8.5: Mummichog Parameters (preserved for reference)
-#! nosev = p cutoff 0.1
-#! modsev = p cutoff 0.05
-#! allsev = p cutoff 0.1
+#! see analysis_parameters.md in Outputs/mummichog

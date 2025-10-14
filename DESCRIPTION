@@ -15,6 +15,7 @@ Imports:
     yaml,
     here,
     conflicted,
+    lubridate,
     purrr,
     dplyr,
     readr,
