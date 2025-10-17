@@ -110,8 +110,8 @@ add_s2_footnote <- function(symbols = c("c", "i")) {
   # Define individual footnote lines
   footnote_lines <- list(
     "c" = "ᶜIdentity confirmed with authentic chemical standard.",
-    "*" = "*Identified with authentic standard as M-H+HCOONa adduct; see Page.Row.Column 2.2.3.",
-    "i" = "ⁱ Isomer annotated or isomer present in library of authentic chemical standards; see Page 5 for details.",
+    "*" = "*Identified with authentic standard as M-H+HCOONa adduct; see Figure.Row.Column 2.2.2.3.",
+    "i" = "ⁱ Isomer annotated or isomer present in library of authentic chemical standards; see Figure 2.5 for details.",
     "i5" = "ⁱ Isomer annotated or isomer present in library of authentic chemical standards. See Footnote Table for details."
   )
   

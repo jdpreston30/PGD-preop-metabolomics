@@ -1,0 +1,4 @@
+Resubmitted manuscript on 10/15.
+In the interim, have made the following updates to the code:
+- Made full documentation updates to all functions
+- Updated and fixed supporting information creation so figures write into PDF
