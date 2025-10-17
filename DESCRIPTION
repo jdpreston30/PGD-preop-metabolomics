@@ -64,7 +64,10 @@ Imports:
     jsonlite,
     glue,
     officer,
-    flextable
+    flextable,
+    rmarkdown,
+    knitr,
+    tinytex
 Additional_repositories: 
     https://bioconductor.org/packages/release/bioc
 Bioconductor:

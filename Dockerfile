@@ -27,6 +27,7 @@ COPY Databases/ Databases/
 # Install R packages
 RUN Rscript -e "install.packages('remotes')"
 RUN Rscript -e "remotes::install_deps('.', dependencies = TRUE)"
+RUN Rscript -e "tinytex::install_tinytex()"
 
 # Default command
 CMD ["R"]
