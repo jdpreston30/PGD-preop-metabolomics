@@ -6,46 +6,46 @@
 #' @author Joshua D. Preston
 #' @export
 
-#+ 9.0: Setup and Dependencies
-#- 9.0.1: Check TinyTeX installation
+#+ 8.0: Setup and Dependencies
+#- 8.0.1: Check TinyTeX installation
 if (!tinytex::is_tinytex()) {
   message("TinyTeX not found. Installing...")
   tinytex::install_tinytex()
 }
 
-#+ 9.0: Setup and Dependencies
-#- 9.0.1: Check TinyTeX installation
+#+ 8.0: Setup and Dependencies
+#- 8.0.1: Check TinyTeX installation
 if (!tinytex::is_tinytex()) {
   message("TinyTeX not found. Installing...")
   tinytex::install_tinytex()
 }
 
-#- 9.0.2: Assumes figure objects are already loaded in environment
+#- 8.0.2: Assumes figure objects are already loaded in environment
 # Run your full pipeline first in R terminal to create:
 # sup_fig1, S2.1, S2.2, S2.3, S2.4, S2.5, add_s2_footnote function
 
-#+ 9.1: Read Component Files
-#- 9.1.1: Define paths to all component files
+#+ 8.1: Read Component Files
+#- 8.1.1: Define paths to all component files
 components_dir <- here::here("Supporting Information", "Components")
 sections_dir <- file.path(components_dir, "Sections")
 cover_page_path <- file.path(sections_dir, "cover_page.Rmd")
 figures_path <- file.path(sections_dir, "figures.Rmd")
 methods_path <- file.path(sections_dir, "methods.tex")
 
-#- 9.1.2: Check that all components exist
+#- 8.1.2: Check that all components exist
 required_files <- c(cover_page_path, figures_path, methods_path)
 missing_files <- required_files[!file.exists(required_files)]
 if (length(missing_files) > 0) {
   stop("Missing component files: ", paste(missing_files, collapse = ", "))
 }
 
-#+ 9.2: Combine Components
-#- 9.2.1: Read each component
+#+ 8.2: Combine Components
+#- 8.2.1: Read each component
 cover_content <- readLines(cover_page_path, warn = FALSE)
 figures_content <- readLines(figures_path, warn = FALSE)
 methods_content <- readLines(methods_path, warn = FALSE)
 
-#- 9.2.2: Fix paths in cover page for correct references when rendered from Components directory
+#- 8.2.2: Fix paths in cover page for correct references when rendered from Components directory
 # Update bibliography and csl paths to be relative from Components directory
 references_dir <- file.path(components_dir, "References")
 bib_path_rel <- file.path("References", "Supporting_AJT.bib")
@@ -58,7 +58,7 @@ cover_content <- gsub('../References/jama.csl', csl_path_rel, cover_content, fix
 # Fix figure paths to be relative from Components directory  
 figures_content <- gsub('../Figures/PDF/', 'Figures/PDF/', figures_content, fixed = TRUE)
 
-#- 9.2.3: Combine all content
+#- 8.2.3: Combine all content
 full_content <- c(
   cover_content,
   "",  # Empty line for separation
@@ -67,12 +67,12 @@ full_content <- c(
   methods_content
 )
 
-#+ 9.3: Generate Final PDF
-#- 9.3.1: Write combined markdown file
+#+ 8.3: Generate Final PDF
+#- 8.3.1: Write combined markdown file
 output_rmd <- file.path(components_dir, "supporting_info.Rmd")
 writeLines(full_content, output_rmd)
 
-#- 9.3.2: Render to PDF in Supporting Information directory
+#- 8.3.2: Render to PDF in Supporting Information directory
 output_dir <- here::here("Supporting Information")
 rmarkdown::render(
   input = output_rmd,

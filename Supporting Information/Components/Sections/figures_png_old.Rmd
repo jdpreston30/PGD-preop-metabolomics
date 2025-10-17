@@ -1,0 +1,41 @@
+# **Supplemental Figure 1**
+
+\begin{center}
+\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{../Figures/S1.png}
+\end{center}
+
+\newpage
+
+# **Supplemental Figure 2.1**
+
+\begin{center}
+\includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{../Figures/S2.1.png}
+\end{center}
+
+# **Supplemental Figure 2.2**
+
+\begin{center}
+\includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{../Figures/S2.2.png}
+```
+
+\end{center}
+
+# **Supplemental Figure 2.3**
+
+\begin{center}
+\includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{../Figures/S2.3.png}
+\end{center}
+
+# **Supplemental Figure 2.4**
+
+\begin{center}
+\includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{../Figures/S2.4.png}
+\end{center}
+
+# **Supplemental Figure 2.5**
+
+\begin{center}
+\includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{../Figures/S2.5.png}
+\end{center}
+
+\newpage

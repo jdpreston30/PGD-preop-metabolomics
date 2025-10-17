@@ -55,10 +55,10 @@ plot_S2 <- function(
     n_cols = 4,
     n_rows = 5,
     plot_width = 1.75,
-    plot_height = 1.75,
+    plot_height = 1.6,
     x_from = 0.6475,
     x_to = 6.0975,
-    y_from = 8.5,
+    y_from = 7.5,
     y_to = 0.465,
     page_width = 8.5,
     page_height = 11
@@ -95,6 +95,11 @@ plot_S2 <- function(
     start_i <- (page_index - 1) * plots_per_page + 1
     end_i <- min(page_index * plots_per_page, length(plots))
     these_plots <- plots[start_i:end_i]
+    
+    # Strip x-axis labels from all plots
+    these_plots <- lapply(these_plots, function(plot) {
+      plot + theme(axis.title.x = element_blank())
+    })
 
     page <- ggdraw(xlim = c(0, page_width), ylim = c(0, page_height))
     for (i in seq_along(these_plots)) {

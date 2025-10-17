@@ -1,9 +1,9 @@
-#* 6 Render Figures
-#+ 6.1: Figure 1
+#* 5 Render Figures
+#+ 5.1: Figure 1
 fig1 <- ggdraw(xlim = c(0, 8.5), ylim = c(0, 11)) +
   draw_plot(ggdraw() + draw_grob(p1A), x = -0.065, y = 4.83, width = 8.5, height = 6) +
   figure_labels(list("Figure 1" = c(0.49, 10.43)))
-#+ 6.2: Figure 2
+#+ 5.2: Figure 2
 fig2 <- ggdraw(xlim = c(0, 8.5), ylim = c(0, 11)) +
 #- 2A
 draw_plot(p2A, x = 0.93, y = 7.53, width = 2.5, height = 2.5) +
@@ -21,7 +21,7 @@ figure_labels(list(
   D = c(3.73, 7.18),
   "Figure 2" = c(0.49, 10.43)
 ))
-#+ 6.3: Figure 3
+#+ 5.3: Figure 3
 fig3 <- ggdraw(xlim = c(0, 8.5), ylim = c(0, 11)) +
 #- 3A
 draw_plot(p3A, x = 0.5475, y = 4.13, width = 3.7, height = 6) +
@@ -66,38 +66,46 @@ figure_labels(list(
   D = c(4.3975, 4.115),
   "Figure 3" = c(0.49, 10.43)
 ))
-#+ 6.4: Supplemental Figure 1
+#+ 5.4: Supplemental Figure 1
 sup_fig1 <- ggdraw(xlim = c(0, 8.5), ylim = c(0, 11)) +
-draw_plot(ggdraw() + draw_grob(S1), x = 1.6675, y = 3.39, width = 3.46*1.5, height = 4.73*1.5)
-#+ 6.5: Supplemental Figure 2
-#- 6.5.1: Pages 1-4
+draw_plot(ggdraw() + draw_grob(S1), x = 1.6675, y = 2.39, width = 3.46*1.5, height = 4.73*1.5)
+#+ 5.5: Supplemental Figure 2
+#- 5.5.1: Pages 1-4
 # First four pages already imported and complete
-#- 6.5.2: Page 5
+#- 5.5.2: Page 5
 S2.5 <- ggdraw(xlim = c(0, 8.5), ylim = c(0, 11)) +
-draw_plot(ggdraw() + draw_grob(S2.5ta), x = 0.75, y = 2.25, width = 7, height = 7.75) +
-draw_label("Abbreviations and Adducts Table", x = 4.25, y = 10.1, hjust = 0.5, size = 14, fontface = "italic", fontfamily = "Arial") +
-draw_plot(ggdraw() + draw_grob(S2.5tf), x = 0.75, y = 0.928, width = 7, height = 1.3) +
-draw_label("Footnote Table", x = 4.25, y = 2.1, hjust = 0.5, size = 14, fontface = "italic", fontfamily = "Arial") 
-#+ 6.7: Print All
+  draw_plot(ggdraw() + draw_grob(S2.5ta), x = 0.75, y = 2.05, width = 7, height = 7.75) +
+  draw_label("Abbreviations and Adducts Table", x = 4.25, y = 9.55, hjust = 0.5, size = 14, fontface = "italic", fontfamily = "Arial") +
+  draw_plot(ggdraw() + draw_grob(S2.5tf), x = 0.75, y = 1.078, width = 7, height = 1.3) +
+  draw_label("Footnote Table", x = 4.25, y = 2.25, hjust = 0.5, size = 14, fontface = "italic", fontfamily = "Arial")
+#+ 5.8: Print All
 print_to_png(fig1, "PNG/fig1.png", width = 8.5, height = 11, dpi = 600)
 print_to_png(fig2, "PNG/fig2.png", width = 8.5, height = 11, dpi = 600)
 print_to_png(fig3, "PNG/fig3.png", width = 8.5, height = 11, dpi = 600)
 print_to_png(sup_fig1, 
-             "S1.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures")
+             "S1.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures/PNG")
 print_to_png(S2.1 + add_s2_footnote(c("*", "c", "i")), 
-             "S2.1.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures")
+             "S2.1.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures/PNG")
 print_to_png(S2.2 + add_s2_footnote(c("c", "i")), 
-             "S2.2.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures")
+             "S2.2.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures/PNG")
 print_to_png(S2.3 + add_s2_footnote(c("c", "i")), 
-             "S2.3.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures")
+             "S2.3.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures/PNG")
 print_to_png(S2.4 + add_s2_footnote(c("c", "i")), 
-             "S2.4.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures")
+             "S2.4.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures/PNG")
 print_to_png(S2.5 + add_s2_footnote(c("*", "c", "i5")), 
-             "S2.5.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures")
-#+ 6.6: Convert main figures to PDFs
-fig1_img <- image_read("Outputs/Figures/Final/PNG/fig1.png")
-image_write(fig1_img, "Outputs/Figures/Final/PDF/fig1.pdf", format = "pdf", density = 600)
-fig2_img <- image_read("Outputs/Figures/Final/PNG/fig2.png")
-image_write(fig2_img, "Outputs/Figures/Final/PDF/fig2.pdf", format = "pdf", density = 600)
-fig3_img <- image_read("Outputs/Figures/Final/PNG/fig3.png")
-image_write(fig3_img, "Outputs/Figures/Final/PDF/fig3.pdf", format = "pdf", density = 600)
+             "S2.5.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures/PNG")
+#+ 5.6: Convert main figures to PDFs
+image_write(image_read("Outputs/Figures/Final/PNG/fig1.png"), "Outputs/Figures/Final/PDF/fig1.pdf", format = "pdf", density = 600)
+image_write(image_read("Outputs/Figures/Final/PNG/fig2.png"), "Outputs/Figures/Final/PDF/fig2.pdf", format = "pdf", density = 600)
+image_write(image_read("Outputs/Figures/Final/PNG/fig3.png"), "Outputs/Figures/Final/PDF/fig3.pdf", format = "pdf", density = 600)
+#+ 5.7: Convert supplemental figures to PDFs
+image_write(image_read("Supporting Information/Components/Figures/PNG/S1.png"), "Supporting Information/Components/Figures/PDF/S1.pdf", format = "pdf", density = 600)
+image_write(image_read("Supporting Information/Components/Figures/PNG/S2.1.png"), "Supporting Information/Components/Figures/PDF/S2.1.pdf", format = "pdf", density = 600)
+S2.2_img <- image_read("Supporting Information/Components/Figures/PNG/S2.2.png")
+image_write(S2.2_img, "Supporting Information/Components/Figures/PDF/S2.2.pdf", format = "pdf", density = 600)
+S2.3_img <- image_read("Supporting Information/Components/Figures/PNG/S2.3.png")
+image_write(S2.3_img, "Supporting Information/Components/Figures/PDF/S2.3.pdf", format = "pdf", density = 600)
+S2.4_img <- image_read("Supporting Information/Components/Figures/PNG/S2.4.png")
+image_write(S2.4_img, "Supporting Information/Components/Figures/PDF/S2.4.pdf", format = "pdf", density = 600)
+S2.5_img <- image_read("Supporting Information/Components/Figures/PNG/S2.5.png")
+image_write(S2.5_img, "Supporting Information/Components/Figures/PDF/S2.5.pdf", format = "pdf", density = 600)
