@@ -30,27 +30,21 @@ draw_plot(p3B.1, x = 4.3975, y = 8.195, width = 1.75, height = 1.75) +
 draw_plot(p3B.2, x = 6.0975, y = 8.195, width = 1.75, height = 1.75) +
 draw_plot(p3B.3, x = 4.3975, y = 6.48, width = 1.75, height = 1.75) +
 draw_plot(p3B.4, x = 6.0975, y = 6.48, width = 1.75, height = 1.75) +
-#- 3C
-draw_plot(p3C.1, x = 4.3975, y = 4.33, width = 1.75, height = 1.75) +
-draw_plot(p3C.2, x = 6.0975, y = 4.33, width = 1.75, height = 1.75) +
+draw_plot(p3B.5, x = 4.3975, y = 4.765, width = 1.75, height = 1.75) +
+draw_plot(p3B.6, x = 6.0975, y = 4.765, width = 1.75, height = 1.75) +
 #- 3D
-draw_plot(p3D.1, x = 0.6475, y = 2.18, width = 1.75, height = 1.75) +
-draw_plot(p3D.2, x = 2.3475, y = 2.18, width = 1.75, height = 1.75) +
-draw_plot(p3D.3, x = 0.6475, y = 0.465, width = 1.75, height = 1.75) +
-draw_plot(p3D.4, x = 2.3475, y = 0.465, width = 1.75, height = 1.75) +
+draw_plot(p3C.1, x = 0.6475, y = 2.18, width = 1.75, height = 1.75) +
+draw_plot(p3C.2, x = 2.3475, y = 2.18, width = 1.75, height = 1.75) +
+draw_plot(p3C.3, x = 0.6475, y = 0.465, width = 1.75, height = 1.75) +
+draw_plot(p3C.4, x = 2.3475, y = 0.465, width = 1.75, height = 1.75) +
 #- 3E
-draw_plot(p3E.1, x = 4.3975, y = 2.18, width = 1.75, height = 1.75) +
-draw_plot(p3E.2, x = 6.0975, y = 2.18, width = 1.75, height = 1.75) +
-draw_plot(p3E.3, x = 4.3975, y = 0.465, width = 1.75, height = 1.75) +
-draw_plot(p3E.4, x = 6.0975, y = 0.465, width = 1.75, height = 1.75) +
+draw_plot(p3D.1, x = 4.3975, y = 2.18, width = 1.75, height = 1.75) +
+draw_plot(p3D.2, x = 6.0975, y = 2.18, width = 1.75, height = 1.75) +
+draw_plot(p3D.3, x = 4.3975, y = 0.465, width = 1.75, height = 1.75) +
+draw_plot(p3D.4, x = 6.0975, y = 0.465, width = 1.75, height = 1.75) +
 #- Panel Sublabels
-draw_label("Redox, Vitamin, & Cofactor Axis",
+draw_label("Amino Acid Metabolism",
   x = 6.3025, y = 10.03,
-  hjust = 0.5, vjust = 0,
-  size = 10, fontface = "bold"
-) +
-draw_label("Heme & Antioxidant Response",
-  x = 6.3025, y = 6.155,
   hjust = 0.5, vjust = 0,
   size = 10, fontface = "bold"
 ) +
@@ -59,7 +53,7 @@ draw_label("Lipid Remodeling & Injury Signaling",
   hjust = 0.5, vjust = 0,
   size = 10, fontface = "bold"
 ) +
-draw_label("Amino Acid & Nitrogen Stress",
+draw_label("Redox Axis",
   x = 6.3025, y = 4.015,
   hjust = 0.5, vjust = 0,
   size = 10, fontface = "bold"
@@ -68,9 +62,8 @@ draw_label("Amino Acid & Nitrogen Stress",
 figure_labels(list(
   A = c(0.6975, 10.13),
   B = c(4.3975, 10.13), 
-  C = c(4.3975, 6.255),
-  D = c(0.6975, 4.115),
-  E = c(4.3975, 4.115),
+  C = c(0.6975, 4.115),
+  D = c(4.3975, 4.115),
   "Figure 3" = c(0.49, 10.43)
 ))
 #+ 6.4: Supplemental Figure 1
@@ -91,9 +84,28 @@ figure_labels(list("Supplemental Figure 2 (Page 5)" = c(0.49, 10.43)))
 print_to_png(fig1, "fig1.png", width = 8.5, height = 11, dpi = 600)
 print_to_png(fig2, "fig2.png", width = 8.5, height = 11, dpi = 600)
 print_to_png(fig3, "fig3.png", width = 8.5, height = 11, dpi = 600)
-print_to_png(sup_fig1, "S1.png", width = 8.5, height = 11, dpi = 600)
-print_to_png(S2.1 + add_s2_footnote(c("*", "c", "i")), "S2.1.png", width = 8.5, height = 11, dpi = 600)
-print_to_png(S2.2 + add_s2_footnote(c("c", "i")), "S2.2.png", width = 8.5, height = 11, dpi = 600)
-print_to_png(S2.3 + add_s2_footnote(c("c", "i")), "S2.3.png", width = 8.5, height = 11, dpi = 600)
-print_to_png(S2.4 + add_s2_footnote(c("c", "i")), "S2.4.png", width = 8.5, height = 11, dpi = 600)
-print_to_png(S2.5 + add_s2_footnote(c("*", "c", "i5")), "S2.5.png", width = 8.5, height = 11, dpi = 600)
+print_to_png(sup_fig1 + 
+             draw_label("-6-", x = 4.25, y = 0.5, hjust = 0.5, size = 11, fontfamily = "Arial"), 
+             "S1.png", width = 8.5, height = 11, dpi = 600)
+print_to_png(S2.1 + add_s2_footnote(c("*", "c", "i")) + 
+             draw_label("-7-", x = 4.25, y = 0.5, hjust = 0.5, size = 11, fontfamily = "Arial"), 
+             "S2.1.png", width = 8.5, height = 11, dpi = 600)
+print_to_png(S2.2 + add_s2_footnote(c("c", "i")) + 
+             draw_label("-8-", x = 4.25, y = 0.5, hjust = 0.5, size = 11, fontfamily = "Arial"), 
+             "S2.2.png", width = 8.5, height = 11, dpi = 600)
+print_to_png(S2.3 + add_s2_footnote(c("c", "i")) + 
+             draw_label("-9-", x = 4.25, y = 0.5, hjust = 0.5, size = 11, fontfamily = "Arial"), 
+             "S2.3.png", width = 8.5, height = 11, dpi = 600)
+print_to_png(S2.4 + add_s2_footnote(c("c", "i")) + 
+             draw_label("-10-", x = 4.25, y = 0.5, hjust = 0.5, size = 11, fontfamily = "Arial"), 
+             "S2.4.png", width = 8.5, height = 11, dpi = 600)
+print_to_png(S2.5 + add_s2_footnote(c("*", "c", "i5")) + 
+             draw_label("-11-", x = 4.25, y = 0.5, hjust = 0.5, size = 11, fontfamily = "Arial"), 
+             "S2.5.png", width = 8.5, height = 11, dpi = 600)
+#+ 6.6: Convert main figures to PDFs
+fig1_img <- image_read("Outputs/Figures/Final/fig1.png")
+image_write(fig1_img, "Outputs/Figures/Final/fig1.pdf", format = "pdf", density = 600)
+fig2_img <- image_read("Outputs/Figures/Final/fig2.png")
+image_write(fig2_img, "Outputs/Figures/Final/fig2.pdf", format = "pdf", density = 600)
+fig3_img <- image_read("Outputs/Figures/Final/fig3.png")
+image_write(fig3_img, "Outputs/Figures/Final/fig3.pdf", format = "pdf", density = 600)

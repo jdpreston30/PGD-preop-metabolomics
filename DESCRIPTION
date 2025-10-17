@@ -33,6 +33,7 @@ Imports:
     scales,
     viridis,
     data.table,
+    pwr,
     raster,
     magick,
     grid,

@@ -55,7 +55,110 @@ processing_time_sentence <- paste0(
   "Sample processing times ranged from ", round(processing_time$min_hr, 2), " to ", round(processing_time$max_hr, 2), 
   " hours (mean = ", round(processing_time$mean_hr, 2), " hours)."
 )
-#+ 8.3: Manuscript sentences summary 
+#+ 8.3: Number of total features
+#- 8.3.1: Count columns by chromatography method (UFT)
+hilic_count <- UFT %>% 
+  select(starts_with("HILIC")) %>% 
+  ncol()
+c18_count <- UFT %>% 
+  select(starts_with("C18")) %>% 
+  ncol()
+total_chrom_count <- hilic_count + c18_count
+#- 8.3.2: Count columns by chromatography method (UFT filtered)
+hilic_count_filtered <- UFT_filtered %>% 
+  select(starts_with("HILIC")) %>% 
+  ncol()
+c18_count_filtered <- UFT_filtered %>% 
+  select(starts_with("C18")) %>% 
+  ncol()
+total_chrom_count_filtered <- hilic_count_filtered + c18_count_filtered
+#- 8.3.3: Create narrative sentences for feature counts
+feature_counts_sentence <- paste0(
+  "A total of ", total_chrom_count, " metabolomic features were detected across both chromatography methods (",
+  hilic_count, " HILIC and ", c18_count, " C18 features). After filtering based on QC measures, ",
+  total_chrom_count_filtered, " features remained (",
+  hilic_count_filtered, " HILIC and ", c18_count_filtered, " C18 features)."
+)
+#+ 8.4: Volcano Plot Statistics for Manuscript
+#- 8.4.1: Extract counts from volcano analysis results
+# Total significantly different features (p < 0.05)
+total_sig <- volcano_allsev_data$volcano_data %>%
+  filter(p_value < volcano_allsev_data$p_threshold) %>%
+  nrow()
+# Features that are significantly upregulated AND meet fold change threshold
+up_sig_fc <- volcano_allsev_data$volcano_data %>%
+  filter(p_value < volcano_allsev_data$p_threshold & 
+         log2_fc >= volcano_allsev_data$fc_threshold) %>%
+  nrow()
+# Features that are significantly downregulated AND meet fold change threshold  
+down_sig_fc <- volcano_allsev_data$volcano_data %>%
+  filter(p_value < volcano_allsev_data$p_threshold & 
+         log2_fc <= -volcano_allsev_data$fc_threshold) %>%
+  nrow()
+#- 8.4.2: Display results and create narrative sentence
+cat("\nVolcano Plot Statistics:\n")
+cat("=========================\n")
+cat("FC threshold (log2):", volcano_allsev_data$fc_threshold, "(=", round(2^volcano_allsev_data$fc_threshold, 1), "-fold)\n")
+cat("P-value threshold:", volcano_allsev_data$p_threshold, "\n")
+cat("Total significantly different features:", total_sig, "\n")
+cat("Significantly higher in PGD group (≥1.5-fold):", up_sig_fc, "\n")
+cat("Significantly lower in PGD group (≥1.5-fold):", down_sig_fc, "\n")
+#- 8.4.3: Create manuscript sentence
+volcano_results_sentence <- paste0(
+  "Further analysis identified ", total_sig, " significantly different untargeted metabolite features between ",
+  "groups, among which ", up_sig_fc, " metabolites were at least 1.5-fold higher in the PGD group, ",
+  "while ", down_sig_fc, " metabolites were at least 1.5-fold lower."
+)
+#+ 8.5: Targeted Analysis Statistics  
+#- 8.5.1: Calculate targeted detection and significance statistics
+total_detected <- nrow(TFT_combined_results)
+significant_features <- sum(TFT_combined_results$p_value < 0.05, na.rm = TRUE)  
+annotated_significant <- nrow(TFT_sig_metadata)
+#- 8.5.2: Create targeted results summary sentence
+targeted_results_sentence <- paste0(
+  "Of ", total_detected, " detected features, ", significant_features, " were significant (p < 0.05), ",
+  "of which ", annotated_significant, " were annotated."
+)
+#+ 8.6: Sample Size and Power Calculation
+#- 8.6.1: Compute n's per group
+n1 <- sum(UFT_filtered$severe_PGD == "Severe PGD")
+n2 <- sum(UFT_filtered$severe_PGD == "No Severe PGD")
+#- 8.6.2: Compute detectable effect size for two-sample t-test (unequal n)
+power_result <- pwr.t2n.test(n1 = n1, n2 = n2, sig.level = 0.05, power = 0.8)
+#- 8.6.3: Compute per-feature pooled SD and minimum detectable fold-change
+feature_cols <- setdiff(
+  colnames(UFT_filtered),
+  c("Patient", "severe_PGD", "PGD_grade_tier", "any_PGD")
+)
+per_feature_fc_sensitivity <- UFT_filtered %>%
+  select(severe_PGD, all_of(feature_cols)) %>%
+  pivot_longer(-severe_PGD, names_to = "feature", values_to = "value") %>%
+  group_by(feature) %>%
+  summarize(
+    n1 = sum(severe_PGD == "Severe PGD", na.rm = TRUE),
+    n2 = sum(severe_PGD == "No Severe PGD", na.rm = TRUE),
+    var1 = var(value[severe_PGD == "Severe PGD"], na.rm = TRUE),
+    var2 = var(value[severe_PGD == "No Severe PGD"], na.rm = TRUE),
+    s_pooled = sqrt(((n1 - 1) * var1 + (n2 - 1) * var2) / (n1 + n2 - 2)),
+    delta_log2_min = power_result$d * s_pooled, # minimum detectable mean difference (log2 units)
+    fc_min = 2^(delta_log2_min), # minimum detectable fold-change
+    .groups = "drop"
+  )
+#- 8.6.4: Summarize fold-change sensitivity
+fc_summary <- per_feature_fc_sensitivity %>%
+  summarize(
+    median_fc   = median(fc_min, na.rm = TRUE),
+    p25_fc      = quantile(fc_min, 0.25, na.rm = TRUE),
+    p75_fc      = quantile(fc_min, 0.75, na.rm = TRUE)
+  )
+#- 8.6.5: Generate narrative sensitivity summary
+sensitivity_sentence <- paste0(
+  "With ", n1 + n2, " patients (", n1, " with severe PGD and ", n2,
+  " without), we had ~80% power (α=0.05) to detect a minimum standardized mean difference of Cohen's d ≈ ",
+  round(power_result$d, 2), ". Based on observed within-group variance, the median minimum detectable fold-change was ",
+  round(fc_summary$median_fc, 2), "× (IQR ", round(fc_summary$p25_fc, 2), "–", round(fc_summary$p75_fc, 2), "×) across all features."
+)
+#+ 8.7: Manuscript sentences summary 
 cat(
   "\n",
   strrep("=", 60), "\n",
@@ -71,32 +174,18 @@ cat(
   "\033[1;34mSentence for methods on sample processing times:\033[0m\n",  # Bold blue header
   "\033[3;34m", processing_time_sentence, "\033[0m\n",  # Italicized blue sentence
   "\n",
+  "\033[1;35mSentence for methods on feature counts:\033[0m\n",  # Bold magenta header
+  "\033[3;35m", feature_counts_sentence, "\033[0m\n",  # Italicized magenta sentence
+  "\n",
+  "\033[1;36mSentence for results on volcano plot analysis:\033[0m\n",  # Bold cyan header
+  "\033[3;36m", volcano_results_sentence, "\033[0m\n",  # Italicized cyan sentence
+  "\n",
+  "\033[1;37mSentence for results on targeted analysis:\033[0m\n",  # Bold white header
+  "\033[3;37m", targeted_results_sentence, "\033[0m\n",  # Italicized white sentence
+  "\n",
+  "\033[1;33mSentence for methods on sensitivity analysis:\033[0m\n",  # Bold yellow header
+  "\033[3;33m", sensitivity_sentence, "\033[0m\n",  # Italicized yellow sentence
+  "\n",
   strrep("=", 60), "\n",
   "\n"
 )
-#+ 8.4: Write manuscript sentences to Word document
-#- 8.4.1: Create output directory if it doesn't exist
-output_dir <- "Outputs/data_not_shown"
-if (!dir.exists(output_dir)) {
-  dir.create(output_dir, recursive = TRUE)
-}
-#- 8.4.2: Create Word document with manuscript sentences
-doc <- officer::read_docx()
-doc <- doc %>%
-  officer::body_add_par("Data Not Shown - Manuscript Sentences", style = "heading 1") %>%
-  officer::body_add_par("") %>%
-  officer::body_add_par("Sample Composition", style = "heading 2") %>%
-  officer::body_add_par(sample_composition_text) %>%
-  officer::body_add_par("") %>%
-  officer::body_add_par("PGD Grade Distribution", style = "heading 2") %>%
-  officer::body_add_par(pgd_grades_sentence) %>%
-  officer::body_add_par("") %>%
-  officer::body_add_par("Sample Processing Times", style = "heading 2") %>%
-  officer::body_add_par(processing_time_sentence) %>%
-  officer::body_add_par("") %>%
-  officer::body_add_par("Mummichog Parameters", style = "heading 2")
-#- 8.4.3: Save the document
-print(doc, target = file.path(output_dir, "data_not_shown.docx"))
-cat("\nWord document saved to:", file.path(output_dir, "data_not_shown.docx"), "\n")
-#+ 8.5: Mummichog Parameters (preserved for reference)
-#! see analysis_parameters.md in Outputs/mummichog

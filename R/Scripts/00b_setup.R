@@ -42,7 +42,8 @@ if (!is.null(config$analysis$datatable_options)) {
 #+ 0b.7: Set up package conflict preferences
 # conflicted is already loaded by 0a_environment_setup.R
 conflicts_prefer(purrr::map)
-conflicts_prefer(dplyr::filter) 
+conflicts_prefer(dplyr::filter)
+conflicts_prefer(dplyr::summarize)
 conflicts_prefer(dplyr::select)
 conflicts_prefer(dplyr::first)
 conflicts_prefer(dplyr::mutate)

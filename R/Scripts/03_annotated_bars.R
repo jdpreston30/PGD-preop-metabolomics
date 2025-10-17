@@ -21,9 +21,6 @@ diverging_plot <- plot_diverging_bars(
   text_scale = 0.9,
   fc_threshold = 1.5
 )
-TFT_sig_metadata %>%
-  select(log2FC, display_name) %>%
-    arrange(log2FC)
 #+ 3.4: Visualize individual feature plots
 #- 3.4.1: Create individual plots for all significant features
 significant_feature_plots_chosen <- plot_targeted(
@@ -35,29 +32,26 @@ significant_feature_plots_chosen <- plot_targeted(
   sig_ord_title = FALSE
 )
 #- 3.4.2: Inspect overall data to choose representative
-print(TFT_sig_metadata %>% select(sig_ord, display_name, long_name, note, p_value, log2FC), n = Inf)
+write_xlsx(TFT_sig_metadata %>% select(sig_ord, display_name, long_name, note, p_value, log2FC), "clay.xlsx")
 #- 3.4.2: Choose targeted to display
 sig_groups <- list(
-  redox_cofactor   = c(2, 4, 41, 70),
-  amino_nitrogen   = c(1, 15, 42, 68), 
-  lipid_remodeling = c(3, 44, 47, 59),
-  heme_antioxidant = c(17, 48)
+  nitrogen   = c(1, 11, 12, 15, 59, 65),
+  lipid = c(3, 44, 47, 62),
+  redox = c(2, 4, 41, 70)
 )
 #- 3.4.6:  Create grouped plot lists
 {
-redox_cofactor_plots <- significant_feature_plots_chosen[as.character(sig_groups$redox_cofactor)]
-lipid_remodeling_plots <- significant_feature_plots_chosen[as.character(sig_groups$lipid_remodeling)]
-amino_nitrogen_plots <- significant_feature_plots_chosen[as.character(sig_groups$amino_nitrogen)]
-heme_antioxidant_plots <- significant_feature_plots_chosen[as.character(sig_groups$heme_antioxidant)]
+nitrogen_plots <- significant_feature_plots_chosen[as.character(sig_groups$nitrogen)]
+lipid_plots <- significant_feature_plots_chosen[as.character(sig_groups$lipid)]
+redox_plots <- significant_feature_plots_chosen[as.character(sig_groups$redox)]
 }
 #+ 3.5: Recreate Individual Feature Plots (Full) For Supplement
-#- 3.5.1: Filter out sig_ord numbers used in grouped plots for main figures
-#- 3.5.2: Make all S2 page plots (pages only, no table)
+#- 3.5.1: Make all S2 page plots (pages only, no table)
 S2 <- plot_S2(
   annot_df = TFT_sig_metadata,
   plots = significant_feature_plots_chosen
 )
-#- 3.5.3: Make footnotes table
+#- 3.5.2: Make footnotes table
 S2_footnotes <- TFT_sig_metadata %>%
   left_join(S2$pg.row.col, by = "sig_ord") %>%
   filter(!is.na(note)) %>%
@@ -67,7 +61,7 @@ S2_footnotes <- TFT_sig_metadata %>%
     `Footnote` = note,
   ) %>%
   select(`Page.Row.Column`, `Abbreviated/Displayed Name`, `Footnote`)
-#- 3.5.4: Build Footnotes Table
+#- 3.5.3: Build Footnotes Table
 S2_footnotes_table <- plot_S2_abbrev(
   table_data = S2_footnotes,
   col_widths = c(1.2, 1.65, 3.55),
@@ -78,7 +72,7 @@ S2_footnotes_table <- plot_S2_abbrev(
   height = 1.3,
   dpi = 1200
 )
-#- 3.5.5: Make abbreviation tibble with S2 mapping
+#- 3.5.4: Make abbreviation tibble with S2 mapping
 S2_abbrev_data <- TFT_sig_metadata %>%
   left_join(S2$pg.row.col, by = "sig_ord") %>%
   mutate(
@@ -89,7 +83,7 @@ S2_abbrev_data <- TFT_sig_metadata %>%
   ) %>%
   mutate(across(everything(), ~ifelse(is.na(.), "-", .))) %>%
   select(`Page.Row.Column`, `Abbreviated/Displayed Name`, `Longform, Other, or Isomer Name(s)`, `Adduct`)
-#- 3.5.6: Build Table (Abbreviations)
+#- 3.5.5: Build Table (Abbreviations)
 S2_abbrev_table <- plot_S2_abbrev(
   table_data = S2_abbrev_data,
   col_widths = c(1.2, 1.65, 2.55, 1),
