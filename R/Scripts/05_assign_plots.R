@@ -11,23 +11,22 @@ p1A <- grid::rasterGrob(as.raster(magick::image_read("Outputs/Figures/Raw/fig1.p
 #+ 5.4: Figure 3 Plots
 {
   p3A <- diverging_plot
-  p3B.1 <- redox_cofactor_plots[["2"]]
-  p3B.2 <- redox_cofactor_plots[["4"]]
-  p3B.3 <- redox_cofactor_plots[["41"]]
-  p3B.4 <- redox_cofactor_plots[["70"]]
-  # Heme Antioxidant Bars
-  p3C.1 <- heme_antioxidant_plots[["17"]]
-  p3C.2 <- heme_antioxidant_plots[["48"]]
+  p3B.1 <- nitrogen_plots[["1"]]
+  p3B.2 <- nitrogen_plots[["11"]]
+  p3B.3 <- nitrogen_plots[["12"]]
+  p3B.4 <- nitrogen_plots[["15"]]
+  p3B.5 <- nitrogen_plots[["59"]]
+  p3B.6 <- nitrogen_plots[["65"]]
   # Lipid Remodeling
-  p3D.1 <- lipid_remodeling_plots[["3"]]
-  p3D.2 <- lipid_remodeling_plots[["44"]]
-  p3D.3 <- lipid_remodeling_plots[["47"]]
-  p3D.4 <- lipid_remodeling_plots[["59"]]
+  p3C.1 <- lipid_plots[["3"]]
+  p3C.2 <- lipid_plots[["44"]]
+  p3C.3 <- lipid_plots[["47"]]
+  p3C.4 <- lipid_plots[["62"]]
   # Amino Nitrogen
-  p3E.1 <- amino_nitrogen_plots[["1"]]
-  p3E.2 <- amino_nitrogen_plots[["15"]]
-  p3E.3 <- amino_nitrogen_plots[["42"]]
-  p3E.4 <- amino_nitrogen_plots[["68"]]
+  p3D.1 <- redox_plots[["2"]]
+  p3D.2 <- redox_plots[["4"]]
+  p3D.3 <- redox_plots[["41"]]
+  p3D.4 <- redox_plots[["70"]]
 }
 #+ 5.5: Supplemental Figures
 #- 5.5.1: Supplemental Figure 1

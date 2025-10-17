@@ -6,8 +6,6 @@ plsda_allsev_data <- run_PCA(
   method = "PLSDA",
   ncomp = 10
 )
-UFT_filtered %>%
-  arrange(severe_PGD)
 #+ 1.3: Run Volcano Analysis on UFT data (Computation Only)
 volcano_allsev_data <- run_volcano(
   data = UFT_filtered,
@@ -16,7 +14,6 @@ volcano_allsev_data <- run_volcano(
   fc_threshold = log2(1.5),
   p_threshold = 0.05
 )
-volcano_allsev_data$fc_threshold
 #+ 1.4: Create Plots
 #- 1.4.5: PLSDA
 plsda_allsev <- plot_PCA(

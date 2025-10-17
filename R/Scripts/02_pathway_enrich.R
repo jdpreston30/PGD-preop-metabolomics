@@ -116,7 +116,7 @@ allsev_network_plot <- plot_biological_network(
   plot_width = 10.5,
   plot_height = 12,
   dpi = 100,
-  seed = 2017, #2023
+  seed = 2017, 
   variable_edge_thickness = TRUE,
   edge_thickness_range = c(0.3, 3),
   max_distance_from_center = 1.5,
@@ -125,6 +125,5 @@ allsev_network_plot <- plot_biological_network(
   labels_below = c(5,4, 7, 2, 12),
   nudge_labels_vert = list(p1 = -1, p3 = -1.5, p6 = -0.8, p10 = -1.75, p7 = 1, p4 = 1, p11 = 2.2, p8 = -0.75, p12 = -1, p9 = -2),
   nudge_labels_horiz = list(p1 = -0.11, p3 = -0.12, p6 = -0.075, p7 = -0.1, p4 = 1.11, p11 = 1, p8 = -0.11, p12 = 1.13, p9 = 0.6),
-  color_scale = "rb",
-  background_color = "white"
+  color_scale = "rb"
 )
