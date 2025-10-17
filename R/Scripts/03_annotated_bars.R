@@ -49,7 +49,9 @@ redox_plots <- significant_feature_plots_chosen[as.character(sig_groups$redox)]
 #- 3.5.1: Make all S2 page plots (pages only, no table)
 S2 <- plot_S2(
   annot_df = TFT_sig_metadata,
-  plots = significant_feature_plots_chosen
+  plots = significant_feature_plots_chosen,
+  y_from = 7.75, 
+  y_to = 0.715
 )
 #- 3.5.2: Make footnotes table
 S2_footnotes <- TFT_sig_metadata %>%
@@ -64,9 +66,9 @@ S2_footnotes <- TFT_sig_metadata %>%
 #- 3.5.3: Build Footnotes Table
 S2_footnotes_table <- plot_S2_abbrev(
   table_data = S2_footnotes,
-  col_widths = c(1.2, 1.65, 3.55),
-  header_row_ht = 0.1*1.5, # Taller header
-  row_ht = 0.1,
+  col_widths = c(0.8, 1.1, 2.55),
+  header_row_ht = 0.09*1.5, # Taller header
+  row_ht = 0.09,
   output_file = "Outputs/Figures/Raw/S2.5tf.png",
   width = 7,
   height = 1.3,
@@ -86,12 +88,11 @@ S2_abbrev_data <- TFT_sig_metadata %>%
 #- 3.5.5: Build Table (Abbreviations)
 S2_abbrev_table <- plot_S2_abbrev(
   table_data = S2_abbrev_data,
-  col_widths = c(1.2, 1.65, 2.55, 1),
-  header_row_ht = 0.1*1.5, # Taller header
-  row_ht = 0.1,
+  col_widths = c(0.8, 1.1, 1.95, 0.6),
+  header_row_ht = 0.09*1.5, # Taller header
+  row_ht = 0.09,
   output_file = "Outputs/Figures/Raw/S2.5ta.png",
   width = 7,
   height = 7.75,
   dpi = 1200
 )
-

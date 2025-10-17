@@ -66,11 +66,11 @@ plot_S2_abbrev <- function(
   # Create custom table theme with no borders
   table_theme_direct <- ttheme_minimal(
     core = list(
-      fg_params = list(fontfamily = "Arial", cex = 0.5, hjust = 0, x = 0.02),
+      fg_params = list(fontfamily = "Arial", cex = 0.4, hjust = 0, x = 0.02),
       bg_params = list(fill = "white", col = NA)
     ),
     colhead = list(
-      fg_params = list(fontfamily = "Arial", fontface = "bold", cex = 0.5, hjust = 0, x = 0.02),
+      fg_params = list(fontfamily = "Arial", fontface = "bold", cex = 0.4, hjust = 0, x = 0.02),
       bg_params = list(fill = header_bg_color, col = NA)
     )
   )
@@ -96,7 +96,7 @@ plot_S2_abbrev <- function(
     padded_text_grob <- grid::textGrob(
       label = page_row_col_text,
       x = 0.06, hjust = 0,  # Increased from 0.02 to 0.06 for more padding
-      gp = grid::gpar(fontfamily = "Arial", cex = 0.5),
+      gp = grid::gpar(fontfamily = "Arial", cex = 0.4),
       just = "left"
     )
     
@@ -116,7 +116,7 @@ plot_S2_abbrev <- function(
   header_text_grob <- grid::textGrob(
     label = names(table_data)[1],  # First column name
     x = 0.06, hjust = 0,  # Same padding as data cells
-    gp = grid::gpar(fontfamily = "Arial", fontface = "bold", cex = 0.5),
+    gp = grid::gpar(fontfamily = "Arial", fontface = "bold", cex = 0.4),
     just = "left"
   )
   
@@ -138,16 +138,16 @@ plot_S2_abbrev <- function(
     # Check if this row needs font adjustment
     cell_size <- font_adjustments[[as.character(page_row_col)]]
     if(is.null(cell_size)) {
-      cell_size <- 0.6  # default size
+      cell_size <- 0.4  # default size - updated to match universal font size
     }
     
     # Debug: print what we're trying to modify
-    if(verbose && cell_size != 0.6) {
+    if(verbose && cell_size != 0.4) {
       cat("Modifying row", i, "with figure.row.col:", page_row_col, "to size:", cell_size, "\n")
     }
     
     # Update the font size for the long name column (column 3) if different from default
-    if(cell_size != 0.6) {
+    if(cell_size != 0.4) {
       long_name <- table_data[i, 3]  # Third column
       text_grob <- grid::textGrob(
         label = long_name,
