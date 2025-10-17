@@ -77,24 +77,23 @@ S2.5 <- ggdraw(xlim = c(0, 8.5), ylim = c(0, 11)) +
 draw_plot(ggdraw() + draw_grob(S2.5ta), x = 0.75, y = 2.25, width = 7, height = 7.75) +
 draw_label("Abbreviations and Adducts Table", x = 4.25, y = 10.1, hjust = 0.5, size = 14, fontface = "italic", fontfamily = "Arial") +
 draw_plot(ggdraw() + draw_grob(S2.5tf), x = 0.75, y = 0.928, width = 7, height = 1.3) +
-draw_label("Footnote Table", x = 4.25, y = 2.1, hjust = 0.5, size = 14, fontface = "italic", fontfamily = "Arial") +
-figure_labels(list("Supplemental Figure 2.5" = c(0.49, 10.43)), fontface = "italic")
+draw_label("Footnote Table", x = 4.25, y = 2.1, hjust = 0.5, size = 14, fontface = "italic", fontfamily = "Arial") 
 #+ 6.7: Print All
 print_to_png(fig1, "PNG/fig1.png", width = 8.5, height = 11, dpi = 600)
 print_to_png(fig2, "PNG/fig2.png", width = 8.5, height = 11, dpi = 600)
 print_to_png(fig3, "PNG/fig3.png", width = 8.5, height = 11, dpi = 600)
 print_to_png(sup_fig1, 
-             "S1.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components")
+             "S1.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures")
 print_to_png(S2.1 + add_s2_footnote(c("*", "c", "i")), 
-             "S2.1.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components")
+             "S2.1.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures")
 print_to_png(S2.2 + add_s2_footnote(c("c", "i")), 
-             "S2.2.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components")
+             "S2.2.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures")
 print_to_png(S2.3 + add_s2_footnote(c("c", "i")), 
-             "S2.3.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components")
+             "S2.3.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures")
 print_to_png(S2.4 + add_s2_footnote(c("c", "i")), 
-             "S2.4.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components")
+             "S2.4.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures")
 print_to_png(S2.5 + add_s2_footnote(c("*", "c", "i5")), 
-             "S2.5.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components")
+             "S2.5.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures")
 #+ 6.6: Convert main figures to PDFs
 fig1_img <- image_read("Outputs/Figures/Final/PNG/fig1.png")
 image_write(fig1_img, "Outputs/Figures/Final/PDF/fig1.pdf", format = "pdf", density = 600)

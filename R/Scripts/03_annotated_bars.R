@@ -32,7 +32,7 @@ significant_feature_plots_chosen <- plot_targeted(
   sig_ord_title = FALSE
 )
 #- 3.4.2: Inspect overall data to choose representative
-write_xlsx(TFT_sig_metadata %>% select(sig_ord, display_name, long_name, note, p_value, log2FC), "clay.xlsx")
+# write_xlsx(TFT_sig_metadata %>% select(sig_ord, display_name, long_name, note, p_value, log2FC), "inspect.xlsx")
 #- 3.4.2: Choose targeted to display
 sig_groups <- list(
   nitrogen   = c(1, 11, 12, 15, 59, 65),
