@@ -1,13 +1,46 @@
 #' Generate Abbreviation Table for Supplemental Figure S2
-#' @param table_data Data frame with abbreviation information
-#' @param col_widths Vector of column widths
-#' @param header_row_ht Header row height
-#' @param row_ht Regular row height
-#' @param output_file Output file path
-#' @param width Plot width
-#' @param height Plot height
-#' @param dpi Resolution
-#' @return Table plot object
+#'
+#' Creates a formatted table displaying abbreviations and their definitions for use
+#' in supplemental figures. The table uses a clean, publication-ready format with
+#' customizable styling, column widths, and export options.
+#'
+#' @param table_data Data frame containing abbreviation information with columns
+#'   for abbreviations and their corresponding definitions
+#' @param col_widths Numeric vector specifying the width of each column in inches
+#'   (default: c(1.2, 1.65, 3.575))
+#' @param header_bg_color Color for the header row background (default: "#ababab")
+#' @param header_row_ht Height of the header row in inches
+#' @param row_ht Height of regular data rows in inches
+#' @param output_file Character string specifying the output file path for saving
+#' @param width Total plot width in inches
+#' @param height Total plot height in inches
+#' @param dpi Resolution for output image (dots per inch)
+#'
+#' @return Table plot object that can be displayed or further customized
+#'
+#' @details
+#' This function creates a professional table layout for abbreviation listings
+#' commonly needed in supplemental materials. The table automatically handles
+#' text wrapping, alignment, and formatting to ensure readability and consistency
+#' with publication standards.
+#'
+#' @examples
+#' \dontrun{
+#'   # Create abbreviation data
+#'   abbrev_data <- data.frame(
+#'     Abbreviation = c("PGD", "ISHLT", "PCA"),
+#'     Definition = c("Primary Graft Dysfunction", 
+#'                   "International Society for Heart and Lung Transplantation",
+#'                   "Principal Component Analysis")
+#'   )
+#'   
+#'   # Generate table
+#'   abbrev_table <- plot_S2_abbrev(
+#'     table_data = abbrev_data,
+#'     output_file = "supplemental_abbreviations.png"
+#'   )
+#' }
+#'
 #' @export
 plot_S2_abbrev <- function(
     table_data,
@@ -56,9 +89,9 @@ plot_S2_abbrev <- function(
     table_grob_direct$heights[i] <- unit(row_ht, "in")
   }
 
-  # Add selective left padding to Page.Row.Column column (column 1)
+  # Add selective left padding to Figure.Row.Column column (column 1)
   for(i in 1:nrow(table_data)) {
-    # Add padding to the first column (Page.Row.Column)
+    # Add padding to the first column (Figure.Row.Column)
     page_row_col_text <- table_data[i, 1]  # First column
     padded_text_grob <- grid::textGrob(
       label = page_row_col_text,
@@ -110,7 +143,7 @@ plot_S2_abbrev <- function(
     
     # Debug: print what we're trying to modify
     if(verbose && cell_size != 0.6) {
-      cat("Modifying row", i, "with page.row.col:", page_row_col, "to size:", cell_size, "\n")
+      cat("Modifying row", i, "with figure.row.col:", page_row_col, "to size:", cell_size, "\n")
     }
     
     # Update the font size for the long name column (column 3) if different from default

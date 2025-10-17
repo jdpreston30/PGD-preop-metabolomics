@@ -8,8 +8,8 @@
 
 ## 📖 Citation
 
-If you use this code, please cite:
-> [Author et al. (Year). Title. *Journal*. DOI: xxx]
+This code is associated with the analysis presented in the following manuscript:
+> [Preston et al. (2025). PENDING. *PENDING*. DOI: xxx]
 
 ## 🚀 Quick Start for Reproduction
 
@@ -66,7 +66,7 @@ All package dependencies are managed automatically:
 This project ensures reproducible analysis through:
 
 - **Dependency management**: `DESCRIPTION` file lists all required packages
-- **Configuration-driven**: All paths and parameters in `config.yaml`
+- **Configuration-driven**: All paths and parameters in `config_dynamic.yaml`
 - **Cross-platform**: Works on Windows, macOS, Linux
 - **Containerization**: Dockerfile provided for complete environment isolation
 

@@ -1,11 +1,53 @@
-#' Generate Multi-Page Supplemental Figure S2
-#' @param annot_df Annotation data frame
-#' @param plots List of plots to arrange
+#' Generate Multi-Page Supplemental Figure S2 with Volcano Plots
+#'
+#' Creates a multi-page supplemental figure with volcano plots arranged in a grid layout.
+#' Each page contains a specified number of plots with consistent positioning and annotation.
+#' Designed for creating publication-ready supplemental materials with multiple metabolomic
+#' analyses or comparisons.
+#'
+#' @param annot_df Data frame containing annotation information for the plots
+#' @param plots List of ggplot objects (typically volcano plots) to arrange across pages
 #' @param n_cols Number of columns per page (default: 4)
 #' @param n_rows Number of rows per page (default: 5)
-#' @param page_width Page width (default: 8.5)
-#' @param page_height Page height (default: 11)
-#' @return List with pages and position mapping
+#' @param plot_width Width of individual plots in inches (default: 1.75)
+#' @param plot_height Height of individual plots in inches (default: 1.75)
+#' @param x_from Left margin for plot positioning in inches (default: 0.6475)
+#' @param x_to Right margin for plot positioning in inches (default: 6.0975)
+#' @param y_from Top margin for plot positioning in inches (default: 8.5)
+#' @param y_to Bottom margin for plot positioning in inches (default: 0.465)
+#' @param page_width Total page width in inches (default: 8.5)
+#' @param page_height Total page height in inches (default: 11)
+#'
+#' @return List containing:
+#'   - pages: List of cowplot objects, one per page
+#'   - position_mapping: Data frame mapping plot indices to page and position
+#'
+#' @details
+#' The function automatically calculates how many pages are needed based on the number
+#' of plots and the specified grid dimensions. Plots are arranged left-to-right,
+#' top-to-bottom within each page. The positioning parameters allow for precise
+#' control over plot placement for publication formatting.
+#'
+#' @examples
+#' \dontrun{
+#'   # Create volcano plots for different comparisons
+#'   volcano_plots <- list(plot1, plot2, plot3, ...)
+#'   
+#'   # Generate multi-page figure
+#'   s2_figure <- plot_S2(
+#'     annot_df = annotations,
+#'     plots = volcano_plots,
+#'     n_cols = 4,
+#'     n_rows = 5
+#'   )
+#'   
+#'   # Access individual pages
+#'   page1 <- s2_figure$pages[[1]]
+#' }
+#'
+#' @importFrom ggplot2 ggplot
+#' @importFrom cowplot plot_grid
+#' @importFrom dplyr %>%
 #' @export
 plot_S2 <- function(
     annot_df,
@@ -68,8 +110,8 @@ plot_S2 <- function(
         )
     }
 
-    label <- sprintf("Supplemental Figure 2 (Page %d)", page_index)
-    page + figure_labels(setNames(list(c(0.49, 10.43)), label))
+    label <- sprintf("Supplemental Figure 2.%d", page_index)
+    page + figure_labels(setNames(list(c(0.49, 10.43)), label), fontface = "italic")
   }
 
   # ---- make all pages ----

@@ -1,8 +1,48 @@
-#' Load and resolve dynamic configuration based on computer
+#' Load and Resolve Dynamic Configuration Based on Computer Environment
 #'
-#' @param computer Character string: "laptop", "desktop", or "auto" for auto-detection
-#' @param config_path Path to the YAML configuration file
-#' @return Resolved configuration list with substituted paths
+#' Loads a YAML configuration file and dynamically resolves computer-specific paths
+#' and settings based on the detected or specified computer environment. Supports
+#' automatic detection of laptop vs desktop environments and variable substitution
+#' in path strings using template syntax.
+#'
+#' @param computer Character string specifying the computer environment:
+#'   - "auto": Automatically detect based on username and system info (default)
+#'   - "laptop": Use laptop-specific configuration (user: jdp2019)
+#'   - "desktop": Use desktop-specific configuration (user: JoshsMacbook2015)
+#' @param config_path Character string specifying the path to the YAML configuration file
+#'   (default: "config_dynamic.yaml")
+#'
+#' @return Named list containing the resolved configuration with:
+#'   - All computer-specific variables substituted in path strings
+#'   - Computer detection metadata in \code{computer_used} field
+#'   - Template variables like \code{{base_data_path}} resolved to actual paths
+#'
+#' @details
+#' The function performs the following operations:
+#' 1. Loads the raw YAML configuration file
+#' 2. Auto-detects computer environment if requested using multiple methods:
+#'    - Username detection (jdp2019 = laptop, JoshsMacbook2015 = desktop)
+#'    - Computer name pattern matching
+#'    - Path signature detection as fallback
+#' 3. Extracts computer-specific variables from the configuration
+#' 4. Recursively resolves template variables in all path strings
+#' 5. Returns the final configuration with resolved paths
+#'
+#' @examples
+#' \dontrun{
+#'   # Auto-detect computer and load config
+#'   config <- load_dynamic_config()
+#'   
+#'   # Manually specify computer type
+#'   config <- load_dynamic_config(computer = "laptop")
+#'   
+#'   # Use custom config file
+#'   config <- load_dynamic_config(config_path = "custom_config.yaml")
+#' }
+#'
+#' @importFrom yaml read_yaml
+#' @importFrom here here
+#' @importFrom glue glue
 #' @export
 load_dynamic_config <- function(computer = "auto", config_path = "config_dynamic.yaml") {
   # Load raw configuration

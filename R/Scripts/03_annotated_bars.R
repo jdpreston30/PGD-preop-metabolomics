@@ -56,11 +56,11 @@ S2_footnotes <- TFT_sig_metadata %>%
   left_join(S2$pg.row.col, by = "sig_ord") %>%
   filter(!is.na(note)) %>%
   mutate(
-    `Page.Row.Column` = paste(page, row, column, sep = "."),
+    `Figure.Row.Column` = paste("2",page, row, column, sep = "."),
     `Abbreviated/Displayed Name` = display_name,
     `Footnote` = note,
   ) %>%
-  select(`Page.Row.Column`, `Abbreviated/Displayed Name`, `Footnote`)
+  select(`Figure.Row.Column`, `Abbreviated/Displayed Name`, `Footnote`)
 #- 3.5.3: Build Footnotes Table
 S2_footnotes_table <- plot_S2_abbrev(
   table_data = S2_footnotes,
@@ -76,13 +76,13 @@ S2_footnotes_table <- plot_S2_abbrev(
 S2_abbrev_data <- TFT_sig_metadata %>%
   left_join(S2$pg.row.col, by = "sig_ord") %>%
   mutate(
-    `Page.Row.Column` = paste(page, row, column, sep = "."),
+    `Figure.Row.Column` = paste("2", page, row, column, sep = "."),
     `Abbreviated/Displayed Name` = display_name,
     `Longform, Other, or Isomer Name(s)` = long_name,
     `Adduct` = adduct,
   ) %>%
   mutate(across(everything(), ~ifelse(is.na(.), "-", .))) %>%
-  select(`Page.Row.Column`, `Abbreviated/Displayed Name`, `Longform, Other, or Isomer Name(s)`, `Adduct`)
+  select(`Figure.Row.Column`, `Abbreviated/Displayed Name`, `Longform, Other, or Isomer Name(s)`, `Adduct`)
 #- 3.5.5: Build Table (Abbreviations)
 S2_abbrev_table <- plot_S2_abbrev(
   table_data = S2_abbrev_data,

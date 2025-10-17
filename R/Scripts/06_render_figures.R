@@ -68,8 +68,7 @@ figure_labels(list(
 ))
 #+ 6.4: Supplemental Figure 1
 sup_fig1 <- ggdraw(xlim = c(0, 8.5), ylim = c(0, 11)) +
-draw_plot(ggdraw() + draw_grob(S1), x = 1.6675, y = 3.39, width = 3.46*1.5, height = 4.73*1.5) +
-figure_labels(list("Supplemental Figure 1" = c(0.49, 10.43)))
+draw_plot(ggdraw() + draw_grob(S1), x = 1.6675, y = 3.39, width = 3.46*1.5, height = 4.73*1.5)
 #+ 6.5: Supplemental Figure 2
 #- 6.5.1: Pages 1-4
 # First four pages already imported and complete
@@ -79,33 +78,27 @@ draw_plot(ggdraw() + draw_grob(S2.5ta), x = 0.75, y = 2.25, width = 7, height = 
 draw_label("Abbreviations and Adducts Table", x = 4.25, y = 10.1, hjust = 0.5, size = 14, fontface = "italic", fontfamily = "Arial") +
 draw_plot(ggdraw() + draw_grob(S2.5tf), x = 0.75, y = 0.928, width = 7, height = 1.3) +
 draw_label("Footnote Table", x = 4.25, y = 2.1, hjust = 0.5, size = 14, fontface = "italic", fontfamily = "Arial") +
-figure_labels(list("Supplemental Figure 2 (Page 5)" = c(0.49, 10.43)))
+figure_labels(list("Supplemental Figure 2.5" = c(0.49, 10.43)), fontface = "italic")
 #+ 6.7: Print All
-print_to_png(fig1, "fig1.png", width = 8.5, height = 11, dpi = 600)
-print_to_png(fig2, "fig2.png", width = 8.5, height = 11, dpi = 600)
-print_to_png(fig3, "fig3.png", width = 8.5, height = 11, dpi = 600)
-print_to_png(sup_fig1 + 
-             draw_label("-6-", x = 4.25, y = 0.5, hjust = 0.5, size = 11, fontfamily = "Arial"), 
-             "S1.png", width = 8.5, height = 11, dpi = 600)
-print_to_png(S2.1 + add_s2_footnote(c("*", "c", "i")) + 
-             draw_label("-7-", x = 4.25, y = 0.5, hjust = 0.5, size = 11, fontfamily = "Arial"), 
-             "S2.1.png", width = 8.5, height = 11, dpi = 600)
-print_to_png(S2.2 + add_s2_footnote(c("c", "i")) + 
-             draw_label("-8-", x = 4.25, y = 0.5, hjust = 0.5, size = 11, fontfamily = "Arial"), 
-             "S2.2.png", width = 8.5, height = 11, dpi = 600)
-print_to_png(S2.3 + add_s2_footnote(c("c", "i")) + 
-             draw_label("-9-", x = 4.25, y = 0.5, hjust = 0.5, size = 11, fontfamily = "Arial"), 
-             "S2.3.png", width = 8.5, height = 11, dpi = 600)
-print_to_png(S2.4 + add_s2_footnote(c("c", "i")) + 
-             draw_label("-10-", x = 4.25, y = 0.5, hjust = 0.5, size = 11, fontfamily = "Arial"), 
-             "S2.4.png", width = 8.5, height = 11, dpi = 600)
-print_to_png(S2.5 + add_s2_footnote(c("*", "c", "i5")) + 
-             draw_label("-11-", x = 4.25, y = 0.5, hjust = 0.5, size = 11, fontfamily = "Arial"), 
-             "S2.5.png", width = 8.5, height = 11, dpi = 600)
+print_to_png(fig1, "PNG/fig1.png", width = 8.5, height = 11, dpi = 600)
+print_to_png(fig2, "PNG/fig2.png", width = 8.5, height = 11, dpi = 600)
+print_to_png(fig3, "PNG/fig3.png", width = 8.5, height = 11, dpi = 600)
+print_to_png(sup_fig1, 
+             "S1.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components")
+print_to_png(S2.1 + add_s2_footnote(c("*", "c", "i")), 
+             "S2.1.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components")
+print_to_png(S2.2 + add_s2_footnote(c("c", "i")), 
+             "S2.2.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components")
+print_to_png(S2.3 + add_s2_footnote(c("c", "i")), 
+             "S2.3.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components")
+print_to_png(S2.4 + add_s2_footnote(c("c", "i")), 
+             "S2.4.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components")
+print_to_png(S2.5 + add_s2_footnote(c("*", "c", "i5")), 
+             "S2.5.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components")
 #+ 6.6: Convert main figures to PDFs
-fig1_img <- image_read("Outputs/Figures/Final/fig1.png")
-image_write(fig1_img, "Outputs/Figures/Final/fig1.pdf", format = "pdf", density = 600)
-fig2_img <- image_read("Outputs/Figures/Final/fig2.png")
-image_write(fig2_img, "Outputs/Figures/Final/fig2.pdf", format = "pdf", density = 600)
-fig3_img <- image_read("Outputs/Figures/Final/fig3.png")
-image_write(fig3_img, "Outputs/Figures/Final/fig3.pdf", format = "pdf", density = 600)
+fig1_img <- image_read("Outputs/Figures/Final/PNG/fig1.png")
+image_write(fig1_img, "Outputs/Figures/Final/PDF/fig1.pdf", format = "pdf", density = 600)
+fig2_img <- image_read("Outputs/Figures/Final/PNG/fig2.png")
+image_write(fig2_img, "Outputs/Figures/Final/PDF/fig2.pdf", format = "pdf", density = 600)
+fig3_img <- image_read("Outputs/Figures/Final/PNG/fig3.png")
+image_write(fig3_img, "Outputs/Figures/Final/PDF/fig3.pdf", format = "pdf", density = 600)
