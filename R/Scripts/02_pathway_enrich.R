@@ -16,7 +16,7 @@ mummichog_allsev_mfn <- run_mummichog_analysis(
   msModeOpt = "mixed",
   force_primary_ion = "yes"
 )
-#- 2.1.3: Run Mummichog (MFN + KEGG)
+#- 2.1.3: Run Mummichog (KEGG)
 mummichog_allsev_kegg <- run_mummichog_analysis(
   ttest_results = pathway_enrich_allsev$results,
   output_dir = "Outputs/mummichog/allsev/KEGG",
