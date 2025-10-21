@@ -115,7 +115,7 @@ allsev_network_plot <- plot_biological_network(
   show_legend = FALSE,
   plot_width = 10.5,
   plot_height = 12,
-  dpi = 100,
+  dpi = 600,
   seed = 2017, 
   variable_edge_thickness = TRUE,
   edge_thickness_range = c(0.3, 3),
