@@ -11,7 +11,7 @@ table_vars <- config$analysis$cohort$table_variables
 T1 <- table_vars$T1
 T2 <- table_vars$T2
 T3 <- table_vars$T3
-#+ 0d.1: Import Clinical metadata 
+#+ 0d.1: Import Clinical and Other metadata 
 #- 0d.1.1: Clinical Data 
 preop_i <- read_clinical_sheet("Preop", analyzed_patients, suppress_warnings = TRUE)
 periop_i <- read_clinical_sheet("Periop", analyzed_patients)
@@ -20,6 +20,9 @@ match_run_i <- read_clinical_sheet("Match Run", analyzed_patients)
 #- 0d.1.2: Sample Type Data
 sample_type <- read_xlsx(config$paths$sample_type) %>%
   filter(Patient %in% analyzed_patients)
+#- 0d.1.3: Sequence Data
+sequence <- read_tsv(config$paths$sequence)
+zip_contents <- read_csv(config$paths$zip_contents)
 #+ 0d.2: Combine clinical metadata into one tibble; format variables
 clinical_metadata_i <- preop_i %>%
   left_join(periop_i, by = "Patient") %>%

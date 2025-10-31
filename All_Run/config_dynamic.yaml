@@ -27,6 +27,9 @@ paths:
   UFT_filtered: "{base_data_path}/{metabojanitor_subpath}/ComBat/Untargeted/UFT_ComBat_20p_halfmin_log2_tidy.csv"
   clinical_metadata: "{user_home}/{onedrive_path}/Research/Chan Lab - Transplant Multi-Omics - OHT/OHT Clinical Data Master Sheet.xlsx"
   sample_type: "{base_data_path}/sample_type.xlsx"
+  sequence: "{base_data_path}/sequence_missing_removed.txt"
+  # Consolidated archive file contents
+  zip_contents: "{base_data_path}/raw_zips/zip_contents.csv"
 
   # Local database paths (relative - same across computers)
   manual_QC: "Databases/manual_QC.xlsx"

@@ -13,5 +13,6 @@ source("R/Scripts/05_render_figures.R")
 source("R/Scripts/06_tables.R")
 source("R/Scripts/07_data_not_shown.R")
 source("R/Scripts/08_supporting_info.R")
+source("R/Scripts/09_MWB_creation.R")
 }
 # https://github.com/metabolomicsworkbench/RefMet
