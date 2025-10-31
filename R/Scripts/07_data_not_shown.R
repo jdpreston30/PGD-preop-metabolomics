@@ -158,7 +158,9 @@ sensitivity_sentence <- paste0(
   round(power_result$d, 2), ". Based on observed within-group variance, the median minimum detectable fold-change was ",
   round(fc_summary$median_fc, 2), "× (IQR ", round(fc_summary$p25_fc, 2), "–", round(fc_summary$p75_fc, 2), "×) across all features."
 )
-#+ 7.7: Manuscript sentences summary 
+#+ 7.7: Demographic Ranges
+range(T1_data$demographics_age_tpx)
+#+ 7.8: Manuscript sentences summary 
 cat(
   "\n",
   strrep("=", 60), "\n",
