@@ -21,13 +21,15 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /analysis
 COPY DESCRIPTION .
 COPY R/ R/
-COPY All_Run/config_dynamic.yaml ./
+COPY All_Run/ All_Run/
 COPY Databases/ Databases/
+COPY Outputs/ Outputs/
+COPY ["Supporting Information/", "Supporting Information/"]
 
 # Install R packages
 RUN Rscript -e "install.packages('remotes')"
 RUN Rscript -e "remotes::install_deps('.', dependencies = TRUE)"
 RUN Rscript -e "tinytex::install_tinytex()"
 
-# Default command
-CMD ["R"]
+# Default command runs the full pipeline
+CMD ["Rscript", "All_Run/run.R"]

@@ -55,28 +55,28 @@ Joshua D. Preston, BS^1,2^, Clayton J. Rust, MD^1^, Aubrey C. Reed, BS^1^, Supre
 
 \textbf{Supplemental Figure 2.5} \dotfill 7
 
-\textbf{Expanded Metabolomics Methods and Other Technical Details} \dotfill 8-12
+\textbf{Expanded Metabolomics Methods and Other Technical Details} \dotfill 8-9
 
 \quad \textit{Sample Collection and Processing} \dotfill 8
 
-\quad \textit{Metabolomics Profiling with LC-MS} \dotfill 8-9
+\quad \textit{Metabolomics Profiling with Liquid Chromatography-Mass Spectrometry} \dotfill 8
 
-\quad \textit{Feature Extraction, Annotation, and Identification} \dotfill 9-10
+\quad \textit{Feature Extraction, Annotation, and Identification} \dotfill 8-9
 
-\quad \textit{Quality Control and Data Transformation} \dotfill 10
+\quad \textit{Quality Control and Data Transformation} \dotfill 9
 
-\textbf{Statistical Analysis and Data Visualization} \dotfill 11-13
+\textbf{Statistical Analysis and Data Visualization} \dotfill 9-10
 
-\quad \textit{Partial Least Squares Discriminant Analysis and Volcano Plots} \dotfill 11
+\quad \textit{Partial Least Squares Discriminant Analysis and Volcano Plots} \dotfill 9
 
-\quad \textit{Pathway Enrichment Analysis} \dotfill 11-12
+\quad \textit{Pathway Enrichment Analysis} \dotfill 9-10
 
-\quad \textit{Targeted Metabolomics Analysis} \dotfill 12
+\quad \textit{Targeted Metabolomics Analysis} \dotfill 10
 
-\quad \textit{Sensitivity Analysis} \dotfill 12-13
+\quad \textit{Sensitivity Analysis} \dotfill 10
 
 
-\textbf{References} \dotfill 14
+\textbf{References} \dotfill 11-12
 
 \newpage
 

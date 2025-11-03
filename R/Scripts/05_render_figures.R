@@ -68,7 +68,8 @@ figure_labels(list(
 ))
 #+ 5.4: Supplemental Figure 1
 sup_fig1 <- ggdraw(xlim = c(0, 8.5), ylim = c(0, 11)) +
-draw_plot(ggdraw() + draw_grob(S1), x = 1.6675, y = 2.39, width = 3.46*1.5, height = 4.73*1.5)
+  draw_plot(ggdraw() + draw_grob(S1), x = 1.6675, y = 2.39, width = 3.46*1.5, height = 4.73*1.5) +
+  draw_text("*Corresponding point to p = 0.05", x = 0.52, y = 0.6, hjust = 0, vjust = 0, size = 7, fontface = "italic", fontfamily = "Arial")
 #+ 5.5: Supplemental Figure 2
 #- 5.5.1: Pages 1-4
 # First four pages already imported and complete
