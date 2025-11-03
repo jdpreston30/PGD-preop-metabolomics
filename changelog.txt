@@ -3,3 +3,9 @@ In the interim, have made the following updates to the code:
 - Made full documentation updates to all functions
 - Updated and fixed supporting information creation so figures write into PDF
 - Made the supporting information fully latex -> PDF
+- Started writing docker information
+- Started writing metabolomics workbench upload
+
+TO DO:
+- reupload figures with changed y values to intensity
+- reupload supplemental file

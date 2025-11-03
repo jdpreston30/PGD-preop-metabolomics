@@ -20,9 +20,6 @@ match_run_i <- read_clinical_sheet("Match Run", analyzed_patients)
 #- 0d.1.2: Sample Type Data
 sample_type <- read_xlsx(config$paths$sample_type) %>%
   filter(Patient %in% analyzed_patients)
-#- 0d.1.3: Sequence Data
-sequence <- read_tsv(config$paths$sequence)
-zip_contents <- read_csv(config$paths$zip_contents)
 #+ 0d.2: Combine clinical metadata into one tibble; format variables
 clinical_metadata_i <- preop_i %>%
   left_join(periop_i, by = "Patient") %>%

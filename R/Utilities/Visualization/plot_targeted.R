@@ -46,7 +46,7 @@ plot_targeted <- function(feature_table,
   
   # Set dynamic y-label based on undo_log parameter
   y_label <- if (undo_log) {
-    "Spectral Intensity"
+    "Intensity"
   } else {
     expression(Log[2]~Intensity)
   }
