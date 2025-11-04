@@ -9,3 +9,5 @@ In the interim, have made the following updates to the code:
 TO DO:
 - reupload figures with changed y values to intensity
 - reupload supplemental file
+- update MWB info in the manuscript itself
+- fix spellin gmsitake in manuscript
