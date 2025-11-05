@@ -49,7 +49,7 @@
 #' }
 #'
 #' @export
-preprocess_FT <- function(df, apply_unique_filter = FALSE, unique_threshold = 0.7) {
+preprocess_FT <- function(df, apply_unique_filter = FALSE, unique_threshold = 0.8) {
   df %>%
     mutate(Sample_ID = if_else(Sample_ID == "H46SS0", "H46S0", Sample_ID)) %>%
     mutate(
