@@ -14,7 +14,7 @@ T1 <- ternG(
   output_docx = "Outputs/Tables/T1.docx",
   consider_normality = TRUE,
   show_test = FALSE,
-  round_intg = TRUE,
+  round_intg = FALSE,
   insert_subheads = TRUE
 )
 #+ 6.2: Table 2 (Donor Characteristics) 
