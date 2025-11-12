@@ -104,7 +104,10 @@ analysis:
         - operative_IT_minutes
         - operative_CPB_minutes
         - donor_platform_generic
+        - postop_MCS_dependence
         - postop_VA_ECMO
+        - postop_MCS_RVAD
+        - postop_MCS_Impella5.5_DEPENDENT
         - postop_ICU_LOS
         - postop_CRRT
         - postop_stroke
