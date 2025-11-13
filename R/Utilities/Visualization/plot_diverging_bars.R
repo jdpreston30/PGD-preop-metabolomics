@@ -131,8 +131,10 @@ plot_diverging_bars <- function(results_tibble,
     scale_x_continuous(
       limits = c(0, 3),
       breaks = c(0, 1, 2, 3),
-      expand = c(0, 0)
+      expand = expansion(mult = c(0.0037, 0.0037))
     ) +
+    # Y-axis spacing control
+    scale_y_discrete(expand = expansion(add = c(0.75, 0.75))) +
     # Axis labels
     labs(
       title = title,

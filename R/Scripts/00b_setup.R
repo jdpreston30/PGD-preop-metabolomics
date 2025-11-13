@@ -1,6 +1,5 @@
 #* 0b: Configuration Setup
 #+ 0b.1: Set up R options and repositories 
-options(repos = c(CRAN = "https://cran.rstudio.com/"))
 options(expressions = 10000)
 #+ 0b.2: Load utility functions first (needed for dynamic config)
 utils_path <- "R/Utilities/"

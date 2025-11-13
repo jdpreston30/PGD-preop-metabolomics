@@ -23,6 +23,6 @@ plsda_allsev <- plot_PCA(
 volc_allsev <- plot_volcano(
   volcano_results = volcano_allsev_data,
   x_limits = c(-5, 5.36),
-  y_limits = c(0, 6.71),
+  y_limits = c(0, 6.79),
   down_color = "#113d6a"
 )

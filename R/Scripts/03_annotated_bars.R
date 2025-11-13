@@ -7,9 +7,14 @@ TFT_combined_results <- run_targeted_ttests(
   fc_ref_group = "No Severe PGD"
 )
 #- 3.1.2: Subset to sig chosen (TFT_QC)
+source("R/Utilities/Helpers/metabolite_sentence_case.R")
 TFT_sig_metadata <- TFT_combined_results %>%
   filter(feature %in% TFT_QC$feature) %>%
-  left_join(TFT_QC, by = "feature")
+  left_join(TFT_QC, by = "feature") %>%
+  mutate(
+    display_name = map2_chr(display_name, abbrev, metabolite_sentence_case)
+  ) %>%
+  select(display_name, everything())
 #- 3.1.3: Create subsetted feature table
 TFT_combined_chosen <- TFT_combined %>%
   select(Patient, severe_PGD, all_of(TFT_sig_metadata$feature))
