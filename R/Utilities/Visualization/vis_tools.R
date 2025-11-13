@@ -107,17 +107,20 @@ figure_labels <- function(labels, size = 14, fontface = "bold", fontfamily = "Ar
 
 #+ S2 footnote
 add_s2_footnote <- function(symbols = c("c", "i")) {
-  # Define individual footnote lines
+  # Define individual footnote lines with symbol and text separated
   footnote_lines <- list(
-    "c" = "ᶜIdentity confirmed with authentic chemical standard.",
-    "*" = "*Identified with authentic standard as M-H+HCOONa adduct; see Figure.Row.Column 2.2.2.3.",
-    "i" = "ⁱ Isomer annotated or isomer present in library of authentic chemical standards; see Figure 2.5 for details.",
-    "i5" = "ⁱ Isomer annotated or isomer present in library of authentic chemical standards. See Footnote Table for details."
+    "c" = list(symbol = "ᶜ", text = "Identity confirmed with authentic chemical standard."),
+    "*" = list(symbol = "*", text = " M-H adduct presented but also identified with authentic standard as M-H+HCOONa adduct; see Figure.Row.Column 2.2.2.3."),
+    "i" = list(symbol = " ᴵ", text = "Isomer annotated or isomer present in library of authentic chemical standards; see Supplemental Figure 2.5 for details."),
+    "i5" = list(symbol = " ᴵ", text = "Isomer annotated or isomer present in library of authentic chemical standards. See Footnote Table for details.")
   )
   
-  # Build footnote text from requested symbols
+  # Build footnote text with plain symbols followed by italic text
   selected_lines <- footnote_lines[symbols]
-  footnote_text <- paste(selected_lines, collapse = "\n")
+  formatted_lines <- sapply(selected_lines, function(line) {
+    paste0(line$symbol, line$text)
+  })
+  footnote_text <- paste(formatted_lines, collapse = "\n")
   
   draw_text(
     footnote_text,

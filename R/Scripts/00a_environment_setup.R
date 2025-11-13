@@ -29,6 +29,8 @@ required_packages <- trimws(packages)
 required_packages <- required_packages[required_packages != ""]
 cat("📋 Found", length(required_packages), "packages in DESCRIPTION file\n")
 #+ 0a.2: Install missing packages 
+#- 0a.2.0: Set CRAN repo
+options(repos = c(CRAN = "https://cran.rstudio.com/"))
 #- 0a.2.1: Check for missing packages 
 missing_packages <- required_packages[!sapply(required_packages, requireNamespace, quietly = TRUE)]
 if (length(missing_packages) > 0) {
@@ -52,7 +54,6 @@ if (!require(TernTablesR, quietly = TRUE)) {
   remotes::install_github("jdpreston30/TernTablesR")
   library(TernTablesR)
 }
-
 #- 0a.2.5: Install MetaboAnalystR and dependencies (if needed)
 if (!require(MetaboAnalystR, quietly = TRUE)) {
   cat("🧪 Installing MetaboAnalystR and dependencies...\n")
@@ -106,9 +107,11 @@ if (!require(MetaboAnalystR, quietly = TRUE)) {
   library(MetaboAnalystR)
   cat("✅ MetaboAnalystR installation complete!\n")
 }
-
 #+ 0a.3: Load all required packages 
 cat("📚 Loading required packages...\n")
 invisible(sapply(required_packages, library, character.only = TRUE, quietly = TRUE))
 #+ 0a.4: Environment setup complete 
 cat("✅ Environment setup complete! All required packages loaded.\n")
+#+ 0a.5: Check system dependencies
+source("R/Utilities/Helpers/check_system_dependencies.R")
+check_system_dependencies()

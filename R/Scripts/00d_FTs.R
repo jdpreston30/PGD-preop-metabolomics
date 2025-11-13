@@ -22,7 +22,7 @@ TFT_annot_QC <- read_xlsx(config$paths$TFT_annot_QC, sheet = "key") %>%
 TFT_QC <- read_xlsx(config$paths$manual_QC, sheet = "pared") %>%
   arrange(p_value) %>%
   mutate(sig_ord = row_number()) %>%
-  select(sig_ord, feature, display_name, long_name, note, adduct)
+  select(sig_ord, feature, display_name, long_name, note, adduct, abbrev)
 #- 0d.2.1: Read in key; join; clean column names
 TFT_annot_key <- read_csv(config$paths$TFT_annot_key) %>%
   rename(
