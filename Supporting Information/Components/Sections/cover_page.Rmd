@@ -71,7 +71,7 @@ Joshua D. Preston, BS^1,2^, Clayton J. Rust, MD^1^, Aubrey C. Reed, BS^1^, Supre
 
 \quad \textit{Pathway Enrichment Analysis} \dotfill 9-10
 
-\quad \textit{Targeted Metabolomics Analysis} \dotfill 10
+\quad \textit{Identified and Annotated Metabolite Analysis} \dotfill 10
 
 \quad \textit{Sensitivity Analysis} \dotfill 10
 
