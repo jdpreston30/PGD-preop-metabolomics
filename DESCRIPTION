@@ -4,10 +4,9 @@ Authors@R: person("Joshua", "Preston", email = "joshua.preston@emory.edu", role 
 Description: Metabolomics analysis pipeline for preoperative primary graft dysfunction study.
     This project contains all code and analysis scripts for reproducing the results
     submitted to AJT, Preston et al. 2025.
-License: MIT + file LICENSE
 URL: https://github.com/jdpreston30/PGD-preop-metabolomics
 Depends: 
-    R (>= 4.3.0)
+    R (>= 4.5.1)
 Imports:
     yaml,
     here,
@@ -85,6 +84,5 @@ Bioconductor:
 Remotes:
     jdpreston30/TernTablesR,
     xia-lab/MetaboAnalystR
-Config/renv/snapshot/type: explicit
 Encoding: UTF-8
-RoxygenNote: 7.3.3
+

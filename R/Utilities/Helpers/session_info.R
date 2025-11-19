@@ -10,9 +10,47 @@ cat("Analysis conducted on:", format(Sys.time()), "\n\n")
 # Print R version and platform info
 print(sessionInfo())
 
+# Check and capture system dependency versions
+cat("\n=== System Dependencies ===\n")
+system_deps_info <- character()
+
+# Ghostscript
+gs_version <- tryCatch({
+  system("gs --version", intern = TRUE)
+}, error = function(e) "Not found")
+cat("Ghostscript:", gs_version, "\n")
+system_deps_info <- c(system_deps_info, paste("Ghostscript:", gs_version))
+
+# ImageMagick
+im_version <- tryCatch({
+  system("convert --version | head -n1", intern = TRUE)
+}, error = function(e) "Not found")
+cat("ImageMagick:", im_version, "\n")
+system_deps_info <- c(system_deps_info, paste("ImageMagick:", im_version))
+
+# Pandoc
+pandoc_version <- tryCatch({
+  system("pandoc --version | head -n1", intern = TRUE)
+}, error = function(e) "Not found")
+cat("Pandoc:", pandoc_version, "\n")
+system_deps_info <- c(system_deps_info, paste("Pandoc:", pandoc_version))
+
+# LaTeX (pdflatex)
+latex_version <- tryCatch({
+  system("pdflatex --version | head -n1", intern = TRUE)
+}, error = function(e) "Not found")
+cat("LaTeX:", latex_version, "\n")
+system_deps_info <- c(system_deps_info, paste("LaTeX:", latex_version))
+
 # Save to file for documentation
 session_file <- here::here("session_info.txt")
-writeLines(capture.output(sessionInfo()), session_file)
+session_output <- c(
+  capture.output(sessionInfo()),
+  "",
+  "=== System Dependencies ===",
+  system_deps_info
+)
+writeLines(session_output, session_file)
 cat("\n📄 Session info saved to:", session_file, "\n")
 
 # Print package versions in a clean format

@@ -1,88 +1,156 @@
-# Postoperative Primary Graft Dysfunct## 🔬 Analysis Workflow
-
-1. **Run complete analysis**: `source("run.R")`
-2. **View results**: Check `Outputs/` directory
-3. **Individual components**: Source specific scripts from `R/Scripts/`etabolomics Analysis
+# Recipient Plasma Metabolomics as a Predictor of Heart Transplant Severe Primary Graft Dysfunction
 
 **Reproducible analysis code for academic publication**
 
 ## 📖 Citation
 
 This code is associated with the analysis presented in the following manuscript:
-> [Preston et al. (2025). PENDING. *PENDING*. DOI: xxx]
+> Preston et al. (2025). Recipient Plasma Metabolomics as a Predictor of Heart Transplant Severe Primary Graft Dysfunction. *American Journal of Transplantation*. (Submitted)
 
 ## 🚀 Quick Start for Reproduction
 
-**One command to reproduce all results:**
+### Option 1: Using Docker (Recommended for Maximum Reproducibility)
 
-```r
-source("run.R")
+**Prerequisites**: Install [Docker Desktop](https://www.docker.com/products/docker-desktop)
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/jdpreston30/PGD-preop-metabolomics.git
+cd PGD-preop-metabolomics
+
+# 2. Build the Docker image (one-time setup, ~15-30 minutes)
+docker build -t pgd-metabolomics .
+
+# 3. Run the complete analysis pipeline
+docker run -v $(pwd)/Outputs:/analysis/Outputs pgd-metabolomics
 ```
 
-This will:
-1. Set up the analysis environment
-2. Load all configurations and dependencies
-3. Execute the complete analysis pipeline
+The Docker container includes:
+- R 4.5.1 with all required packages
+- All system dependencies (Ghostscript, ImageMagick, Pandoc, LaTeX)
+- Isolated environment guaranteed to work identically on any system
+
+Results will be saved to your local `Outputs/` directory.
+
+### Option 2: Manual Installation (Without Docker)
+
+**Prerequisites**: R >= 4.5.1
+
+```r
+# 1. Check system dependencies
+source("R/Utilities/Helpers/check_system_dependencies.R")
+check_system_dependencies()
+
+# 2. Install R packages from DESCRIPTION
+install.packages("remotes")
+remotes::install_deps(".", dependencies = TRUE)
+
+# 3. Run the complete analysis pipeline
+source("All_Run/run.R")
+```
 
 ## 📁 Project Structure
 
 ```
-├── DESCRIPTION              # Package dependencies (R standard)
-├── config.yaml             # Analysis settings and paths
-├── run.R                   # Main analysis execution script
+├── DESCRIPTION              # R package dependencies (CRAN, Bioconductor, GitHub)
+├── Dockerfile              # Docker container for reproducible environment
+├── All_Run/
+│   ├── config_dynamic.yaml # Analysis configuration and parameters
+│   └── run.R              # Main pipeline execution script
 ├── R/
-│   ├── Scripts/
-│   │   ├── setup.R         # Environment configuration  
-│   │   └── 01_analysis.R   # Main analysis scripts
-│   └── Utilities/          # Custom functions
-├── Data/                   # Raw data files
-└── Outputs/               # Generated results
+│   ├── Scripts/           # Analysis workflow scripts (00a-08)
+│   └── Utilities/         # Custom analysis functions
+│       ├── Analysis/      # Statistical and pathway analysis
+│       ├── Helpers/       # Utility functions
+│       ├── Preprocessing/ # Data preprocessing
+│       └── Visualization/ # Plotting functions
+├── Databases/             # Reference databases (IROA, MetaboAnalyst)
+├── Outputs/              # Generated results
+│   ├── Figures/          # Publication figures (PDF, EPS, PNG)
+│   ├── Tables/           # Result tables
+│   └── mummichog/        # Pathway enrichment results
+└── Supporting Information/ # Supplementary materials and methods
 ```
 
-## � Analysis Workflow
+## 🔬 Analysis Workflow
 
-1. **Setup environment**: `source("setup.R")`
-2. **Run analysis**: `source("R/Scripts/01_analysis.R")`
-3. **View results**: Check `Outputs/` directory
+The complete pipeline executes in sequence:
+
+1. **00a-00d**: Environment setup, clinical metadata, feature tables
+2. **01**: Clustering analysis (PCA, metabolite grouping)
+3. **02**: Pathway enrichment (mummichog analysis)
+4. **03**: Annotated bar plots
+5. **04**: Assignment plots
+6. **05**: Render final figures (PDF, EPS)
+7. **06**: Generate results tables
+8. **07**: Additional analyses
+9. **08**: Supporting information document
 
 ## 💻 System Requirements
 
-- **R**: Version 4.0.0 or higher
-- **Platform**: Windows, macOS, or Linux
-- **Memory**: 8GB RAM recommended
-- **Disk Space**: 2GB for packages and outputs
+### Computational Requirements
+- **R**: Version 4.5.1 or higher
+- **Platform**: Developed on macOS but should work well on Windows or Linux
+- **Note**: Standard modern computer sufficient; no special hardware required
 
-## 📦 Dependencies
+### System Dependencies
+- **Ghostscript**: PDF to EPS conversion
+- **Pandoc**: R Markdown rendering
+- **ImageMagick**: Image processing
+- **TinyTeX/LaTeX**: PDF generation
 
-All package dependencies are managed automatically:
+*Note: All system dependencies are automatically installed in the Docker container. For manual installation, run `check_system_dependencies()` for platform-specific instructions.*
 
-- **Core packages**: Listed in `DESCRIPTION`
-- **Environment setup**: Managed via environment setup scripts
-- **Bioconductor**: Automatic installation
-- **Custom packages**: From GitHub repositories
+## 📦 Package Dependencies
 
-## 🔄 Reproducibility
+All R package dependencies are specified in `DESCRIPTION`. Key packages include:
 
-This project ensures reproducible analysis through:
+### CRAN Packages (~60 packages)
+- **Data manipulation**: tidyverse (dplyr, tidyr, purrr, readr, etc.)
+- **Visualization**: ggplot2, ggraph, patchwork, Cairo, magick
+- **Statistical modeling**: mixOmics, caret, randomForest, e1071
+- **Reporting**: rmarkdown, knitr, officer, flextable
 
-- **Dependency management**: `DESCRIPTION` file lists all required packages
-- **Configuration-driven**: All paths and parameters in `config_dynamic.yaml`
-- **Cross-platform**: Works on Windows, macOS, Linux
-- **Containerization**: Dockerfile provided for complete environment isolation
+### Bioconductor Packages (14 packages)
+- **Metabolomics workflow**: xcms, CAMERA, MSnbase
+- **Pathway analysis**: fgsea, globaltest, GlobalAncova
+- **Network analysis**: RBGL, Rgraphviz
 
-## 🤝 For Collaborators
+### GitHub Packages
+- `jdpreston30/TernTablesR`: Custom ternary plot tables
+- `xia-lab/MetaboAnalystR`: Metabolomics analysis and pathway enrichment
 
-1. Clone this repository
-2. Install R packages: `install.packages(readLines("DESCRIPTION")[grep("Imports:", readLines("DESCRIPTION")):length(readLines("DESCRIPTION"))])`
-3. Run analysis: `source("run.R")`
+*See `DESCRIPTION` file for complete list of all dependencies.*
+
+## 🔄 Reproducibility Features
+
+This project implements best practices for computational reproducibility:
+
+- ✅ **Version Control**: Complete analysis code on GitHub
+- ✅ **Dependency Management**: All required packages specified in `DESCRIPTION`
+- ✅ **Containerization**: Docker image freezes exact environment and package versions
+- ✅ **Configuration-Driven**: All parameters in `config_dynamic.yaml`
+- ✅ **System Dependency Checking**: Automated validation via `check_system_dependencies()`
+- ✅ **Documentation**: Comprehensive function documentation and workflow comments
+
+## 🤝 For Reviewers & Collaborators
+
+**Easiest reproduction method**: Use the Docker container (Option 1 above). This ensures you have the exact same environment used to generate all manuscript results.
+
+If you encounter any issues:
+1. Verify Docker is installed and running
+2. Ensure you're running the commands from the repository root directory
+3. Check Docker logs for any error messages
+
+For questions or issues, please open a GitHub issue or contact the corresponding author.
 
 ## 📧 Contact
 
-For questions about the analysis:
-- **Author**: Joshua Preston (joshua.preston@emory.edu)
-- **ORCID**: [0000-0001-9834-3017](https://orcid.org/0000-0001-9834-3017)
-- **Institution**: Emory University
+**Corresponding Author**: Joshua D. Preston
+- **Email**: joshua.preston@emory.edu  
+- **ORCID**: [0000-0001-9834-3017](https://orcid.org/0000-0001-9834-3017)  
+- **Institution**: Department of Surgery, Emory University School of Medicine
 
-## 📄 License
+---
 
-This code is available under the MIT License. See LICENSE file for details.
+**Repository**: https://github.com/jdpreston30/PGD-preop-metabolomics
