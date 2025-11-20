@@ -13,24 +13,54 @@ This code is associated with the analysis presented in the following manuscript:
 
 **Prerequisites**: Install [Docker Desktop](https://www.docker.com/products/docker-desktop)
 
+#### Setup & Execution
+
 ```bash
 # 1. Clone the repository
 git clone https://github.com/jdpreston30/PGD-preop-metabolomics.git
 cd PGD-preop-metabolomics
 
-# 2. Build the Docker image (one-time setup, ~15-30 minutes)
+# 2. Build the Docker image (one-time setup, ~30-45 minutes)
 docker build -t pgd-metabolomics .
 
 # 3. Run the complete analysis pipeline
 docker run -v $(pwd)/Outputs:/analysis/Outputs pgd-metabolomics
 ```
 
-The Docker container includes:
-- R 4.5.1 with all required packages
-- All system dependencies (Ghostscript, ImageMagick, Pandoc, LaTeX)
-- Isolated environment guaranteed to work identically on any system
+#### What's Included
+
+The Docker container provides a completely isolated environment with:
+- R 4.5.1 with all required packages pre-installed
+- All system dependencies (Ghostscript, ImageMagick, Pandoc, TinyTeX/LaTeX)
+- Guaranteed identical results regardless of host system
 
 Results will be saved to your local `Outputs/` directory.
+
+#### Testing the Container
+
+To verify the Docker image was built correctly before running the full analysis:
+
+```bash
+# Quick verification (< 1 minute)
+docker run --rm pgd-metabolomics Rscript -e "packageVersion('xcms'); packageVersion('mixOmics')"
+```
+
+This should display package versions. If it succeeds, the container is ready for the full analysis.
+
+#### Troubleshooting
+
+**Build fails or is very slow**: 
+- This is normal for the first build (30-45 minutes) due to compiling complex packages like xcms
+- If build is interrupted, run `docker build` again - it will resume from where it stopped
+
+**"No space left on device" error**:
+- The final image is ~3-5 GB
+- Check available disk space: `docker system df`
+- Clean up old images: `docker image prune`
+
+**Container runs but produces no output**:
+- Check the Outputs directory exists and is writable
+- Verify the mount path: `ls Outputs/`
 
 ### Option 2: Manual Installation (Without Docker)
 

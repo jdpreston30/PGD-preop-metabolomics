@@ -16,7 +16,6 @@ RUN apt-get update && apt-get install -y \
     # Required system tools (from check_system_dependencies.R)
     ghostscript \
     pandoc \
-    pandoc-citeproc \
     imagemagick \
     # XML and networking
     libxml2-dev \
@@ -50,7 +49,6 @@ RUN apt-get update && apt-get install -y \
 # Copy project files
 WORKDIR /analysis
 COPY DESCRIPTION .
-COPY NAMESPACE .
 COPY R/ R/
 COPY All_Run/ All_Run/
 COPY Databases/ Databases/
@@ -79,9 +77,9 @@ RUN Rscript -e "tinytex::install_tinytex()"
 ENV PATH="${PATH}:/root/bin"
 
 # Verify key packages are installed
-RUN Rscript -e "packageVersion('MetaboAnalystR')" && \
-    Rscript -e "packageVersion('mixOmics')" && \
-    Rscript -e "packageVersion('xcms')"
+RUN Rscript -e "packageVersion('mixOmics')" && \
+    Rscript -e "packageVersion('xcms')" && \
+    Rscript -e "packageVersion('fgsea')"
 
 # Default command runs the full pipeline
 CMD ["Rscript", "All_Run/run.R"]
