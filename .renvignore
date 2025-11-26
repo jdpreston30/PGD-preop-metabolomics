@@ -1,0 +1,5 @@
+# Exclude obsolete and preprocessing code from renv dependency scanning
+# Only R/Scripts/ and R/Utilities/ are relevant for the analysis pipeline
+
+R/Misc_Obsolete/
+R/raw_process/
