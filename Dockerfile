@@ -46,8 +46,22 @@ RUN apt-get update && apt-get install -y \
     libgraphviz-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Set up renv for exact package restoration
+ENV RENV_VERSION=1.0.11
+RUN Rscript -e "install.packages('remotes', repos='https://cloud.r-project.org')"
+RUN Rscript -e "remotes::install_github('rstudio/renv@${RENV_VERSION}')"
+
 # Copy project files
 WORKDIR /analysis
+COPY renv.lock renv.lock
+COPY .Rprofile .Rprofile
+COPY renv/activate.R renv/activate.R
+COPY renv/settings.json renv/settings.json
+
+# Restore R packages from renv.lock (this captures exact versions from laptop)
+RUN Rscript -e "renv::restore()"
+
+# Copy remaining project files after package installation
 COPY DESCRIPTION .
 COPY R/ R/
 COPY All_Run/ All_Run/
@@ -55,37 +69,17 @@ COPY Databases/ Databases/
 COPY Outputs/ Outputs/
 COPY ["Supporting Information/", "Supporting Information/"]
 
-# Set CRAN snapshot for reproducibility (Feb 1, 2025 - matches igraph 2.1.4)
-ENV CRAN_REPO='https://packagemanager.posit.co/cran/2025-02-01'
-
-# Install remotes and BiocManager first
-RUN Rscript -e "install.packages(c('remotes', 'BiocManager'), repos=Sys.getenv('CRAN_REPO'))"
-
-# Set Bioconductor version for R 4.5.1 (released with Bioc 3.20)
-RUN Rscript -e "BiocManager::install(version='3.20', ask=FALSE, update=FALSE)"
-
-# Install Bioconductor packages explicitly (these can fail with remotes::install_deps)
-RUN Rscript -e "BiocManager::install(c(\
-    'RBGL', 'Rgraphviz', 'fgsea', 'globaltest', 'GlobalAncova', \
-    'Rsamtools', 'edgeR', 'siggenes', 'BiocParallel', 'MSnbase', \
-    'xcms', 'CAMERA', 'multtest' \
-    ), ask=FALSE, update=FALSE)"
-
-# Install GitHub remotes explicitly with commit SHAs for reproducibility
-RUN Rscript -e "remotes::install_github('jdpreston30/TernTablesR@e4372de78f2ac1ed995d6e563c42856066baa46e', dependencies=FALSE)"
-RUN Rscript -e "remotes::install_github('xia-lab/MetaboAnalystR@1c752c1436f75f674c6f0160d25893bfd7c6722d', dependencies=FALSE)"
-
-# Install remaining CRAN packages from DESCRIPTION
-RUN Rscript -e "remotes::install_deps('.', dependencies=TRUE, repos=Sys.getenv('CRAN_REPO'))"
-
 # Install tinytex for PDF generation
 RUN Rscript -e "tinytex::install_tinytex()"
 ENV PATH="${PATH}:/root/bin"
 
-# Verify key packages are installed
-RUN Rscript -e "packageVersion('mixOmics')" && \
-    Rscript -e "packageVersion('xcms')" && \
-    Rscript -e "packageVersion('fgsea')"
+# Verify key packages are installed with correct versions
+RUN Rscript -e "cat('Installed package versions:\n'); \
+    cat('  igraph:', as.character(packageVersion('igraph')), '\n'); \
+    cat('  ggplot2:', as.character(packageVersion('ggplot2')), '\n'); \
+    cat('  ggraph:', as.character(packageVersion('ggraph')), '\n'); \
+    cat('  mixOmics:', as.character(packageVersion('mixOmics')), '\n'); \
+    cat('  xcms:', as.character(packageVersion('xcms')), '\n')"
 
 # Default command runs the full pipeline
 CMD ["Rscript", "All_Run/run.R"]

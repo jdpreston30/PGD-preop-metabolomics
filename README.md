@@ -47,11 +47,11 @@ docker run -v $(pwd):/analysis pgd-metabolomics
 
 The Docker container provides a completely isolated, reproducible environment with:
 - **R 4.5.1** with all required packages at pinned versions
-- **CRAN snapshot**: 2025-02-01 (matches igraph 2.1.4 for consistent network layouts)
-- **Bioconductor 3.20** with versioned packages
-- **GitHub packages** at specific commit SHAs (TernTablesR@e4372de, MetaboAnalystR@1c752c1)
+- **Package management**: Uses `renv` to lock exact versions of all 138+ R packages
+- **R version**: 4.5.1 (2025-06-13)
 - **System dependencies**: Ghostscript, ImageMagick, Pandoc, TinyTeX/LaTeX, GraphViz
 - **Guaranteed identical results** regardless of host system or when the analysis is run
+- **Key package versions**: igraph 2.1.4, ggplot2 3.5.2, ggraph 2.2.2 (see `renv.lock` for complete list)
 
 All outputs (figures, tables, pathway results) will be saved to your local workspace.
 

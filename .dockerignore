@@ -1,0 +1,14 @@
+# Prevent copying large/unnecessary files to Docker context
+.git
+.DS_Store
+*.Rproj
+.Rproj.user
+.Rhistory
+.RData
+renv/library
+renv/local
+renv/cellar
+renv/lock
+renv/python
+renv/sandbox
+renv/staging
