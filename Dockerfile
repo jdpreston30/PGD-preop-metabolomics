@@ -55,8 +55,8 @@ COPY Databases/ Databases/
 COPY Outputs/ Outputs/
 COPY ["Supporting Information/", "Supporting Information/"]
 
-# Set CRAN snapshot for reproducibility (Nov 19, 2025 - last known good figure output)
-ENV CRAN_REPO='https://packagemanager.posit.co/cran/2025-11-19'
+# Set CRAN snapshot for reproducibility (Feb 1, 2025 - matches igraph 2.1.4)
+ENV CRAN_REPO='https://packagemanager.posit.co/cran/2025-02-01'
 
 # Install remotes and BiocManager first
 RUN Rscript -e "install.packages(c('remotes', 'BiocManager'), repos=Sys.getenv('CRAN_REPO'))"

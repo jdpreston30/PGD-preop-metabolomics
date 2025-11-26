@@ -28,8 +28,8 @@ mummichog_allsev_kegg <- run_mummichog_analysis(
   msModeOpt = "mixed",
   force_primary_ion = "yes"
 )
-#+ 2.3: Create Pathway Enrichment Plots
-#- 2.3.1: Define JSON file paths once
+#+ 2.2: Create Pathway Enrichment Plots
+#- 2.2.1: Define JSON file paths once
 mfn_json_files <- list(
   allsev = "Outputs/mummichog/allsev/MFN/scattermum.json"
 )
@@ -40,25 +40,25 @@ combined_json_files <- list(
   mfn = mfn_json_files,
   kegg = kegg_json_files
 )
-#- 2.3.2: Import tibbles for inspection
+#- 2.2.2: Import tibbles for inspection
 mfn_tibbles <- map(mfn_json_files, read_mummichog_json)
 kegg_tibbles <- map(kegg_json_files, read_mummichog_json)
 combined_tibbles <- list(
   MFN = mfn_tibbles,
   KEGG = kegg_tibbles
 )
-#- 2.3.3: Make MFN inspection tibble for visualization
+#- 2.2.3: Make MFN inspection tibble for visualization
 mfn_inspect <- mfn_tibbles$allsev %>%
   arrange(enrichment) %>%
   filter(p_value >= 1)
-#- 2.3.4: Inspect combined for visualization
+#- 2.2.4: Inspect combined for visualization
 combined_inspection <- bind_rows(
   mfn_tibbles$allsev %>% mutate(database = "MFN"),
   kegg_tibbles$allsev %>% mutate(database = "KEGG")
 ) %>%
   arrange(enrichment) %>%
   filter(p_value >= 1)
-#- 2.3.5: Print min and max of MFN and combined p values and enrichment for visualization scaling
+#- 2.2.5: Print min and max of MFN and combined p values and enrichment for visualization scaling
 cat(
   "\n", strrep("=", 60), "\n",
   "PATHWAY ENRICHMENT RANGES FOR VISUALIZATION SCALING\n",
@@ -71,7 +71,7 @@ cat(
   "   Enrichment range: ", min(combined_inspection$enrichment), " to ", max(combined_inspection$enrichment), "\n\n",
   strrep("=", 60), "\n\n"
 )
-#- 2.3.6: Make MFN only plot
+#- 2.2.6: Make MFN only plot
 pgd_enrichment_plot_mfn <- plot_mummichog_enrichment(
   json_files = mfn_json_files,
   combine_databases = FALSE,
@@ -86,7 +86,7 @@ pgd_enrichment_plot_mfn <- plot_mummichog_enrichment(
   dpi = 600,
   color_scale = "rb"
 )
-#- 2.3.7: Create combined MFN and KEGG enrichment plot from JSON outputs
+#- 2.2.7: Create combined MFN and KEGG enrichment plot from JSON outputs
 pgd_enrichment_plot_combined <- plot_mummichog_enrichment(
   json_files = combined_json_files,
   combine_databases = TRUE,
@@ -101,15 +101,15 @@ pgd_enrichment_plot_combined <- plot_mummichog_enrichment(
   dpi = 600,
   color_scale = "rb"
 )
-#+ 2.4: Run Biological Network Analysis
+#+ 2.3: Run Biological Network Analysis
 mfn_allsev_network <- create_biological_network(
-  pathway_csv = "Outputs/mummichog/allsev/MFN/mummichog_pathway_enrichment_mummichog2.csv",
+  pathway_csv = "Outputs/mummichog/allsev/MFN/mummichog_pathway_enrichment_mummichog.csv",
   min_shared_compounds = 1, 
   p_threshold = 0.1,
   max_pathways = 20,
   network_name = "mfn_allsev_biological"
 )
-#+ 2.5: Plot Biological Networks
+#+ 2.4: Plot Biological Networks
 allsev_network_plot <- plot_biological_network(
   network_data = mfn_allsev_network,
   output_file = "Outputs/Figures/Raw/fig2d.png",
@@ -118,7 +118,7 @@ allsev_network_plot <- plot_biological_network(
   show_legend = FALSE,
   plot_width = 10.5,
   plot_height = 12,
-  dpi = 600,
+  dpi = 1200,
   seed = 2017, 
   variable_edge_thickness = TRUE,
   edge_thickness_range = c(0.3, 3),

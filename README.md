@@ -9,34 +9,51 @@ This code is associated with the analysis presented in the following manuscript:
 
 ## 🚀 Quick Start for Reproduction
 
-### Option 1: Using Docker (Recommended for Maximum Reproducibility)
+### Option 1: Using Docker (Recommended for Exact Reproducibility)
 
-**Prerequisites**: Install [Docker Desktop](https://www.docker.com/products/docker-desktop)
+**Prerequisites**: 
+- Install [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- (Optional) Create free [Docker Hub](https://hub.docker.com) account
 
-#### Setup & Execution
+#### Method A: Pull Pre-built Image (Fastest - Recommended)
 
 ```bash
 # 1. Clone the repository
 git clone https://github.com/jdpreston30/PGD-preop-metabolomics.git
 cd PGD-preop-metabolomics
 
-# 2. Build the Docker image (one-time setup, ~30-45 minutes)
+# 2. Pull the pre-built Docker image (~5-10 minutes)
+docker pull jdpreston30/pgd-metabolomics:latest
+
+# 3. Run the complete analysis pipeline
+docker run -v $(pwd):/analysis jdpreston30/pgd-metabolomics:latest
+```
+
+#### Method B: Build Image Locally
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/jdpreston30/PGD-preop-metabolomics.git
+cd PGD-preop-metabolomics
+
+# 2. Build the Docker image from Dockerfile (~30-45 minutes)
 docker build -t pgd-metabolomics .
 
 # 3. Run the complete analysis pipeline
-docker run -v $(pwd)/Outputs:/analysis/Outputs pgd-metabolomics
+docker run -v $(pwd):/analysis pgd-metabolomics
 ```
 
 #### What's Included
 
-The Docker container provides a completely isolated environment with:
-- R 4.5.1 with all required packages at pinned versions (CRAN snapshot: 2025-11-26)
-- Bioconductor 3.20 with versioned packages
-- GitHub packages at specific commit SHAs
-- All system dependencies (Ghostscript, ImageMagick, Pandoc, TinyTeX/LaTeX)
-- Guaranteed identical results regardless of host system or when the analysis is run
+The Docker container provides a completely isolated, reproducible environment with:
+- **R 4.5.1** with all required packages at pinned versions
+- **CRAN snapshot**: 2025-02-01 (matches igraph 2.1.4 for consistent network layouts)
+- **Bioconductor 3.20** with versioned packages
+- **GitHub packages** at specific commit SHAs (TernTablesR@e4372de, MetaboAnalystR@1c752c1)
+- **System dependencies**: Ghostscript, ImageMagick, Pandoc, TinyTeX/LaTeX, GraphViz
+- **Guaranteed identical results** regardless of host system or when the analysis is run
 
-Results will be saved to your local `Outputs/` directory.
+All outputs (figures, tables, pathway results) will be saved to your local workspace.
 
 #### Testing the Container
 
@@ -68,7 +85,7 @@ This should display package versions. If it succeeds, the container is ready for
 
 **Prerequisites**: R >= 4.5.1
 
-**Note**: Manual installation will use the latest package versions available at the time of installation. For exact version reproducibility matching the manuscript, use Docker (Option 1). All package versions used in the analysis are documented in `session_info.txt`.
+**Note**: Manual installation will use the latest package versions available at the time of installation. For exact version reproducibility matching the manuscript, use Docker (Option 1). All package versions used in the published analysis are documented in `session_info.txt`.
 
 ```r
 # 1. Check system dependencies
@@ -162,20 +179,37 @@ This project implements best practices for computational reproducibility:
 
 - ✅ **Version Control**: Complete analysis code on GitHub
 - ✅ **Dependency Management**: All required packages specified in `DESCRIPTION`
-- ✅ **Containerization**: Docker image with pinned CRAN snapshot (2025-11-26), Bioconductor 3.20, and GitHub commit SHAs
+- ✅ **Containerization**: Docker image with pinned CRAN snapshot (2025-02-01), Bioconductor 3.20, and GitHub commit SHAs
+- ✅ **Docker Hub Distribution**: Pre-built image available at [jdpreston30/pgd-metabolomics](https://hub.docker.com/r/jdpreston30/pgd-metabolomics)
 - ✅ **Configuration-Driven**: All parameters in `config_dynamic.yaml`
 - ✅ **System Dependency Checking**: Automated validation via `check_system_dependencies()`
 - ✅ **Documentation**: Comprehensive function documentation and workflow comments
-- ✅ **Session Info**: Timestamped session information captured on successful pipeline completion
+- ✅ **Session Info**: Timestamped session information in `session_info.txt` documents exact package versions
 
 ## 🤝 For Reviewers & Collaborators
 
-**Easiest reproduction method**: Use the Docker container (Option 1 above). This ensures you have the exact same environment used to generate all manuscript results.
+**Easiest reproduction method**: Pull the pre-built Docker image from Docker Hub (Option 1A above). This ensures you have the exact same computational environment used to generate all manuscript results.
+
+### Quick Verification (5 minutes)
+```bash
+# Clone, pull image, and verify it works
+git clone https://github.com/jdpreston30/PGD-preop-metabolomics.git
+cd PGD-preop-metabolomics
+docker pull jdpreston30/pgd-metabolomics:latest
+docker run --rm jdpreston30/pgd-metabolomics:latest Rscript -e "packageVersion('igraph')"
+# Should output: [1] '2.1.4'
+```
+
+### Full Analysis Run (~10-30 minutes)
+```bash
+docker run -v $(pwd):/analysis jdpreston30/pgd-metabolomics:latest
+```
 
 If you encounter any issues:
-1. Verify Docker is installed and running
-2. Ensure you're running the commands from the repository root directory
-3. Check Docker logs for any error messages
+1. Verify Docker Desktop is installed and running
+2. Ensure you're in the repository root directory
+3. Check that output directories exist and are writable
+4. Review Docker logs: `docker logs <container-id>`
 
 For questions or issues, please open a GitHub issue or contact the corresponding author.
 
