@@ -211,7 +211,7 @@ plot_S2_abbrev <- function(
     table_grob_direct <- gtable::gtable_add_grob(
       table_grob_direct, 
       row_border,
-      t = i + 1, b = i + 1,  # +1 to account for header
+      t = i + 1, b = i + 1,  #+1 to account for header
       l = 1, r = n_cols,
       name = paste0("row_border_", i)
     )

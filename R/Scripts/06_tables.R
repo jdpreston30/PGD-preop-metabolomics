@@ -1,4 +1,9 @@
-#* 6: Create Tables
+#* 6: Generate Manuscript Tables
+#' Creates descriptive statistics tables using ternG package.
+#' Table 1: Recipient preoperative characteristics stratified by PGD status.
+#' Table 2: Donor characteristics stratified by PGD status.
+#' Table 3: Procurement/surgical factors and post-transplant outcomes by PGD status.
+#' Exports tables as Word documents.
 #+ 6.0a: Examine Normality
 #! Did manual examination of this via below TernTables runs
 #! T1 has 12/16 normality fail, T2 has 2/3, and T3 has 7/10

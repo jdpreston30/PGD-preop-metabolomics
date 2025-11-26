@@ -1,12 +1,15 @@
-#* 1: PCA and PLS-DA Analysis (Computation Only)
-#+ 1.2: Run PLSDA on UFT data 
+#* 1: Clustering and Differential Analysis
+#' Performs PLS-DA clustering analysis on untargeted feature table (UFT).
+#' Conducts volcano plot analysis comparing severe PGD vs no severe PGD groups.
+#' Creates visualization objects for PLS-DA scores and volcano plots.
+#+ 1.1: Run PLSDA on UFT data 
 plsda_allsev_data <- run_PCA(
   UFT_filtered,
   group_var = "severe_PGD",
   method = "PLSDA",
   ncomp = 10
 )
-#+ 1.3: Run Volcano Analysis on UFT data (Computation Only)
+#+ 1.2: Run Volcano Analysis on UFT data (Computation Only)
 volcano_allsev_data <- run_volcano(
   data = UFT_filtered,
   group_var = "severe_PGD",
@@ -14,12 +17,12 @@ volcano_allsev_data <- run_volcano(
   fc_threshold = log2(1.5),
   p_threshold = 0.05
 )
-#+ 1.4: Create Plots
-#- 1.4.5: PLSDA
+#+ 1.3: Create Plots
+#- 1.3.1: PLSDA
 plsda_allsev <- plot_PCA(
   pca_results = plsda_allsev_data
 )
-#- 1.4.6: Volcano
+#- 1.3.2: Volcano
 volc_allsev <- plot_volcano(
   volcano_results = volcano_allsev_data,
   x_limits = c(-5, 5.36),

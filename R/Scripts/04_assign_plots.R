@@ -1,4 +1,7 @@
-#* 4: Assign Plots
+#* 4: Assign Plots to Figure Panels
+#' Assigns all generated plot objects to specific manuscript figure panels.
+#' Organizes main figures (1-3) and supplemental figures (S1-S2) components.
+#' Reads pre-rendered PNG images for certain panels and creates raster grobs.
 #+ 4.1: Figure 1 Plots
 p1A <- grid::rasterGrob(as.raster(magick::image_read("Outputs/Figures/Raw/fig1.png")), interpolate = TRUE)
 #+ 4.2: Figure 2 Plots

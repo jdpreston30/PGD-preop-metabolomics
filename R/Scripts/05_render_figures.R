@@ -1,4 +1,7 @@
-#* 5 Render Figures
+#* 5: Render Manuscript Figures
+#' Assembles multi-panel manuscript figures using cowplot layout specifications.
+#' Combines plot panels with precise positioning, scaling, and panel labels.
+#' Exports final figures to PNG, PDF, and EPS formats for publication.
 #+ 5.1: Figure 1
 fig1 <- ggdraw(xlim = c(0, 8.5), ylim = c(0, 11)) +
   draw_plot(ggdraw() + draw_grob(p1A), x = -0.065, y = 4.83, width = 8.5, height = 6) +

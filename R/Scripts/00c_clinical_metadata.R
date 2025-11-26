@@ -1,33 +1,38 @@
-#* 0d: Importing Clinical Metadata and Preprocess
-#+ 0d.0: Set Vectors from Config
-#- 0d.0.1: Generate patient list from config
+#* 0c: Clinical Metadata Import and Preprocessing
+#' 
+#' Imports clinical metadata from Excel sheets (Preop, Periop, Outcomes, Match Run).
+#' Calculates RADIAL risk score, BiVAD dependence, ISHLT PGD classification, and PHM.
+#' Creates stratified data subsets (T1_data, T2_data, T3_data) for manuscript tables.
+#' Generates PGD_specifics tibble for joining with metabolomic data.
+#+ 0c.0: Set Vectors from Config
+#- 0c.0.1: Generate patient list from config
 patient_range <- config$analysis$cohort$patient_range
 all_patients <- seq(patient_range$start, patient_range$end)
 excluded_patients <- patient_range$excluded
 included_patients <- all_patients[!all_patients %in% excluded_patients]
 analyzed_patients <- paste0("H", included_patients)
-#- 0d.0.2: Extract table variables from config
+#- 0c.0.2: Extract table variables from config
 table_vars <- config$analysis$cohort$table_variables
 T1 <- table_vars$T1
 T2 <- table_vars$T2
 T3 <- table_vars$T3
-#+ 0d.1: Import Clinical and Other metadata 
-#- 0d.1.1: Clinical Data 
+#+ 0c.1: Import Clinical and Other metadata 
+#- 0c.1.1: Clinical Data 
 preop_i <- read_clinical_sheet("Preop", analyzed_patients, suppress_warnings = TRUE)
 periop_i <- read_clinical_sheet("Periop", analyzed_patients)
 outcomes_i <- read_clinical_sheet("Outcomes", analyzed_patients)
 match_run_i <- read_clinical_sheet("Match Run", analyzed_patients)
-#- 0d.1.2: Sample Type Data
+#- 0c.1.2: Sample Type Data
 sample_type <- read_xlsx(config$paths$sample_type) %>%
   filter(Patient %in% analyzed_patients)
-#+ 0d.2: Combine clinical metadata into one tibble; format variables
+#+ 0c.2: Combine clinical metadata into one tibble; format variables
 clinical_metadata_i <- preop_i %>%
   left_join(periop_i, by = "Patient") %>%
   left_join(outcomes_i, by = "Patient") %>%
   left_join(match_run_i, by = "Patient") %>%
   select(-ends_with(".x"), -ends_with(".y")) %>%
   mutate(across(where(is.character), as.factor))
-#+ 0d.4: Compute RADIAL score, PHM, and ISHLT PGD Status
+#+ 0c.3: Compute RADIAL score, PHM, BiVAD, ISHLT PGD Status
 clinical_metadata <- clinical_metadata_i %>%
   calc_radial(
     rap_col = "preop_RAP",
@@ -37,6 +42,7 @@ clinical_metadata <- clinical_metadata_i %>%
     donor_age_col = "donor_age",
     ischemic_time_col = "operative_IT_minutes"
   ) %>%
+  calc_BiVAD() %>%
   calc_ISHLT() %>%
   calc_PHM() %>%
   mutate(severe_PGD = if_else(
@@ -48,14 +54,14 @@ clinical_metadata <- clinical_metadata_i %>%
     postop_PGD_grade_ISHLT == "N" ~ "No PGD",
     TRUE ~ NA_character_
   ))
-#+ 0d.4: Break into components for the final tables 
+#+ 0c.4: Break into components for the final tables 
 T1_data <- clinical_metadata %>%
   select(Patient, severe_PGD, all_of(T1))
 T2_data <- clinical_metadata %>%
   select(Patient, severe_PGD, all_of(T2))
 T3_data <- clinical_metadata %>%
   select(Patient, severe_PGD, all_of(T3))
-#+ 0d.5: Store PGD specifics for later joining 
+#+ 0c.5: Store PGD specifics for later joining 
 PGD_specifics <- clinical_metadata %>%
   select(
     Patient, postop_PGD_grade_ISHLT, severe_PGD, 

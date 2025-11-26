@@ -30,9 +30,11 @@ docker run -v $(pwd)/Outputs:/analysis/Outputs pgd-metabolomics
 #### What's Included
 
 The Docker container provides a completely isolated environment with:
-- R 4.5.1 with all required packages pre-installed
+- R 4.5.1 with all required packages at pinned versions (CRAN snapshot: 2025-11-26)
+- Bioconductor 3.20 with versioned packages
+- GitHub packages at specific commit SHAs
 - All system dependencies (Ghostscript, ImageMagick, Pandoc, TinyTeX/LaTeX)
-- Guaranteed identical results regardless of host system
+- Guaranteed identical results regardless of host system or when the analysis is run
 
 Results will be saved to your local `Outputs/` directory.
 
@@ -65,6 +67,8 @@ This should display package versions. If it succeeds, the container is ready for
 ### Option 2: Manual Installation (Without Docker)
 
 **Prerequisites**: R >= 4.5.1
+
+**Note**: Manual installation will use the latest package versions available at the time of installation. For exact version reproducibility matching the manuscript, use Docker (Option 1). All package versions used in the analysis are documented in `session_info.txt`.
 
 ```r
 # 1. Check system dependencies
@@ -158,10 +162,11 @@ This project implements best practices for computational reproducibility:
 
 - ✅ **Version Control**: Complete analysis code on GitHub
 - ✅ **Dependency Management**: All required packages specified in `DESCRIPTION`
-- ✅ **Containerization**: Docker image freezes exact environment and package versions
+- ✅ **Containerization**: Docker image with pinned CRAN snapshot (2025-11-26), Bioconductor 3.20, and GitHub commit SHAs
 - ✅ **Configuration-Driven**: All parameters in `config_dynamic.yaml`
 - ✅ **System Dependency Checking**: Automated validation via `check_system_dependencies()`
 - ✅ **Documentation**: Comprehensive function documentation and workflow comments
+- ✅ **Session Info**: Timestamped session information captured on successful pipeline completion
 
 ## 🤝 For Reviewers & Collaborators
 

@@ -1,15 +1,16 @@
-#* 0d: Importing feature tables and preprocessing
-#+ 0d.0: Pull PGD info 
-pgd_status <- clinical_metadata_i %>%
-  select(Patient, PGD = postop_PGD_ISHLT)
+#* 0d: Feature Table Import and Preprocessing
+#' Imports targeted (TFT) and untargeted (UFT) metabolomic feature tables.
+#' Applies preprocessing including uniqueness filters for TFT data.
+#' Imports IROA IDX quantification standards and annotation keys with QC metadata.
+#' Joins feature tables with clinical metadata and filters to preoperative (S0) samples.
 #+ 0d.1:Import FTs, add Patient and Sample IDs, filter to S0 (preop); apply uniqueness filter
 #- 0d.1.1: TFT annotated and preprocess; apply uniqueness filter
 TFT_annot <- read_csv(config$paths$TFT_annot) %>%
   preprocess_FT(apply_unique_filter = TRUE, unique_threshold = 0.8)
-#- 0d.1.1: UFT filtered and preprocess; NO uniqueness filter
+#- 0d.1.2: UFT filtered and preprocess; NO uniqueness filter
 UFT_filtered <- read_csv(config$paths$UFT_filtered) %>%
   preprocess_FT(apply_unique_filter = FALSE)
-#- 0d.1.1: UFT filtered and preprocess; NO uniqueness filter
+#- 0d.1.3: UFT full and preprocess; NO uniqueness filter
 UFT <- read_csv(config$paths$UFT_full) %>%
   preprocess_FT(apply_unique_filter = FALSE)
 #! Filtering out H49 as this was a 'false start' where we collected early but then heart offer didn't go through
@@ -23,7 +24,7 @@ TFT_QC <- read_xlsx(config$paths$manual_QC, sheet = "pared") %>%
   arrange(p_value) %>%
   mutate(sig_ord = row_number()) %>%
   select(sig_ord, feature, display_name, long_name, note, adduct, abbrev)
-#- 0d.2.1: Read in key; join; clean column names
+#- 0d.2.3: Read in key; join; clean column names
 TFT_annot_key <- read_csv(config$paths$TFT_annot_key) %>%
   rename(
     feature = Feature,
@@ -61,7 +62,7 @@ identified <- create_identified_FT(
 )
 #- 0d.4.2: Assign and apply unique filter fxn just in case
 TFT_confirmed <- identified$TFT_confirmed
-#- 0d.4.2: Build key
+#- 0d.4.3: Build key
 TFT_confirmed_key <- identified$matched_features %>%
   select(identified_name = compound_name, isomer = library_isomer, everything()) %>%
   mutate(MMD = "")

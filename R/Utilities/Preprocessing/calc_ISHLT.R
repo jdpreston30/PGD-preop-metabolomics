@@ -6,7 +6,7 @@
 #'
 #' @param clinical_metadata_i Data frame containing clinical metadata with postoperative variables
 #' @param impella_dep_col Column name for Impella 5.5 dependence (default: "postop_MCS_Impella5.5_DEPENDENT")
-#' @param rvad_col Column name for right ventricular assist device use (default: "postop_MCS_RVAD")
+#' @param bivad_col Column name for biventricular assist device dependence (default: "postop_BiVAD_dependence")
 #' @param iabp_col Column name for intra-aortic balloon pump use (default: "postop_MCS_IABP")
 #' @param ecmo_col Column name for VA-ECMO use (default: "postop_VA_ECMO")
 #' @param cvp_col Column name for central venous pressure (default: "postop_CVP")
@@ -46,7 +46,7 @@
 #' @export
 calc_ISHLT <- function(clinical_metadata_i,
                        impella_dep_col = "postop_MCS_Impella5.5_DEPENDENT",
-                       rvad_col = "postop_MCS_RVAD",
+                       bivad_col = "postop_BiVAD_dependence",
                        iabp_col = "postop_MCS_IABP",
                        ecmo_col = "postop_VA_ECMO",
                        cvp_col = "postop_CVP",
@@ -60,7 +60,7 @@ calc_ISHLT <- function(clinical_metadata_i,
   # Check column names exist
   missing_cols <- c()
   for (col in c(impella_dep_col,
-                rvad_col,
+                bivad_col,
                 iabp_col,
                 ecmo_col,
                 cvp_col,
@@ -82,7 +82,7 @@ calc_ISHLT <- function(clinical_metadata_i,
     mutate(
       postop_PGD_grade_ISHLT = case_when(
         # Check if all values are empty/NA (return empty string)
-        is.na(.data[[impella_dep_col]]) & is.na(.data[[rvad_col]]) & 
+        is.na(.data[[impella_dep_col]]) & is.na(.data[[bivad_col]]) & 
         is.na(.data[[ecmo_col]]) & is.na(.data[[iabp_col]]) & 
         is.na(.data[[cvp_col]]) & is.na(.data[[cardiac_index_col]]) & 
         is.na(.data[[lvef_col]]) & 
@@ -90,7 +90,7 @@ calc_ISHLT <- function(clinical_metadata_i,
         
         # Check for Severe PGD first (any mechanical support)
         .data[[ecmo_col]] == "Y" | 
-        .data[[rvad_col]] == "Y" | 
+        .data[[bivad_col]] == "Y" | 
         .data[[impella_dep_col]] == "Y" ~ "Severe",
         
         # Moderate PGD: hemodynamic compromise AND (high inotrope OR IABP)

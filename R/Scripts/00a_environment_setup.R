@@ -1,4 +1,8 @@
 #* 0a: Environment Setup
+#' 
+#' Reads required packages from DESCRIPTION file and installs any missing packages.
+#' Handles both CRAN packages and Bioconductor packages (mixOmics, KEGGREST).
+#' Sets CRAN repository to RStudio mirror.
 #+ 0a.1: Read required packages from DESCRIPTION file 
 desc_file <- "DESCRIPTION"
 if (!file.exists(desc_file)) {

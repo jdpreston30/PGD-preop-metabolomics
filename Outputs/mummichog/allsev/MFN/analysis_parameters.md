@@ -1,6 +1,6 @@
 # Mummichog Analysis Parameters
 
-**Analysis Date:** 2025-11-19
+**Analysis Date:** 2025-11-26
 
 **Database:** hsa_mfn
 

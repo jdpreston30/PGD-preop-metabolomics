@@ -1,4 +1,8 @@
 #* 0b: Configuration Setup
+#' 
+#' Loads utility functions, sets up dynamic configuration from YAML file,
+#' creates output directories, configures R environment preferences
+#' (tibble/data.table display options), and resolves package conflicts.
 #+ 0b.1: Set up R options and repositories 
 options(expressions = 10000)
 #+ 0b.2: Load utility functions first (needed for dynamic config)
@@ -12,9 +16,6 @@ if (dir.exists(utils_path)) {
 }
 #+ 0b.3: Load dynamic project configuration 
 .GlobalEnv$CONFIG <- config
-#+ 0b.4: Set up global paths from config 
-output_path <- config$paths$output  
-scripts_path <- config$paths$scripts
 #+ 0b.4: Set up global paths from config 
 output_path <- config$paths$output  
 scripts_path <- config$paths$scripts

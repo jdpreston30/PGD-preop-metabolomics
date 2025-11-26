@@ -1,29 +1,17 @@
-#' Generate Supporting Information PDF
-#'
-#' This script orchestrates the creation of the complete supporting information PDF
-#' by combining pre-existing modular components from the Supporting Information/Components folder.
-#'
-#' @author Joshua D. Preston
-#' @export
-
+#* 8: Generate Supporting Information PDF
+#' Orchestrates creation of complete supporting information PDF document.
+#' Combines modular components from Supporting Information/Components folder
+#' (cover page, figures, methods sections). Checks TinyTeX installation.
+#' Renders final PDF with proper LaTeX formatting and references.
 #+ 8.0: Setup and Dependencies
 #- 8.0.1: Check TinyTeX installation
 if (!tinytex::is_tinytex()) {
   message("TinyTeX not found. Installing...")
   tinytex::install_tinytex()
 }
-
-#+ 8.0: Setup and Dependencies
-#- 8.0.1: Check TinyTeX installation
-if (!tinytex::is_tinytex()) {
-  message("TinyTeX not found. Installing...")
-  tinytex::install_tinytex()
-}
-
 #- 8.0.2: Assumes figure objects are already loaded in environment
 # Run your full pipeline first in R terminal to create:
 # sup_fig1, S2.1, S2.2, S2.3, S2.4, S2.5, add_s2_footnote function
-
 #+ 8.1: Read Component Files
 #- 8.1.1: Define paths to all component files
 components_dir <- here::here("Supporting Information", "Components")
@@ -31,33 +19,27 @@ sections_dir <- file.path(components_dir, "Sections")
 cover_page_path <- file.path(sections_dir, "cover_page.Rmd")
 figures_path <- file.path(sections_dir, "figures.Rmd")
 methods_path <- file.path(sections_dir, "methods.tex")
-
 #- 8.1.2: Check that all components exist
 required_files <- c(cover_page_path, figures_path, methods_path)
 missing_files <- required_files[!file.exists(required_files)]
 if (length(missing_files) > 0) {
   stop("Missing component files: ", paste(missing_files, collapse = ", "))
 }
-
 #+ 8.2: Combine Components
 #- 8.2.1: Read each component
 cover_content <- readLines(cover_page_path, warn = FALSE)
 figures_content <- readLines(figures_path, warn = FALSE)
 methods_content <- readLines(methods_path, warn = FALSE)
-
 #- 8.2.2: Fix paths in cover page for correct references when rendered from Components directory
 # Update bibliography and csl paths to be relative from Components directory
 references_dir <- file.path(components_dir, "References")
 bib_path_rel <- file.path("References", "Supporting_AJT.bib")
 csl_path_rel <- file.path("References", "jama.csl")
-
 # Replace the relative paths in cover content
 cover_content <- gsub('../References/Supporting_AJT.bib', bib_path_rel, cover_content, fixed = TRUE)
 cover_content <- gsub('../References/jama.csl', csl_path_rel, cover_content, fixed = TRUE)
-
 # Fix figure paths to be relative from Components directory  
 figures_content <- gsub('../Figures/PDF/', 'Figures/PDF/', figures_content, fixed = TRUE)
-
 #- 8.2.3: Combine all content
 full_content <- c(
   cover_content,

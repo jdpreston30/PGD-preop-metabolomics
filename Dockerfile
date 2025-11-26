@@ -55,8 +55,14 @@ COPY Databases/ Databases/
 COPY Outputs/ Outputs/
 COPY ["Supporting Information/", "Supporting Information/"]
 
+# Set CRAN snapshot for reproducibility (Nov 19, 2025 - last known good figure output)
+ENV CRAN_REPO='https://packagemanager.posit.co/cran/2025-11-19'
+
 # Install remotes and BiocManager first
-RUN Rscript -e "install.packages(c('remotes', 'BiocManager'), repos='https://cloud.r-project.org/')"
+RUN Rscript -e "install.packages(c('remotes', 'BiocManager'), repos=Sys.getenv('CRAN_REPO'))"
+
+# Set Bioconductor version for R 4.5.1 (released with Bioc 3.20)
+RUN Rscript -e "BiocManager::install(version='3.20', ask=FALSE, update=FALSE)"
 
 # Install Bioconductor packages explicitly (these can fail with remotes::install_deps)
 RUN Rscript -e "BiocManager::install(c(\
@@ -65,12 +71,12 @@ RUN Rscript -e "BiocManager::install(c(\
     'xcms', 'CAMERA', 'multtest' \
     ), ask=FALSE, update=FALSE)"
 
-# Install GitHub remotes explicitly
-RUN Rscript -e "remotes::install_github('jdpreston30/TernTablesR', dependencies=FALSE)"
-RUN Rscript -e "remotes::install_github('xia-lab/MetaboAnalystR', dependencies=FALSE)"
+# Install GitHub remotes explicitly with commit SHAs for reproducibility
+RUN Rscript -e "remotes::install_github('jdpreston30/TernTablesR@e4372de78f2ac1ed995d6e563c42856066baa46e', dependencies=FALSE)"
+RUN Rscript -e "remotes::install_github('xia-lab/MetaboAnalystR@1c752c1436f75f674c6f0160d25893bfd7c6722d', dependencies=FALSE)"
 
 # Install remaining CRAN packages from DESCRIPTION
-RUN Rscript -e "remotes::install_deps('.', dependencies=TRUE, repos='https://cloud.r-project.org/')"
+RUN Rscript -e "remotes::install_deps('.', dependencies=TRUE, repos=Sys.getenv('CRAN_REPO'))"
 
 # Install tinytex for PDF generation
 RUN Rscript -e "tinytex::install_tinytex()"

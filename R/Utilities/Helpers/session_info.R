@@ -45,6 +45,8 @@ system_deps_info <- c(system_deps_info, paste("LaTeX:", latex_version))
 # Save to file for documentation
 session_file <- here::here("session_info.txt")
 session_output <- c(
+  paste("Analysis run on:", format(Sys.time(), "%Y-%m-%d %H:%M:%S %Z")),
+  "",
   capture.output(sessionInfo()),
   "",
   "=== System Dependencies ===",

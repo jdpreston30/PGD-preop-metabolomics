@@ -116,7 +116,7 @@ plot_S2 <- function(
     }
 
     # label <- sprintf("Supplemental Figure 2.%d", page_index)
-    page # +
+    page 
     #  figure_labels(setNames(list(c(0.49, 10.43)), label), fontface = "italic")
   }
 

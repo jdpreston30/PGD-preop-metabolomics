@@ -1,4 +1,8 @@
 #* 7: Data Not Shown
+#' Calculates supplementary statistics and text for manuscript methods/results.
+#' Computes sample processing time statistics (elapsed time from collection to processing).
+#' Generates sample composition percentages (arterial vs venous blood samples).
+#' Calculates PGD grade distributions and creates descriptive sentences for manuscript text.
 #+ 7.0: Sample Processing Time
 #- 7.0.1: Compute Elapsed Minutes
 processing_time <- sample_type %>%
