@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     # Core build tools
     build-essential \
     gfortran \
+    cmake \
     # Required system tools (from check_system_dependencies.R)
     ghostscript \
     pandoc \
