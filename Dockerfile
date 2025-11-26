@@ -47,9 +47,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Set up renv for exact package restoration
-ENV RENV_VERSION=1.0.11
-RUN Rscript -e "install.packages('remotes', repos='https://cloud.r-project.org')"
-RUN Rscript -e "remotes::install_github('rstudio/renv@${RENV_VERSION}')"
+RUN Rscript -e "install.packages('renv', repos='https://cloud.r-project.org')"
 
 # Copy project files
 WORKDIR /analysis
