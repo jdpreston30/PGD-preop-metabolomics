@@ -23,10 +23,10 @@ git clone https://github.com/jdpreston30/PGD-preop-metabolomics.git
 cd PGD-preop-metabolomics
 
 # 2. Pull the pre-built Docker image (~5-10 minutes)
-docker pull jdpreston30/pgd-metabolomics:latest
+docker pull jdpreston30/PGD-preop-metabolomics:latest
 
 # 3. Run the complete analysis pipeline
-docker run -v $(pwd):/analysis jdpreston30/pgd-metabolomics:latest
+docker run -v $(pwd):/analysis jdpreston30/PGD-preop-metabolomics:latest
 ```
 
 #### Method B: Build Image Locally
@@ -83,22 +83,39 @@ This should display package versions. If it succeeds, the container is ready for
 
 ### Option 2: Manual Installation (Without Docker)
 
-**Prerequisites**: R >= 4.5.1
+**Prerequisites**: 
+- R >= 4.5.1
+- Git (to clone repository)
 
-**Note**: Manual installation will use the latest package versions available at the time of installation. For exact version reproducibility matching the manuscript, use Docker (Option 1). All package versions used in the published analysis are documented in `session_info.txt`.
+**Note**: This project uses `renv` for package management to ensure reproducibility. The `renv.lock` file contains exact versions of all packages used in the manuscript.
 
 ```r
-# 1. Check system dependencies
+# 1. Clone the repository
+# (from terminal)
+git clone https://github.com/jdpreston30/PGD-preop-metabolomics.git
+cd PGD-preop-metabolomics
+
+# 2. Start R in the project directory
+# (renv automatically activates via .Rprofile)
+
+# 3. Restore all packages at exact versions (first time only, ~10-20 minutes)
+renv::restore()
+
+# 4. Check system dependencies
 source("R/Utilities/Helpers/check_system_dependencies.R")
 check_system_dependencies()
 
-# 2. Install R packages from DESCRIPTION
-install.packages("remotes")
-remotes::install_deps(".", dependencies = TRUE)
-
-# 3. Run the complete analysis pipeline
+# 5. Run the complete analysis pipeline
 source("All_Run/run.R")
 ```
+
+**What happens during `renv::restore()`**:
+- Installs 445+ R packages at exact versions from `renv.lock`
+- Installs CRAN packages (e.g., ggplot2, dplyr)
+- Installs Bioconductor packages (e.g., xcms, mixOmics, CAMERA)
+- Installs GitHub packages (TernTablesR, MetaboAnalystR)
+- Creates isolated project library (doesn't affect your system R packages)
+- Only needed once per computer; subsequent runs use installed packages
 
 ## 📁 Project Structure
 
@@ -178,9 +195,10 @@ All R package dependencies are specified in `DESCRIPTION`. Key packages include:
 This project implements best practices for computational reproducibility:
 
 - ✅ **Version Control**: Complete analysis code on GitHub
-- ✅ **Dependency Management**: All required packages specified in `DESCRIPTION`
+- ✅ **Package Management**: `renv` with `renv.lock` pinning all 445+ packages to exact versions
+- ✅ **Dependency Management**: All required packages specified in `DESCRIPTION` and `renv.lock`
 - ✅ **Containerization**: Docker image with pinned CRAN snapshot (2025-02-01), Bioconductor 3.20, and GitHub commit SHAs
-- ✅ **Docker Hub Distribution**: Pre-built image available at [jdpreston30/pgd-metabolomics](https://hub.docker.com/r/jdpreston30/pgd-metabolomics)
+- ✅ **Docker Hub Distribution**: Pre-built image available at [jdpreston30/PGD-preop-metabolomics](https://hub.docker.com/r/jdpreston30/PGD-preop-metabolomics)
 - ✅ **Configuration-Driven**: All parameters in `config_dynamic.yaml`
 - ✅ **System Dependency Checking**: Automated validation via `check_system_dependencies()`
 - ✅ **Documentation**: Comprehensive function documentation and workflow comments

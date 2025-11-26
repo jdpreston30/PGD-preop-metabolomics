@@ -36,7 +36,6 @@ Imports:
     gridExtra,
     patchwork,
     mixOmics,
-    TernTablesR,
     igraph,
     RColorBrewer,
     xtable,
@@ -79,8 +78,7 @@ Bioconductor:
     MSnbase,
     xcms,
     CAMERA,
-    multtest,
-    TernTablesR
+    multtest
 Remotes:
     jdpreston30/TernTablesR,
     xia-lab/MetaboAnalystR
