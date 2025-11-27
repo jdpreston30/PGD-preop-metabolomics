@@ -23,10 +23,10 @@ git clone https://github.com/jdpreston30/PGD-preop-metabolomics.git
 cd PGD-preop-metabolomics
 
 # 2. Pull the pre-built Docker image (~5-10 minutes)
-docker pull jdpreston30/PGD-preop-metabolomics:latest
+docker pull jdpreston30/pgd-preop-metabolomics:latest
 
 # 3. Run the complete analysis pipeline
-docker run -v $(pwd):/analysis jdpreston30/PGD-preop-metabolomics:latest
+docker run -v $(pwd):/analysis jdpreston30/pgd-preop-metabolomics:latest
 ```
 
 #### Method B: Build Image Locally
@@ -46,12 +46,13 @@ docker run -v $(pwd):/analysis pgd-metabolomics
 #### What's Included
 
 The Docker container provides a completely isolated, reproducible environment with:
-- **R 4.5.1** with all required packages at pinned versions
-- **Package management**: Uses `renv` to lock exact versions of all 138+ R packages
-- **R version**: 4.5.1 (2025-06-13)
-- **System dependencies**: Ghostscript, ImageMagick, Pandoc, TinyTeX/LaTeX, GraphViz
+- **R 4.5.1** (2025-06-13) with all required packages at pinned versions
+- **Package management**: Uses `renv` to lock exact versions of 211 R packages
+- **Bioconductor**: Version 3.21 packages (mixOmis, xcms, CAMERA, etc.)
+- **System dependencies**: Ghostscript, ImageMagick, Pandoc, TinyTeX/LaTeX, GraphViz, GDAL
 - **Guaranteed identical results** regardless of host system or when the analysis is run
-- **Key package versions**: igraph 2.1.4, ggplot2 3.5.2, ggraph 2.2.2 (see `renv.lock` for complete list)
+- **Key package versions**: mixOmics 6.32.0, igraph 2.1.4, ggplot2 3.5.2, ggraph 2.2.2, xcms (see `renv.lock` for complete list)
+- **Automatic package loading**: All dependencies from `DESCRIPTION` loaded automatically via helper functions
 
 All outputs (figures, tables, pathway results) will be saved to your local workspace.
 
@@ -110,12 +111,13 @@ source("All_Run/run.R")
 ```
 
 **What happens during `renv::restore()`**:
-- Installs 445+ R packages at exact versions from `renv.lock`
-- Installs CRAN packages (e.g., ggplot2, dplyr)
-- Installs Bioconductor packages (e.g., xcms, mixOmics, CAMERA)
+- Installs 211 R packages at exact versions from `renv.lock`
+- Installs CRAN packages (e.g., ggplot2, dplyr, broom, conflicted)
+- Installs Bioconductor 3.21 packages (e.g., xcms, mixOmics, CAMERA)
 - Installs GitHub packages (TernTablesR, MetaboAnalystR)
 - Creates isolated project library (doesn't affect your system R packages)
 - Only needed once per computer; subsequent runs use installed packages
+- Packages are automatically loaded from `DESCRIPTION` file during pipeline execution
 
 ## 📁 Project Structure
 
@@ -126,7 +128,7 @@ source("All_Run/run.R")
 │   ├── config_dynamic.yaml # Analysis configuration and parameters
 │   └── run.R              # Main pipeline execution script
 ├── R/
-│   ├── Scripts/           # Analysis workflow scripts (00a-08)
+│   ├── Scripts/           # Analysis workflow scripts (00a-09)
 │   └── Utilities/         # Custom analysis functions
 │       ├── Analysis/      # Statistical and pathway analysis
 │       ├── Helpers/       # Utility functions
@@ -153,6 +155,7 @@ The complete pipeline executes in sequence:
 7. **06**: Generate results tables
 8. **07**: Additional analyses
 9. **08**: Supporting information document
+10. **09**: Session information (documents final package versions)
 
 ## 💻 System Requirements
 
@@ -179,13 +182,14 @@ All R package dependencies are specified in `DESCRIPTION`. Key packages include:
 - **Statistical modeling**: mixOmics, caret, randomForest, e1071
 - **Reporting**: rmarkdown, knitr, officer, flextable
 
-### Bioconductor Packages (14 packages)
+### Bioconductor Packages (Bioconductor 3.21)
 - **Metabolomics workflow**: xcms, CAMERA, MSnbase
 - **Pathway analysis**: fgsea, globaltest, GlobalAncova
-- **Network analysis**: RBGL, Rgraphviz
+- **Network analysis**: RBGL
+- **Data structures**: BiocParallel, multtest
 
 ### GitHub Packages
-- `jdpreston30/TernTablesR`: Custom ternary plot tables
+- `jdpreston30/TernTablesR`: Epidemiologic statistics and tables
 - `xia-lab/MetaboAnalystR`: Metabolomics analysis and pathway enrichment
 
 *See `DESCRIPTION` file for complete list of all dependencies.*
@@ -195,10 +199,11 @@ All R package dependencies are specified in `DESCRIPTION`. Key packages include:
 This project implements best practices for computational reproducibility:
 
 - ✅ **Version Control**: Complete analysis code on GitHub
-- ✅ **Package Management**: `renv` with `renv.lock` pinning all 445+ packages to exact versions
-- ✅ **Dependency Management**: All required packages specified in `DESCRIPTION` and `renv.lock`
-- ✅ **Containerization**: Docker image with pinned CRAN snapshot (2025-02-01), Bioconductor 3.20, and GitHub commit SHAs
-- ✅ **Docker Hub Distribution**: Pre-built image available at [jdpreston30/PGD-preop-metabolomics](https://hub.docker.com/r/jdpreston30/PGD-preop-metabolomics)
+- ✅ **Package Management**: `renv` with `renv.lock` pinning all 211 packages to exact versions
+- ✅ **Dependency Declaration**: All dependencies specified in `DESCRIPTION` with automatic loading
+- ✅ **Containerization**: Docker image (R 4.5.1, Bioconductor 3.21) available at `jdpreston30/pgd-preop-metabolomics:latest`
+- ✅ **Conflict Resolution**: `conflicted` package ensures predictable function behavior
+- ✅ **Docker Hub Distribution**: Pre-built image available at [jdpreston30/pgd-preop-metabolomics](https://hub.docker.com/r/jdpreston30/pgd-preop-metabolomics)
 - ✅ **Configuration-Driven**: All parameters in `config_dynamic.yaml`
 - ✅ **System Dependency Checking**: Automated validation via `check_system_dependencies()`
 - ✅ **Documentation**: Comprehensive function documentation and workflow comments
@@ -213,14 +218,14 @@ This project implements best practices for computational reproducibility:
 # Clone, pull image, and verify it works
 git clone https://github.com/jdpreston30/PGD-preop-metabolomics.git
 cd PGD-preop-metabolomics
-docker pull jdpreston30/pgd-metabolomics:latest
-docker run --rm jdpreston30/pgd-metabolomics:latest Rscript -e "packageVersion('igraph')"
+docker pull jdpreston30/pgd-preop-metabolomics:latest
+docker run --rm jdpreston30/pgd-preop-metabolomics:latest Rscript -e "packageVersion('igraph')"
 # Should output: [1] '2.1.4'
 ```
 
 ### Full Analysis Run (~10-30 minutes)
 ```bash
-docker run -v $(pwd):/analysis jdpreston30/pgd-metabolomics:latest
+docker run -v $(pwd):/analysis jdpreston30/pgd-preop-metabolomics:latest
 ```
 
 If you encounter any issues:

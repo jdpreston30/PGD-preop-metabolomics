@@ -9,21 +9,17 @@
 
 #+ 0a.1: Verify renv is active
 cat("📦 Package environment managed by renv\n")
-
 if (!("renv" %in% loadedNamespaces())) {
   warning("⚠️  renv is not active. Attempting to activate...")
   source("renv/activate.R")
 }
-
 #+ 0a.2: Check if packages need to be installed
 core_packages <- c("dplyr", "ggplot2", "here", "purrr", "yaml")
 missing_core <- core_packages[!sapply(core_packages, requireNamespace, quietly = TRUE)]
-
 if (length(missing_core) > 0) {
   cat("⚠️  Core packages missing:", paste(missing_core, collapse = ", "), "\n")
   cat("🔄 Running renv::restore() to install packages...\n")
   cat("   (This may take 10-20 minutes on first run)\n\n")
-  
   # Run renv::restore() automatically
   tryCatch({
     renv::restore(prompt = FALSE)  # No prompt, automatic yes
@@ -32,7 +28,6 @@ if (length(missing_core) > 0) {
     stop("❌ Failed to restore packages: ", e$message, 
          "\n   Please run renv::restore() manually and check for errors.")
   })
-  
   # Verify installation succeeded
   still_missing <- core_packages[!sapply(core_packages, requireNamespace, quietly = TRUE)]
   if (length(still_missing) > 0) {
@@ -42,10 +37,12 @@ if (length(missing_core) > 0) {
 } else {
   cat("✅ renv environment verified. All core packages available.\n")
 }
-
-#+ 0a.3: Load conflicted package for namespace conflict management
-library(conflicted)
-
-#+ 0a.4: Check system dependencies
+#+ 0a.3: Load all packages from DESCRIPTION file
+source("R/Utilities/Helpers/load_packages_from_description.R")
+load_packages_from_description()
+#+ 0a.4: Load GitHub Packages explicitly for renv detection
+library(TernTablesR)
+library(MetaboAnalystR)
+#+ 0a.5: Check system dependencies
 source("R/Utilities/Helpers/check_system_dependencies.R")
 check_system_dependencies()
