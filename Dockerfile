@@ -31,6 +31,8 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     libcairo2-dev \
     libxt-dev \
+    libharfbuzz-dev \
+    libfribidi-dev \
     # LaTeX/PDF generation dependencies
     wget \
     perl \
@@ -45,6 +47,11 @@ RUN apt-get update && apt-get install -y \
     # GraphViz for network plots
     graphviz \
     libgraphviz-dev \
+    # Additional system dependencies identified by renv
+    gdal-bin \
+    git \
+    libgdal-dev \
+    libmagick++-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Set up renv for exact package restoration
@@ -57,10 +64,7 @@ COPY .Rprofile .Rprofile
 COPY renv/activate.R renv/activate.R
 COPY renv/settings.json renv/settings.json
 
-# Restore R packages from renv.lock (this captures exact versions from laptop)
-RUN Rscript -e "renv::restore()"
-
-# Copy remaining project files after package installation
+# Copy remaining project files before restore (needed for renv to scan dependencies)
 COPY DESCRIPTION .
 COPY R/ R/
 COPY All_Run/ All_Run/
@@ -68,12 +72,16 @@ COPY Databases/ Databases/
 COPY Outputs/ Outputs/
 COPY ["Supporting Information/", "Supporting Information/"]
 
+# Restore R packages from renv.lock (this captures exact versions from laptop)
+RUN Rscript -e "renv::restore()"
+
 # Install tinytex for PDF generation
 RUN Rscript -e "tinytex::install_tinytex()"
 ENV PATH="${PATH}:/root/bin"
 
-# Verify key packages are installed with correct versions
-RUN Rscript -e "cat('Installed package versions:\n'); \
+# Verify renv status and key packages
+RUN Rscript -e "renv::status()" && \
+    Rscript -e "cat('Installed package versions:\n'); \
     cat('  igraph:', as.character(packageVersion('igraph')), '\n'); \
     cat('  ggplot2:', as.character(packageVersion('ggplot2')), '\n'); \
     cat('  ggraph:', as.character(packageVersion('ggraph')), '\n'); \
