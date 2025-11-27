@@ -452,17 +452,6 @@
       "Maintainer": "Martin Maechler <mmaechler+Matrix@gmail.com>",
       "Repository": "CRAN"
     },
-    "MetaboAnalystR": {
-      "Package": "MetaboAnalystR",
-      "Version": "4.2.0",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteUsername": "xia-lab",
-      "RemoteRepo": "MetaboAnalystR",
-      "RemoteRef": "master",
-      "RemoteSha": "1c752c1436f75f674c6f0160d25893bfd7c6722d"
-    },
     "ModelMetrics": {
       "Package": "ModelMetrics",
       "Version": "1.2.2.2",
@@ -836,17 +825,6 @@
       "Author": "Torsten Hothorn [aut, cre]",
       "Maintainer": "Torsten Hothorn <Torsten.Hothorn@R-project.org>",
       "Repository": "CRAN"
-    },
-    "TernTablesR": {
-      "Package": "TernTablesR",
-      "Version": "0.1.1",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteUsername": "jdpreston30",
-      "RemoteRepo": "TernTablesR",
-      "RemoteRef": "main",
-      "RemoteSha": "e4372de78f2ac1ed995d6e563c42856066baa46e"
     },
     "askpass": {
       "Package": "askpass",
