@@ -11,6 +11,7 @@ Imports:
     yaml,
     here,
     conflicted,
+    broom,
     lubridate,
     purrr,
     dplyr,
@@ -67,7 +68,6 @@ Additional_repositories:
     https://bioconductor.org/packages/release/bioc
 Bioconductor:
     RBGL,
-    Rgraphviz,
     fgsea,
     globaltest,
     GlobalAncova,
