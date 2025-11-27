@@ -37,12 +37,37 @@ if (length(missing_core) > 0) {
 } else {
   cat("✅ renv environment verified. All core packages available.\n")
 }
-#+ 0a.3: Load all packages from DESCRIPTION file
+#+ 0a.3: Load conflicted and set ALL preferences BEFORE loading other packages
+library(conflicted)
+# Set all conflict preferences to prevent warnings during package loading
+conflicts_prefer(purrr::map)
+conflicts_prefer(dplyr::filter)
+conflicts_prefer(dplyr::summarize)
+conflicts_prefer(dplyr::select)
+conflicts_prefer(dplyr::first)
+conflicts_prefer(dplyr::mutate)
+conflicts_prefer(dplyr::arrange)
+conflicts_prefer(dplyr::summarise)
+conflicts_prefer(dplyr::count)
+conflicts_prefer(dplyr::rename)
+conflicts_prefer(ggplot2::margin)
+conflicts_prefer(stats::chisq.test)
+conflicts_prefer(stats::fisher.test)
+conflicts_prefer(jsonlite::fromJSON)
+conflicts_prefer(readxl::read_xlsx)
+conflicts_prefer(raster::intersect)
+conflicts_prefer(igraph::compose)
+conflicts_prefer(flextable::align)
+conflicts_prefer(base::setdiff)
+conflicts_prefer(base::as.factor)
+conflicts_prefer(base::unique)
+conflicts_prefer(base::as.data.frame)
+#+ 0a.4: Load all packages from DESCRIPTION file
 source("R/Utilities/Helpers/load_packages_from_description.R")
 load_packages_from_description()
-#+ 0a.4: Load GitHub Packages explicitly for renv detection
+#+ 0a.5: Load GitHub Packages explicitly for renv detection
 library(TernTablesR)
 library(MetaboAnalystR)
-#+ 0a.5: Check system dependencies
+#+ 0a.6: Check system dependencies
 source("R/Utilities/Helpers/check_system_dependencies.R")
 check_system_dependencies()
