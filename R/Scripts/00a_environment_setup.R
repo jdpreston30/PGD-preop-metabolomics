@@ -42,6 +42,10 @@ if (length(missing_core) > 0) {
 } else {
   cat("✅ renv environment verified. All core packages available.\n")
 }
-#+ 0a.2: Check system dependencies
+
+#+ 0a.3: Load conflicted package for namespace conflict management
+library(conflicted)
+
+#+ 0a.4: Check system dependencies
 source("R/Utilities/Helpers/check_system_dependencies.R")
 check_system_dependencies()
