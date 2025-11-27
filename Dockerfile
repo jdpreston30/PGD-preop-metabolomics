@@ -79,14 +79,8 @@ RUN Rscript -e "renv::restore()"
 RUN Rscript -e "tinytex::install_tinytex()"
 ENV PATH="${PATH}:/root/bin"
 
-# Verify renv status and key packages
-RUN Rscript -e "renv::status()" && \
-    Rscript -e "cat('Installed package versions:\n'); \
-    cat('  igraph:', as.character(packageVersion('igraph')), '\n'); \
-    cat('  ggplot2:', as.character(packageVersion('ggplot2')), '\n'); \
-    cat('  ggraph:', as.character(packageVersion('ggraph')), '\n'); \
-    cat('  mixOmics:', as.character(packageVersion('mixOmics')), '\n'); \
-    cat('  xcms:', as.character(packageVersion('xcms')), '\n')"
+# Verify renv status
+RUN Rscript -e "renv::status()"
 
 # Default command runs the full pipeline
 CMD ["Rscript", "All_Run/run.R"]
