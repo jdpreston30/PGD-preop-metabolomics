@@ -126,6 +126,8 @@ source("All_Run/run.R")
 ```
 ├── DESCRIPTION                 # R package dependencies (CRAN, Bioconductor, GitHub)
 ├── Dockerfile                  # Docker container for reproducible environment
+├── renv.lock                   # Exact package versions for reproducibility
+├── session_info.txt            # Timestamped session and package information
 ├── All_Run/                    # Pipeline execution
 │   ├── config_dynamic.yaml     # Analysis configuration (update paths for your system)
 │   └── run.R                   # Main pipeline execution script
