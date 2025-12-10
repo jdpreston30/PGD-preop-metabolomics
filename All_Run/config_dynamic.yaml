@@ -1,5 +1,13 @@
 # Analysis Configuration - Dynamic Computer Detection
 # Project settings and data paths for reproducible analysis
+#
+# NOTE FOR USERS: If you only use one computer, you can:
+# 1. Keep only one entry under "computers:" (e.g., just "laptop:" or "mycomputer:")
+# 2. Update that entry with your local paths
+# 3. Specify that computer name when calling load_dynamic_config()
+#    Example: config <- load_dynamic_config(computer = "mycomputer")
+#
+# The laptop/desktop distinction is only needed if running on multiple machines.
 
 # Computer-specific path templates
 computers:
