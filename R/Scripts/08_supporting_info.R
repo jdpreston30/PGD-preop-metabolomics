@@ -51,11 +51,11 @@ full_content <- c(
 
 #+ 8.3: Generate Final PDF
 #- 8.3.1: Write combined markdown file
-output_rmd <- file.path(components_dir, "supporting_info.Rmd")
+output_dir <- here::here("Supporting Information")
+output_rmd <- file.path(output_dir, "supporting_info.Rmd")
 writeLines(full_content, output_rmd)
 
 #- 8.3.2: Render to PDF in Supporting Information directory
-output_dir <- here::here("Supporting Information")
 rmarkdown::render(
   input = output_rmd,
   output_dir = output_dir,
