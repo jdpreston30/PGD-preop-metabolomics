@@ -158,7 +158,7 @@ fc_summary <- per_feature_fc_sensitivity %>%
 #- 7.6.5: Generate narrative sensitivity summary
 sensitivity_sentence <- paste0(
   "With ", n1 + n2, " patients (", n1, " with severe PGD and ", n2,
-  " without), we had ~80% power (α=0.05) to detect a minimum standardized mean difference of Cohen's d ≈ ",
+  " without), we had ~80% power (α = 0.05) to detect a minimum standardized mean difference of Cohen's d ≈ ",
   round(power_result$d, 2), ". Based on observed within-group variance, the median minimum detectable fold-change was ",
   round(fc_summary$median_fc, 2), "× (IQR ", round(fc_summary$p25_fc, 2), "–", round(fc_summary$p75_fc, 2), "×) across all features."
 )
