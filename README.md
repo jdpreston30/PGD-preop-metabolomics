@@ -228,4 +228,4 @@ This project implements best practices for computational reproducibility:
 
 **Repository**: https://github.com/jdpreston30/PGD-preop-metabolomics  
 **Docker Hub**: https://hub.docker.com/r/jdpreston30/pgd-preop-metabolomics  
-**Archived Version**: Zenodo DOI will be assigned upon publication (archived December 10, 2025; see manuscript for DOI). Documentation updates may be made to this repository, but the Zenodo archive contains the static version used for the manuscript.
+**Archived Version**: Zenodo DOI pending (archived December 10, 2025). Documentation updates may be made to this repository, but the Zenodo archive contains the static version used for the manuscript.
