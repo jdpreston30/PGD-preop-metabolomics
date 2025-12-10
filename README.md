@@ -237,7 +237,7 @@ If you encounter any issues:
 3. Check that output directories exist and are writable
 4. Review Docker logs: `docker logs <container-id>`
 
-For questions or issues, please open a GitHub issue or contact the corresponding author.
+For questions or issues, please open a GitHub issue or contact the authors (contact information below).
 
 ## 📧 Contact
 
@@ -253,4 +253,6 @@ For questions or issues, please open a GitHub issue or contact the corresponding
 
 ---
 
-**Repository**: https://github.com/jdpreston30/PGD-preop-metabolomics
+**Repository**: https://github.com/jdpreston30/PGD-preop-metabolomics  
+**Docker Hub**: https://hub.docker.com/r/jdpreston30/pgd-preop-metabolomics  
+**Archived Version**: Zenodo DOI will be assigned upon publication (archived December 10, 2025; see manuscript for DOI). Documentation updates may be made to this repository, but the Zenodo archive contains the static version used for the manuscript.
