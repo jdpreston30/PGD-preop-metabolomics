@@ -27,6 +27,10 @@ docker pull jdpreston30/pgd-preop-metabolomics:latest
 
 # 3. Run the complete analysis pipeline
 docker run -v $(pwd):/analysis jdpreston30/pgd-preop-metabolomics:latest
+
+# Windows users: Replace $(pwd) with:
+# - CMD: docker run -v %cd%:/analysis jdpreston30/pgd-preop-metabolomics:latest
+# - PowerShell: docker run -v ${PWD}:/analysis jdpreston30/pgd-preop-metabolomics:latest
 ```
 
 #### Method B: Build Image Locally
@@ -41,13 +45,17 @@ docker build -t pgd-metabolomics .
 
 # 3. Run the complete analysis pipeline
 docker run -v $(pwd):/analysis pgd-metabolomics
+
+# Windows users: Replace $(pwd) with:
+# - CMD: docker run -v %cd%:/analysis pgd-metabolomics
+# - PowerShell: docker run -v ${PWD}:/analysis pgd-metabolomics
 ```
 
 #### What's Included
 
 The Docker container provides a completely isolated, reproducible environment with:
 - **R 4.5.1** (2025-06-13) with all required packages at pinned versions
-- **Package management**: Uses `renv` to lock exact versions of 211 R packages
+- **Package management**: Uses `renv` to lock exact versions of 246 R packages
 - **Bioconductor**: Version 3.21 packages (mixOmis, xcms, CAMERA, etc.)
 - **System dependencies**: Ghostscript, ImageMagick, Pandoc, TinyTeX/LaTeX, GraphViz, GDAL
 - **Guaranteed identical results** regardless of host system or when the analysis is run
@@ -111,7 +119,7 @@ source("All_Run/run.R")
 ```
 
 **What happens during `renv::restore()`**:
-- Installs 211 R packages at exact versions from `renv.lock`
+- Installs 246 R packages at exact versions from `renv.lock`
 - Installs CRAN packages (e.g., ggplot2, dplyr, broom, conflicted)
 - Installs Bioconductor 3.21 packages (e.g., xcms, mixOmics, CAMERA)
 - Installs GitHub packages (TernTablesR, MetaboAnalystR)
@@ -199,7 +207,7 @@ All R package dependencies are specified in `DESCRIPTION`. Key packages include:
 This project implements best practices for computational reproducibility:
 
 - ✅ **Version Control**: Complete analysis code on GitHub
-- ✅ **Package Management**: `renv` with `renv.lock` pinning all 211 packages to exact versions
+- ✅ **Package Management**: `renv` with `renv.lock` pinning all 246 packages to exact versions
 - ✅ **Dependency Declaration**: All dependencies specified in `DESCRIPTION` with automatic loading
 - ✅ **Containerization**: Docker image (R 4.5.1, Bioconductor 3.21) available at `jdpreston30/pgd-preop-metabolomics:latest`
 - ✅ **Conflict Resolution**: `conflicted` package ensures predictable function behavior
