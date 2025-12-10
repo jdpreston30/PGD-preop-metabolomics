@@ -1,4 +1,4 @@
-Analysis run on: 2025-11-26 23:35:58 EST
+Analysis run on: 2025-12-09 23:35:29 EST
 
 R version 4.5.1 (2025-06-13)
 Platform: aarch64-apple-darwin23.6.0
@@ -44,8 +44,8 @@ other attached packages:
 [67] magrittr_2.0.4       ggraph_2.2.2         ggplot2_3.5.2       
 [70] stringr_1.5.2        tidyr_1.3.1          readr_2.1.5         
 [73] dplyr_1.1.4          purrr_1.1.0          lubridate_1.9.4     
-[76] broom_1.0.10         conflicted_1.2.0     here_1.0.2          
-[79] yaml_2.3.10         
+[76] broom_1.0.10         here_1.0.2           yaml_2.3.10         
+[79] conflicted_1.2.0    
 
 loaded via a namespace (and not attached):
   [1] IRanges_2.42.0              vroom_1.6.6                
@@ -95,7 +95,7 @@ loaded via a namespace (and not attached):
  [89] statmod_1.5.1               tzdb_0.5.0                 
  [91] tweenr_2.0.3                pkgconfig_2.0.3            
  [93] tools_4.5.1                 cachem_1.1.0               
- [95] rbibutils_2.3               RSQLite_2.4.4              
+ [95] rbibutils_2.3               RSQLite_2.4.5              
  [97] DBI_1.2.3                   numDeriv_2016.8-1.1        
  [99] impute_1.82.0               crmn_0.0.21                
 [101] fastmap_1.2.0               scrime_1.3.5               
@@ -129,6 +129,6 @@ loaded via a namespace (and not attached):
 
 === System Dependencies ===
 Ghostscript: 10.06.0
-ImageMagick: 
+ImageMagick: Version: ImageMagick 7.1.2-9 Q16-HDRI aarch64 23451 https://imagemagick.org
 Pandoc: pandoc 3.5
 LaTeX: pdfTeX 3.141592653-2.6-1.40.28 (TeX Live 2025)
