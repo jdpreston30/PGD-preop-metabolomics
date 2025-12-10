@@ -245,7 +245,7 @@ For questions or issues, please open a GitHub issue or contact the corresponding
 - **ORCID**: [0000-0001-9834-3017](https://orcid.org/0000-0001-9834-3017)  
 - **Institution**: Department of Surgery, Emory University School of Medicine
 
-**Senior Author**: Joshua L. Chan
+**Senior & Corresponding Author**: Joshua L. Chan
 - **Email**: joshua.chan@emory.edu  
 - **ORCID**: [0000-0001-7220-561X](https://orcid.org/0000-0001-7220-561X)  
 - **Institution**: Department of Surgery, Emory University School of Medicine
