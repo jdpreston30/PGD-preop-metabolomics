@@ -2,8 +2,8 @@
 output:
   pdf_document:
     latex_engine: xelatex
-bibliography: "References/Supporting_AJT.bib"
-csl: "References/jama.csl"
+bibliography: "Components/References/Supporting_AJT.bib"
+csl: "Components/References/jama.csl"
 header-includes:
   - \usepackage{fontspec}
   - \usepackage{graphicx}
@@ -82,17 +82,17 @@ Joshua D. Preston, BS^1,2^, Clayton J. Rust, MD^1^, Aubrey C. Reed, BS^1^, Supre
 
 
 
-\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplemental Figure 1}\vspace{0.5cm}}]{Figures/PDF/S1.pdf}
+\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplemental Figure 1}\vspace{0.5cm}}]{Components/Figures/PDF/S1.pdf}
 
-\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplemental Figure 2.1}\vspace{0.2cm}\\\noindent\textit{\fontsize{11}{13}\selectfont Markers on X-axis indicate Y/N severe PGD status.}\vspace{0.3cm}}]{Figures/PDF/S2.1.pdf}
+\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplemental Figure 2.1}\vspace{0.2cm}\\\noindent\textit{\fontsize{11}{13}\selectfont Markers on x-axis indicate Y/N severe PGD status.}\vspace{0.3cm}}]{Components/Figures/PDF/S2.1.pdf}
 
-\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplemental Figure 2.2}\vspace{0.2cm}\\\noindent\textit{\fontsize{11}{13}\selectfont Markers on X-axis indicate Y/N severe PGD status.}\vspace{0.3cm}}]{Figures/PDF/S2.2.pdf}
+\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplemental Figure 2.2}\vspace{0.2cm}\\\noindent\textit{\fontsize{11}{13}\selectfont Markers on x-axis indicate Y/N severe PGD status.}\vspace{0.3cm}}]{Components/Figures/PDF/S2.2.pdf}
 
-\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplemental Figure 2.3}\vspace{0.2cm}\\\noindent\textit{\fontsize{11}{13}\selectfont Markers on X-axis indicate Y/N severe PGD status.}\vspace{0.3cm}}]{Figures/PDF/S2.3.pdf}
+\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplemental Figure 2.3}\vspace{0.2cm}\\\noindent\textit{\fontsize{11}{13}\selectfont Markers on x-axis indicate Y/N severe PGD status.}\vspace{0.3cm}}]{Components/Figures/PDF/S2.3.pdf}
 
-\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplemental Figure 2.4}\vspace{0.2cm}\\\noindent\textit{\fontsize{11}{13}\selectfont Markers on X-axis indicate Y/N severe PGD status.}\vspace{0.3cm}}]{Figures/PDF/S2.4.pdf}
+\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplemental Figure 2.4}\vspace{0.2cm}\\\noindent\textit{\fontsize{11}{13}\selectfont Markers on x-axis indicate Y/N severe PGD status.}\vspace{0.3cm}}]{Components/Figures/PDF/S2.4.pdf}
 
-\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplemental Figure 2.5}\vspace{0.5cm}}]{Figures/PDF/S2.5.pdf}
+\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplemental Figure 2.5}\vspace{0.5cm}}]{Components/Figures/PDF/S2.5.pdf}
 
 # **Expanded Metabolomics Methods and Other Technical Details**
 In keeping with consensus reporting standards for metabolomics experiments,[@sumnerProposedMinimumReporting2007] we provide in-depth details as follows:
