@@ -1,13 +1,17 @@
 # Recipient Plasma Metabolomics as a Predictor of Heart Transplant Severe Primary Graft Dysfunction
 
-**Reproducible analysis code for academic publication**
-
 ## 📖 Citation
 
 This code is associated with the analysis presented in the following manuscript:
 > Preston et al. (2025). Recipient Plasma Metabolomics as a Predictor of Heart Transplant Severe Primary Graft Dysfunction. *American Journal of Transplantation*.
 
 ## 🚀 Quick Start for Reproduction
+
+**⚠️ Data Availability Notice**: 
+- **No data files** (raw data, processed feature tables, or clinical metadata) are included in this repository
+- **Raw metabolomics data** will be publicly available after embargo (October 31, 2026) through the NIH Common Fund's National Metabolomics Data Repository (NMDR) at Metabolomics Workbench (Project ID PR002742; Study ID ST004328; DOI: http://dx.doi.org/10.21228/M87549)
+- **Before embargo**: Data are available from the corresponding author upon reasonable request
+- **To run analyses with your own data**: Update file paths in `All_Run/config_dynamic.yaml` to match your system
 
 ### Option 1: Using Docker (Recommended for Exact Reproducibility)
 
@@ -50,17 +54,6 @@ docker run -v $(pwd):/analysis pgd-metabolomics
 # - CMD: docker run -v %cd%:/analysis pgd-metabolomics
 # - PowerShell: docker run -v ${PWD}:/analysis pgd-metabolomics
 ```
-
-#### What's Included
-
-The Docker container provides a completely isolated, reproducible environment with:
-- **R 4.5.1** (2025-06-13) with all required packages at pinned versions
-- **Package management**: Uses `renv` to lock exact versions of 246 R packages
-- **Bioconductor**: Version 3.21 packages (mixOmis, xcms, CAMERA, etc.)
-- **System dependencies**: Ghostscript, ImageMagick, Pandoc, TinyTeX/LaTeX, GraphViz, GDAL
-- **Guaranteed identical results** regardless of host system or when the analysis is run
-- **Key package versions**: mixOmics 6.32.0, igraph 2.1.4, ggplot2 3.5.2, ggraph 2.2.2, xcms (see `renv.lock` for complete list)
-- **Automatic package loading**: All dependencies from `DESCRIPTION` loaded automatically via helper functions
 
 All outputs (figures, tables, pathway results) will be saved to your local workspace.
 
@@ -130,24 +123,25 @@ source("All_Run/run.R")
 ## 📁 Project Structure
 
 ```
-├── DESCRIPTION              # R package dependencies (CRAN, Bioconductor, GitHub)
-├── Dockerfile              # Docker container for reproducible environment
-├── All_Run/
-│   ├── config_dynamic.yaml # Analysis configuration and parameters
-│   └── run.R              # Main pipeline execution script
-├── R/
-│   ├── Scripts/           # Analysis workflow scripts (00a-09)
-│   └── Utilities/         # Custom analysis functions
-│       ├── Analysis/      # Statistical and pathway analysis
-│       ├── Helpers/       # Utility functions
-│       ├── Preprocessing/ # Data preprocessing
-│       └── Visualization/ # Plotting functions
-├── Databases/             # Reference databases (IROA, MetaboAnalyst)
-├── Outputs/              # Generated results
-│   ├── Figures/          # Publication figures (PDF, EPS, PNG)
-│   ├── Tables/           # Result tables
-│   └── mummichog/        # Pathway enrichment results
-└── Supporting Information/ # Supplementary materials and methods
+├── DESCRIPTION                 # R package dependencies (CRAN, Bioconductor, GitHub)
+├── Dockerfile                  # Docker container for reproducible environment
+├── All_Run/                    # Pipeline execution
+│   ├── config_dynamic.yaml     # Analysis configuration (update paths for your system)
+│   └── run.R                   # Main pipeline execution script
+├── R/                          # Analysis code
+│   ├── Scripts/                # Analysis workflow scripts (00a-09)
+│   ├── Utilities/              # Custom analysis functions
+│   │   ├── Analysis/           # Statistical and pathway analysis
+│   │   ├── Helpers/            # Helper functions
+│   │   ├── Preprocessing/      # Data preprocessing functions
+│   │   └── Visualization/      # Plotting functions
+│   └── raw_process/            # Raw data processing (not part of main pipeline)
+├── Databases/                  # Reference databases/metabolite libraries
+├── Outputs/                    # Generated results
+│   ├── Figures/                # Publication figures (PDF, EPS, PNG)
+│   ├── Tables/                 # Tables (Clinical Data)
+│   └── mummichog/              # Pathway enrichment results
+└── Supporting Information/     # Supplementary materials and methods
 ```
 
 ## 🔬 Analysis Workflow
@@ -155,14 +149,14 @@ source("All_Run/run.R")
 The complete pipeline executes in sequence:
 
 1. **00a-00d**: Environment setup, clinical metadata, feature tables
-2. **01**: Clustering analysis (PCA, metabolite grouping)
+2. **01**: Clustering analysis
 3. **02**: Pathway enrichment (mummichog analysis)
 4. **03**: Annotated bar plots
-5. **04**: Assignment plots
-6. **05**: Render final figures (PDF, EPS)
-7. **06**: Generate results tables
-8. **07**: Additional analyses
-9. **08**: Supporting information document
+5. **04**: Assignment of plots
+6. **05**: Render final figures
+7. **06**: Generate tables of clinical data
+8. **07**: Results mentioned in manuscript but not in figures/tables
+9. **08**: Supporting information document creation
 10. **09**: Session information (documents final package versions)
 
 ## 💻 System Requirements
@@ -184,7 +178,7 @@ The complete pipeline executes in sequence:
 
 All R package dependencies are specified in `DESCRIPTION`. Key packages include:
 
-### CRAN Packages (~60 packages)
+### CRAN Packages
 - **Data manipulation**: tidyverse (dplyr, tidyr, purrr, readr, etc.)
 - **Visualization**: ggplot2, ggraph, patchwork, Cairo, magick
 - **Statistical modeling**: mixOmics, caret, randomForest, e1071
@@ -246,9 +240,14 @@ For questions or issues, please open a GitHub issue or contact the corresponding
 
 ## 📧 Contact
 
-**Corresponding Author**: Joshua D. Preston
+**First Author & Repository Maintainer**: Joshua D. Preston
 - **Email**: joshua.preston@emory.edu  
 - **ORCID**: [0000-0001-9834-3017](https://orcid.org/0000-0001-9834-3017)  
+- **Institution**: Department of Surgery, Emory University School of Medicine
+
+**Senior Author**: Joshua L. Chan
+- **Email**: joshua.chan@emory.edu  
+- **ORCID**: [0000-0001-7220-561X](https://orcid.org/0000-0001-7220-561X)  
 - **Institution**: Department of Surgery, Emory University School of Medicine
 
 ---
