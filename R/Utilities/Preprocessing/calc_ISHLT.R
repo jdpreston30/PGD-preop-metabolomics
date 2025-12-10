@@ -4,6 +4,8 @@
 #' Heart and Lung Transplantation (ISHLT) criteria based on mechanical support 
 #' requirements and hemodynamic parameters within 24 hours post-transplant.
 #'
+#' @author Ailin Tang, Emory University
+#'
 #' @param clinical_metadata_i Data frame containing clinical metadata with postoperative variables
 #' @param impella_dep_col Column name for Impella 5.5 dependence (default: "postop_MCS_Impella5.5_DEPENDENT")
 #' @param bivad_col Column name for biventricular assist device dependence (default: "postop_BiVAD_dependence")

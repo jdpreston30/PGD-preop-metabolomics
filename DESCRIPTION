@@ -1,10 +1,12 @@
 Type: Project
 Title: Recipient Plasma Metabolomics as a Predictor of Heart Transplant Severe Primary Graft Dysfunction
 Authors@R: person("Joshua", "Preston", email = "joshua.preston@emory.edu", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9834-3017"))
-Description: Metabolomics analysis pipeline for preoperative primary graft dysfunction study.
-    This project contains all code and analysis scripts for reproducing the results
-    submitted to AJT, Preston et al. 2025.
-URL: https://github.com/jdpreston30/PGD-preop-metabolomics
+Description: Metabolomics analysis pipeline for preoperative primary graft dysfunction study. 
+    This project contains all code and analysis scripts for reproducing the results 
+    in Preston et al. 2025, American Journal of Transplantation. 
+    Reproducible computational environment available via Docker Hub 
+    (jdpreston30/pgd-preop-metabolomics) and archived at Zenodo (see manuscript for DOI).
+URL: https://github.com/jdpreston30/PGD-preop-metabolomics, https://hub.docker.com/r/jdpreston30/pgd-preop-metabolomics
 Depends: 
     R (>= 4.5.1)
 Imports:

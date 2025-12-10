@@ -5,7 +5,7 @@
 ## 📖 Citation
 
 This code is associated with the analysis presented in the following manuscript:
-> Preston et al. (2025). Recipient Plasma Metabolomics as a Predictor of Heart Transplant Severe Primary Graft Dysfunction. *American Journal of Transplantation*. (Submitted)
+> Preston et al. (2025). Recipient Plasma Metabolomics as a Predictor of Heart Transplant Severe Primary Graft Dysfunction. *American Journal of Transplantation*.
 
 ## 🚀 Quick Start for Reproduction
 
