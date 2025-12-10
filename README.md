@@ -9,7 +9,7 @@ This code is associated with the analysis presented in the following manuscript:
 
 **⚠️ Data Availability Notice**: 
 - **No data files** (raw data, processed feature tables, or clinical metadata) are included in this repository
-- **To reproduce this analysis**: Contact the first author (joshua.preston@emory.edu) to obtain the data files—this is the easiest and recommended approach
+- **To reproduce this analysis**: Contact the senior author (Joshua L. Chan, joshua.chan@emory.edu) or first author (Joshua D. Preston, joshua.preston@emory.edu) to obtain the data files—this is the easiest and recommended approach
 - **Public data access**: Raw metabolomics data will be available after embargo (October 31, 2026) through the NIH Common Fund's National Metabolomics Data Repository (NMDR) at Metabolomics Workbench (Project ID PR002742; Study ID ST004328; DOI: http://dx.doi.org/10.21228/M87549)
 - **To run analyses with your own data**: Update file paths in `All_Run/config_dynamic.yaml` to match your system
 
