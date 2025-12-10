@@ -186,7 +186,7 @@ All R package dependencies are specified in `DESCRIPTION`. Key packages include:
 - **Reporting**: rmarkdown, knitr, officer, flextable
 
 ### Bioconductor Packages (Bioconductor 3.21)
-- **Metabolomics workflow**: xcms, CAMERA, MSnbase
+- **MetaboAnalystR dependencies**: xcms, CAMERA, MSnbase
 - **Pathway analysis**: fgsea, globaltest, GlobalAncova
 - **Network analysis**: RBGL
 - **Data structures**: BiocParallel, multtest
@@ -211,33 +211,6 @@ This project implements best practices for computational reproducibility:
 - ✅ **System Dependency Checking**: Automated validation via `check_system_dependencies()`
 - ✅ **Documentation**: Comprehensive function documentation and workflow comments
 - ✅ **Session Info**: Timestamped session information in `session_info.txt` documents exact package versions
-
-## 🤝 For Reviewers & Collaborators
-
-**Easiest reproduction method**: Pull the pre-built Docker image from Docker Hub (Option 1A above). This ensures you have the exact same computational environment used to generate all manuscript results.
-
-### Quick Verification (5 minutes)
-```bash
-# Clone, pull image, and verify it works
-git clone https://github.com/jdpreston30/PGD-preop-metabolomics.git
-cd PGD-preop-metabolomics
-docker pull jdpreston30/pgd-preop-metabolomics:latest
-docker run --rm jdpreston30/pgd-preop-metabolomics:latest Rscript -e "packageVersion('igraph')"
-# Should output: [1] '2.1.4'
-```
-
-### Full Analysis Run (~10-30 minutes)
-```bash
-docker run -v $(pwd):/analysis jdpreston30/pgd-preop-metabolomics:latest
-```
-
-If you encounter any issues:
-1. Verify Docker Desktop is installed and running
-2. Ensure you're in the repository root directory
-3. Check that output directories exist and are writable
-4. Review Docker logs: `docker logs <container-id>`
-
-For questions or issues, please open a GitHub issue or contact the authors (contact information below).
 
 ## 📧 Contact
 
