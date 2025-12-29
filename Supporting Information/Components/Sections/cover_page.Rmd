@@ -43,17 +43,17 @@ Joshua D. Preston, BS^1,2^, Clayton J. Rust, MD^1^, Aubrey C. Reed, BS^1^, Supre
 
 # Table of Contents
 
-\textbf{Supplemental Figure 1} \dotfill 2
+\textbf{Supplementary Figure S1} \dotfill 2
 
-\textbf{Supplemental Figure 2.1} \dotfill 3
+\textbf{Supplementary Figure S2.1} \dotfill 3
 
-\textbf{Supplemental Figure 2.2} \dotfill 4
+\textbf{Supplementary Figure S2.2} \dotfill 4
 
-\textbf{Supplemental Figure 2.3} \dotfill 5
+\textbf{Supplementary Figure S2.3} \dotfill 5
 
-\textbf{Supplemental Figure 2.4} \dotfill 6
+\textbf{Supplementary Figure S2.4} \dotfill 6
 
-\textbf{Supplemental Figure 2.5} \dotfill 7
+\textbf{Supplementary Figure S2.5} \dotfill 7
 
 \textbf{Expanded Metabolomics Methods and Other Technical Details} \dotfill 8-9
 

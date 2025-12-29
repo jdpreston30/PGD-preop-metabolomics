@@ -1,7 +1,7 @@
-#' Generate Abbreviation Table for Supplemental Figure S2
+#' Generate Abbreviation Table for Supplementary Figure S2
 #'
 #' Creates a formatted table displaying abbreviations and their definitions for use
-#' in supplemental figures. The table uses a clean, publication-ready format with
+#' in supplementary figures. The table uses a clean, publication-ready format with
 #' customizable styling, column widths, and export options.
 #'
 #' @param table_data Data frame containing abbreviation information with columns

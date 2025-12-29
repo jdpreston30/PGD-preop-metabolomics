@@ -69,11 +69,11 @@ figure_labels(list(
   D = c(4.3975, 4.115),
   "Figure 3" = c(0.49, 10.43)
 ))
-#+ 5.4: Supplemental Figure 1
+#+ 5.4: Supplementary Figure S1
 sup_fig1 <- ggdraw(xlim = c(0, 8.5), ylim = c(0, 11)) +
   draw_plot(ggdraw() + draw_grob(S1), x = 1.6675, y = 2.39, width = 3.46*1.5, height = 4.73*1.5) +
   draw_text("* Corresponding point to p = 0.05", x = 0.52, y = 0.6, hjust = 0, vjust = 0, size = 7, fontface = "italic", fontfamily = "Arial")
-#+ 5.5: Supplemental Figure 2
+#+ 5.5: Supplementary Figure S2
 #- 5.5.1: Pages 1-4
 # First four pages already imported and complete
 #- 5.5.2: Page 5
@@ -109,7 +109,7 @@ ggsave("Outputs/Figures/Final/PDF/fig3.pdf",
 system("pdf2ps Outputs/Figures/Final/PDF/fig1.pdf Outputs/Figures/Final/EPS/fig1.eps")
 system("pdf2ps Outputs/Figures/Final/PDF/fig2.pdf Outputs/Figures/Final/EPS/fig2.eps")
 system("pdf2ps Outputs/Figures/Final/PDF/fig3.pdf Outputs/Figures/Final/EPS/fig3.eps")
-#+ 5.7: Print All Supplemental Figures
+#+ 5.7: Print All Supplementary Figures
 #- 5.7.1: Print as PNGs
 print_to_png(sup_fig1, 
              "S1.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures/PNG")
@@ -123,7 +123,7 @@ print_to_png(S2.4 + add_s2_footnote(c("c", "i")),
              "S2.4.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures/PNG")
 print_to_png(S2.5 + add_s2_footnote(c("*", "c", "i5")), 
              "S2.5.png", width = 8.5, height = 11, dpi = 600, output_dir = "Supporting Information/Components/Figures/PNG")
-#- 5.7.2: Convert supplemental figures to PDFs
+#- 5.7.2: Convert supplementary figures to PDFs
 image_write(image_read("Supporting Information/Components/Figures/PNG/S1.png"), "Supporting Information/Components/Figures/PDF/S1.pdf", format = "pdf", density = 600)
 image_write(image_read("Supporting Information/Components/Figures/PNG/S2.1.png"), "Supporting Information/Components/Figures/PDF/S2.1.pdf", format = "pdf", density = 600)
 S2.2_img <- image_read("Supporting Information/Components/Figures/PNG/S2.2.png")

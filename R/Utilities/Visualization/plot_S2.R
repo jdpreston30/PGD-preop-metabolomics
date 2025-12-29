@@ -1,6 +1,6 @@
-#' Generate Multi-Page Supplemental Figure S2 with Volcano Plots
+#' Generate Multi-Page Supplementary Figure S2 with Volcano Plots
 #'
-#' Creates a multi-page supplemental figure with volcano plots arranged in a grid layout.
+#' Creates a multi-page supplementary figure with volcano plots arranged in a grid layout.
 #' Each page contains a specified number of plots with consistent positioning and annotation.
 #' Designed for creating publication-ready supplemental materials with multiple metabolomic
 #' analyses or comparisons.
@@ -115,7 +115,7 @@ plot_S2 <- function(
         )
     }
 
-    # label <- sprintf("Supplemental Figure 2.%d", page_index)
+    # label <- sprintf("Supplementary Figure S2.%d", page_index)
     page 
     #  figure_labels(setNames(list(c(0.49, 10.43)), label), fontface = "italic")
   }

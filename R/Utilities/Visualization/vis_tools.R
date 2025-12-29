@@ -110,8 +110,8 @@ add_s2_footnote <- function(symbols = c("c", "i")) {
   # Define individual footnote lines with symbol and text separated
   footnote_lines <- list(
     "c" = list(symbol = "ᶜ", text = "Identity confirmed with authentic chemical standard."),
-    "*" = list(symbol = "*", text = " M-H adduct presented but also identified with authentic standard as M-H+HCOONa adduct; see Figure.Row.Column 2.2.2.3."),
-    "i" = list(symbol = " ᴵ", text = "Isomer annotated or isomer present in library of authentic chemical standards; see Supplemental Figure 2.5 for details."),
+    "*" = list(symbol = "*", text = " M-H adduct presented but also identified with authentic standard as M-H+HCOONa adduct; see Figure.Row.Column S2.2.2.3."),
+    "i" = list(symbol = " ᴵ", text = "Isomer annotated or isomer present in library of authentic chemical standards; see Supplementary Figure S2.5 for details."),
     "i5" = list(symbol = " ᴵ", text = "Isomer annotated or isomer present in library of authentic chemical standards. See Footnote Table for details.")
   )
   

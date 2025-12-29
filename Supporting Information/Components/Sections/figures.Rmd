@@ -1,11 +1,11 @@
-\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplemental Figure 1}\vspace{0.5cm}}]{../Figures/PDF/S1.pdf}
+\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplementary Figure S1}\vspace{0.5cm}}]{../Figures/PDF/S1.pdf}
 
-\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplemental Figure 2.1}\vspace{0.2cm}\\\noindent\textit{\fontsize{11}{13}\selectfont Markers on x-axis indicate Y/N severe PGD status.}\vspace{0.3cm}}]{../Figures/PDF/S2.1.pdf}
+\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplementary Figure S2.1}\vspace{0.2cm}\\\noindent\textit{\fontsize{11}{13}\selectfont Markers on x-axis indicate Y/N severe PGD status.}\vspace{0.3cm}}]{../Figures/PDF/S2.1.pdf}
 
-\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplemental Figure 2.2}\vspace{0.2cm}\\\noindent\textit{\fontsize{11}{13}\selectfont Markers on x-axis indicate Y/N severe PGD status.}\vspace{0.3cm}}]{../Figures/PDF/S2.2.pdf}
+\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplementary Figure S2.2}\vspace{0.2cm}\\\noindent\textit{\fontsize{11}{13}\selectfont Markers on x-axis indicate Y/N severe PGD status.}\vspace{0.3cm}}]{../Figures/PDF/S2.2.pdf}
 
-\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplemental Figure 2.3}\vspace{0.2cm}\\\noindent\textit{\fontsize{11}{13}\selectfont Markers on x-axis indicate Y/N severe PGD status.}\vspace{0.3cm}}]{../Figures/PDF/S2.3.pdf}
+\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplementary Figure S2.3}\vspace{0.2cm}\\\noindent\textit{\fontsize{11}{13}\selectfont Markers on x-axis indicate Y/N severe PGD status.}\vspace{0.3cm}}]{../Figures/PDF/S2.3.pdf}
 
-\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplemental Figure 2.4}\vspace{0.2cm}\\\noindent\textit{\fontsize{11}{13}\selectfont Markers on x-axis indicate Y/N severe PGD status.}\vspace{0.3cm}}]{../Figures/PDF/S2.4.pdf}
+\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplementary Figure S2.4}\vspace{0.2cm}\\\noindent\textit{\fontsize{11}{13}\selectfont Markers on x-axis indicate Y/N severe PGD status.}\vspace{0.3cm}}]{../Figures/PDF/S2.4.pdf}
 
-\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplemental Figure 2.5}\vspace{0.5cm}}]{../Figures/PDF/S2.5.pdf}
+\includepdf[pages=-,pagecommand={\noindent\textbf{\Large Supplementary Figure S2.5}\vspace{0.5cm}}]{../Figures/PDF/S2.5.pdf}

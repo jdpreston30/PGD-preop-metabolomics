@@ -66,7 +66,7 @@ S2_footnotes <- TFT_sig_metadata %>%
   left_join(S2$pg.row.col, by = "sig_ord") %>%
   filter(!is.na(note)) %>%
   mutate(
-    `Figure.Row.Column` = paste("2",page, row, column, sep = "."),
+    `Figure.Row.Column` = paste("S2",page, row, column, sep = "."),
     `Abbreviated/Displayed Name` = display_name,
     `Footnote` = note,
   ) %>%
@@ -86,7 +86,7 @@ S2_footnotes_table <- plot_S2_abbrev(
 S2_abbrev_data <- TFT_sig_metadata %>%
   left_join(S2$pg.row.col, by = "sig_ord") %>%
   mutate(
-    `Figure.Row.Column` = paste("2", page, row, column, sep = "."),
+    `Figure.Row.Column` = paste("S2", page, row, column, sep = "."),
     `Abbreviated/Displayed Name` = display_name,
     `Longform, Other, or Isomer Name(s)` = long_name,
     `Adduct` = adduct,
