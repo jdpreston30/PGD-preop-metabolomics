@@ -38,14 +38,14 @@
   </locale>
   <macro name="editor">
     <names variable="editor" suffix=".">
-      <name name-as-sort-order="all" sort-separator=" " initialize-with="" delimiter=", " delimiter-precedes-last="always"/>
+      <name name-as-sort-order="all" sort-separator=" " initialize-with="." delimiter=", " delimiter-precedes-last="always"/>
       <label form="short" prefix=", "/>
     </names>
   </macro>
   <macro name="author">
     <group>
       <names variable="author">
-        <name name-as-sort-order="all" sort-separator=" " initialize-with="" delimiter=", " delimiter-precedes-last="always"/>
+        <name name-as-sort-order="all" sort-separator=" " initialize-with="." delimiter=", " delimiter-precedes-last="always"/>
         <label form="short" prefix=", "/>
         <substitute>
           <names variable="editor"/>
@@ -284,17 +284,7 @@
                       </date>
                     </if>
                     <else>
-                      <group delimiter=" ">
-                        <choose>
-                          <if type="article">
-                            <text value="Preprint posted online"/>
-                          </if>
-                          <else>
-                            <text value="Published online"/>
-                          </else>
-                        </choose>
-                        <date form="text" date-parts="year-month-day" variable="issued"/>
-                      </group>
+                      <date form="text" date-parts="year-month-day" variable="issued"/>
                     </else>
                   </choose>
                   <group>
