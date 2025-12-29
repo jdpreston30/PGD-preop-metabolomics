@@ -20,7 +20,7 @@ header-includes:
 ---
 
 \begin{center}
-\textit{\Large Supporting Information for:}
+\textit{\Large Supplementary Data for:}
 \end{center}
 
 \begin{center}
@@ -29,7 +29,7 @@ header-includes:
 
 \vspace{1em}
 
-Joshua D. Preston, BS^1,2^, Clayton J. Rust, MD^1^, Aubrey C. Reed, BS^1^, Supreet S. Randhawa, MS^1^, Ailin Tang, BS^1^, Kimberly A. Rooney, BS^3^, Misho Kozmava, BS^3^, Jaclyn Weinberg, BS^2^, Lucy Avant, BS^1^, Catherine L.B. McGeoch, MD, MSc^1^, Gustavo A. Parrilla, MD^1^, Jiada Zhan, BS, RD^2^, ViLinh Tran, MS^2^, Michael E. Halkos, MD, MSc^1^, Muath M. Bishawi, MD PhD^1^, Mani A. Daneshmand, MD^1^, Arshed A. Quyyumi, MD^3^, Charles D. Searles, MD^3^, Young-Mi Go, PhD^2^, Dean P. Jones, PhD^2^, Joshua L. Chan, MD^1^
+Joshua D. Preston^1,2^, Clayton J. Rust^1^, Aubrey C. Reed^1^, Supreet S. Randhawa^1^, Ailin Tang^1^, Kimberly A. Rooney^3^, Mikhael Kozmava^3^, Jaclyn Weinberg^2^, Lucy Avant^1^, Catherine L.B. McGeoch^1^, Gustavo A. Parrilla^1^, Jiada Zhan^2^, ViLinh Tran^2^, Michael E. Halkos^1^, Muath M. Bishawi^1^, Mani A. Daneshmand^1^, Arshed A. Quyyumi^3^, Charles D. Searles^3^, Young-Mi Go^2^, Dean P. Jones^2^, Joshua L. Chan^1^
 
 \vspace{1em}
 
@@ -59,7 +59,7 @@ Joshua D. Preston, BS^1,2^, Clayton J. Rust, MD^1^, Aubrey C. Reed, BS^1^, Supre
 
 \quad \textit{Sample Collection and Processing} \dotfill 8
 
-\quad \textit{Metabolomics Profiling with Liquid Chromatography-Mass Spectrometry} \dotfill 8
+\quad \textit{Metabolomics Profiling with Liquid Chromatography--Mass Spectrometry} \dotfill 8
 
 \quad \textit{Feature Extraction, Annotation, and Identification} \dotfill 8-9
 
